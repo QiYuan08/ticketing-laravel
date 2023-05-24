@@ -8,7 +8,6 @@ use App\Models\Ticket;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class TicketReplyController extends Controller
 {

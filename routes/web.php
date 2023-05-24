@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AddCustomerController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +55,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
     
     Route::delete('/agent/{agentID}', [AgentController::class, 'delete'])->name('agent.delete');
+});
+
+// CUSTOMER
+Route::middleware('auth')->name('customer.')->group(function() {
+    Route::get('/customer', [CustomerController::class, 'create'])->name('list');
+    Route::patch('/{customer}', [CustomerController::class, 'update'])->name('update');
+    Route::delete('/{customer}', [CustomerController::class, 'delete'])->name('delete');
+
+    Route::post('/new-customer', [AddCustomerController::class, 'store'])->name('create');
+    Route::get('/new-customer', [AddCustomerController::class, 'create'])->name('create');
 });
 
 // TICKET 

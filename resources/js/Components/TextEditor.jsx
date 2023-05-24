@@ -1,13 +1,14 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React from "react";
 
-const TextEditor = ({ value, onChange }) => {
+const TextEditor = ({ value, onChange, height = 200 }) => {
     return (
         <Editor
             value={value}
             onEditorChange={onChange}
+            apiKey="ik1nx1iajwhhkh8b95507x2yypxi2mk1puzytm2ge7ctvyb8"
             init={{
-                height: 200,
+                height: height,
                 menubar: false,
                 selector: "textarea",
                 plugins: [

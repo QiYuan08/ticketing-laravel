@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SearchBox from "@/Components/SearchBox";
 import StatusTag from "@/Components/StatusTag";
 import Table from "@/Components/Table";
+import { useDebounce } from "@/Hooks/useDebounce";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Head, Link, router, useForm } from "@inertiajs/react";
@@ -14,7 +15,8 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { debounce } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Dashboard(props) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -34,29 +36,18 @@ export default function Dashboard(props) {
         setData(event.target.id, event.target.checked);
     };
 
-    // debounce first time to update data
-    useEffect(() => {
-        let timeout = setTimeout(() => {
-            setData("searchTerm", searchTerm);
-        }, 200);
+    // debounce to call API
+    const debounceSearchAPI = useDebounce(() => {
+        console.log("calling APi ");
+        router.visit(`/dashboard`, {
+            method: "get",
+            data: data,
+            preserveScroll: true,
+            preserveState: true,
+        });
+    });
 
-        return () => clearTimeout(timeout);
-    }, [searchTerm]);
-
-    // debounce second time to call API
-    useEffect(() => {
-        let timeout = setTimeout(() => {
-            console.log("calling APi");
-            router.visit(`/dashboard`, {
-                method: "get",
-                data: data,
-                preserveScroll: true,
-                preserveState: true,
-            });
-        }, 800);
-
-        return () => clearTimeout(timeout);
-    }, [data]);
+    // const setSearchTerm = (value) => {};
 
     return (
         <AuthenticatedLayout
@@ -79,8 +70,11 @@ export default function Dashboard(props) {
                                     "Search by subject, requestor, assignee"
                                 }
                                 searchRoute={""}
-                                searchTerm={searchTerm}
-                                setSearchTerm={(value) => setSearchTerm(value)}
+                                searchTerm={data.searchTerm}
+                                setSearchTerm={(value) => {
+                                    setData("searchTerm", value);
+                                    debounceSearchAPI();
+                                }}
                             />
 
                             <Filter

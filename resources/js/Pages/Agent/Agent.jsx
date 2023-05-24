@@ -23,7 +23,10 @@ const Agent = (props) => {
                 <CardBody>
                     <div className="max-w-8xl mx-auto py-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between py-3 px-2">
-                            <SearchBox searchValue={""} searchRoute={""} />
+                            <SearchBox
+                                searchValue={"Search by agent name, email"}
+                                searchRoute={""}
+                            />
 
                             <PrimaryButton
                                 onClick={() => {

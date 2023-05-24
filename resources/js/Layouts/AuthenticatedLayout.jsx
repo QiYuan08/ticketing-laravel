@@ -34,6 +34,12 @@ export default function Authenticated({ auth, header, children }) {
                                 >
                                     Agent
                                 </NavLink>
+                                <NavLink
+                                    href={route("customer.list")}
+                                    active={route().current("customer.list")}
+                                >
+                                    Customer
+                                </NavLink>
                             </div>
                         </div>
 
