@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Ticket\TicketReplyController;
 use App\Http\Controllers\User\NewAgentController;
 use App\Models\Ticket;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,11 +36,7 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified']);
 
 // DASHBOARD
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard', [
-        'data' => Ticket::orderBy('updated_at')->limit(5)->get(),
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // USER PROFILE
 Route::middleware('auth')->group(function () {
@@ -50,13 +49,21 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/new-agent', [NewAgentController::class, 'create'])->name('new-agent');
     Route::post('/new-agent', [NewAgentController::class, 'store'])->name('new-agent');
-    Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent');
+
+    Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
+    
+    Route::delete('/agent/{agentID}', [AgentController::class, 'delete'])->name('agent.delete');
 });
 
 // TICKET 
-Route::middleware('auth')->group(function () {
-    Route::get('/ticket/{ticketID}', [TicketController::class, 'create'])->name('ticket');
-    Route::delete('/ticket/{ticketID}', [TicketController::class, 'delete'])->name('ticket');
+Route::middleware('auth')
+    ->prefix('ticket/')
+    ->name('ticket.')
+    ->group(function () {
+    Route::get('{ticketID}', [TicketController::class, 'create'])->name('get');
+    Route::delete('{ticketID}', [TicketController::class, 'delete'])->name('delete');
+
+    Route::post('attachment/${ticket}', [TicketReplyController::class, 'reply'])->name('attachment.upload');
 });
 
 require __DIR__.'/auth.php';

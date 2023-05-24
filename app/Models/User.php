@@ -51,4 +51,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class, 'role_id', 'role_id');
     }
+
+    public function tickets() {
+        return $this->hasMany(Ticket::class, 'requestor_id');
+    }
+
+    // all the ticket this users is handling
+    public function handle() {
+        return $this->hasMany(Ticket::class, 'assignee_id');
+    }
 }

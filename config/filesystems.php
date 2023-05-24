@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'do_spaces'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +29,15 @@ return [
     */
 
     'disks' => [
+
+        'do_spaces' => [
+            'driver' => 's3',
+            'key' => env('DIGITALOCEAN_SPACES_KEY'),
+            'secret' => env('DIGITALOCEAN_SPACES_SECRET'),
+            'region' => env('DIGITALOCEAN_SPACES_REGION'),
+            'bucket' => env('DIGITALOCEAN_SPACES_BUCKET'),
+            'endpoint' => env('DIGITALOCEAN_SPACES_ENDPOINT'),
+        ],
 
         'local' => [
             'driver' => 'local',

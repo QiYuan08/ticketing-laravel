@@ -1,31 +1,13 @@
 import { router } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-const SearchBox = ({ searchValue, searchRoute }) => {
-    const [searchTerm, setSearchTerm] = useState();
-    const [initiaLoad, setInitialLoad] = useState(true);
-
-    useEffect(() => {
-        let timeout;
-
-        if (initiaLoad) {
-            setInitialLoad(false);
-        } else {
-            timeout = setTimeout(() => {
-                console.log("calling APi");
-                router.visit(`/agent`, {
-                    method: "get",
-                    data: { searchTerm: searchTerm },
-                    preserveState: true,
-                });
-            }, 700);
-        }
-
-        return () => clearTimeout(timeout);
-    }, [searchTerm]);
-
+const SearchBox = ({ searchValue, searchRoute, setSearchTerm, searchTerm }) => {
     const handleChange = (event) => {
-        setSearchTerm(event.target.value);
+        if (event.target.value.trim() === "") {
+            setSearchTerm(null);
+        } else {
+            setSearchTerm(event.target.value);
+        }
     };
 
     return (

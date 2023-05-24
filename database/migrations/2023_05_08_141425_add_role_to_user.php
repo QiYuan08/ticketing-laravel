@@ -32,10 +32,7 @@ return new class extends Migration
         ]);
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')
-                ->nullable()
-                ->references('role_id')
-                ->on('role');
+            $table->foreignIdFor(Role::class, 'role_id')->constrained('role', 'role_id')->onDelete('cascade');
         });
     }
 
@@ -46,9 +43,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('user', function (Blueprint $table) {
-            $table->dropForeign('users_role_id_foreign');
-            $table->dropColumn('role_id');
-        });
+        // Schema::table('user', function (Blueprint $table) {
+        //     $table->dropForeign('users_role_id_foreign');
+        //     $table->dropColumn('role_id');
+        // });
     }
 };

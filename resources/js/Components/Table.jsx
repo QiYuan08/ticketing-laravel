@@ -48,8 +48,8 @@ const Table = ({
                 </div> */}
 
             <div className="p-1.5 w-full inline-block align-middle">
-                <div className="overflow-x-scroll border rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200 overflow-x-scroll">
+                <div className="border rounded-lg">
+                    <table className="table-auto min-w-full divide-y divide-gray-200 lg:table-fixed">
                         <thead className="bg-gray-50">
                             <tr>
                                 {header.map((head, idx) => {
@@ -57,7 +57,7 @@ const Table = ({
                                         <th
                                             key={idx}
                                             scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                            className="px-3 py-3 text-sm font-bold text-left text-gray-500 uppercase"
                                         >
                                             {head}
                                         </th>

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Ticket extends Model
+class Ticket extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
 
     protected $primaryKey = 'ticket_id';
@@ -16,7 +19,7 @@ class Ticket extends Model
     
     public function messages()
     {
-        return $this->hasMany(Messages::class);
+        return $this->hasMany(Messages::class, 'ticket_id');
     }
 
     public function priority() {
@@ -29,6 +32,14 @@ class Ticket extends Model
 
     public function type() {
         return $this->belongsTo(Type::class, 'type_id');
+    }
+
+    public function requestor() {
+        return $this->belongsTo(User::class, 'requestor_id');
+    }
+
+    public function assignee() {
+        return $this->belongsTo(User::class, 'assignee_id');
     }
 
 }

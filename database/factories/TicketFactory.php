@@ -23,6 +23,8 @@ class TicketFactory extends Factory
     public function definition()
     {
         return [
+            'assignee_id' => fake()->numberBetween(1, 13),
+            'requestor_id' => fake()->numberBetween(1, 13),
             'subject' => $this->faker->realText(50),
             'priority_id' => $this->faker->numberBetween(1,3),
             'status_id' => $this->faker->numberBetween(1,5),

@@ -17,11 +17,13 @@ class AgentController extends Controller
         ['data' => User::whereRelation('role', 'name', Role::ADMIN)
             ->orWhereRelation('role', 'name', Role::AGENT)
             ->orderBy('updated_at')
-            ->limit(5)
             ->with('role')
             ->get()
         ]);
+    }
 
+    public function delete (Request $request) {
+        dd($request->query());
     }
 
 }
