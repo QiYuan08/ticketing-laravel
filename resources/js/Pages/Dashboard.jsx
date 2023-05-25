@@ -9,14 +9,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import {
-    Button,
     Card,
     CardBody,
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import { debounce } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Dashboard(props) {
     const [searchTerm, setSearchTerm] = useState("");

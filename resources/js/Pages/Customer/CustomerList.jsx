@@ -19,8 +19,7 @@ const CustomerList = (props) => {
     });
 
     // debounce to call API
-
-    let debounceSearchAPI = useDebounce(() => {
+    const debounceSearchAPI = useDebounce(() => {
         console.log("calling APi ");
         router.visit(route("customer.list"), {
             method: "get",
@@ -29,6 +28,12 @@ const CustomerList = (props) => {
             preserveState: true,
         });
     });
+
+    const viewCustomerDetail = (customerId) => {
+        router.visit(route("customer.details", customerId), {
+            method: "get",
+        });
+    };
 
     return (
         <Authenticated
@@ -67,7 +72,6 @@ const CustomerList = (props) => {
                             </PrimaryButton>
                         </div>
 
-                        {console.log(props.data.data)}
                         <div className=" ">
                             <Table
                                 searchValue={"Seach by email, name, role"}
@@ -87,11 +91,16 @@ const CustomerList = (props) => {
                                     (customer, idx) => {
                                         return (
                                             <tr
-                                                className="odd:bg-gray-100"
+                                                className="odd:bg-gray-100 cursor-pointer hover:shadow-gray-600"
                                                 key={idx}
+                                                onClick={() =>
+                                                    viewCustomerDetail(
+                                                        customer.customer_id
+                                                    )
+                                                }
                                             >
                                                 <td className="px-1 py-4 text-sm font-medium text-gray-800 text-center">
-                                                    {customer.customer_id}
+                                                    {customer.alias_customer_id}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800 ">
                                                     {customer.pic_name}

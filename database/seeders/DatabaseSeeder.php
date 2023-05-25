@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(15)->create();
         // Ticket::factory(50)->create();
 
-        Messages::factory(10)->create();
+        // Messages::factory(10)->create();
 
         Customer::factory(30)->create();
         // \App\Models\User::factory(10)->create();

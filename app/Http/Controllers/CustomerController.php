@@ -28,8 +28,30 @@ class CustomerController extends Controller
         return Inertia::render('Customer/CustomerList', ['data' => $query]);
     }
 
+    public function view(Customer $customer) {
 
-    public function update(User $customer) {
+        return Inertia::render('Customer/CustomerDetails', ['customer' => $customer]);
+    }
+
+
+    public function update(Request $request, Customer $customer) {
+
+        $request->validate([
+            'customerId' => ['unique:App\Models\Customer,alias_customer_id'],
+            'picName' => ['required'],
+        ]);
+
+        $customer->alias_customer_id = $request->input('customerId');
+        $customer->pic_name = $request->input('picName');
+        $customer->phone_number = $request->input('phoneNumber');
+        $customer->mobile_number = $request->input('mobileNumber');
+        $customer->company = $request->input('companyName');
+        $customer->company_address = $request->input('address');
+        $customer->additional_info = $request->input('additionalInfo'); 
+    
+        $customer->save();
+
+        return Inertia::render('Customer/CustomerDetails', ['customer' => $customer->refresh()]);
 
     }
 

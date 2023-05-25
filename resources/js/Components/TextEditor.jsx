@@ -19,9 +19,9 @@ const TextEditor = ({ value, onChange, height = 200 }) => {
                 toolbar:
                     "numlist bullist | " +
                     "undo redo | formatselect | " +
-                    "bold italic backcolor | alignleft aligncenter " +
-                    "alignright alignjustify | bullist numlist outdent indent | " +
-                    "removeformat | help ",
+                    "bold italic backcolor underline | alignleft aligncenter " +
+                    "alignright alignjustify |  outdent indent | " +
+                    "fontsizeinput fontfamily | removeformat  | help ",
                 content_style:
                     "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}

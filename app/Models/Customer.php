@@ -2,21 +2,27 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
     use HasFactory;
+    use HasUuids;
 
     protected $primaryKey = 'customer_id';
 
     /**
-     * The data type of the auto-incrementing ID.
+     * Get the columns that should receive a unique identifier.
      *
-     * @var string
+     * @return array
      */
-    protected $keyType = 'string';
+    public function uniqueIds()
+    {
+        return ['customer_id'];
+    }
+
 
     protected $fillable = [
         'customer_id',
@@ -24,6 +30,7 @@ class Customer extends Model
         'phone_number',
         'mobile_number',
         'company',
-        'company_address'
+        'company_address',
+        'additional_info'
     ];
 }
