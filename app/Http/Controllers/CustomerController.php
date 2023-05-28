@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -22,6 +23,7 @@ class CustomerController extends Controller
             ->orWhere('company', 'ILIKE', "%$searchTerm%");
           
         }))
+        ->orderBy('updated_at', 'desc')
         ->paginate(15);
 
 
@@ -36,26 +38,37 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer) {
 
-        $request->validate([
-            'customerId' => ['unique:App\Models\Customer,alias_customer_id'],
+        $validator = Validator::make($request->all(), 
+        [            
             'picName' => ['required'],
         ]);
 
-        $customer->alias_customer_id = $request->input('customerId');
+        // check if the new customer id is unique or not if the newCustomerId is different than old customerId
+        $validator->sometimes('newCustomerId', 'unique:App\Models\Customer,customer_id', function ($request) {
+            return $request->customerId !== $request->newCustomerId;
+        });
+        
+        
+        $customer->alias_customer_id = $request->input('newCustomerId');
         $customer->pic_name = $request->input('picName');
         $customer->phone_number = $request->input('phoneNumber');
         $customer->mobile_number = $request->input('mobileNumber');
         $customer->company = $request->input('companyName');
         $customer->company_address = $request->input('address');
-        $customer->additional_info = $request->input('additionalInfo'); 
+        // $customer->additional_info = $request->input('additionalInfo'); 
     
         $customer->save();
 
-        return Inertia::render('Customer/CustomerDetails', ['customer' => $customer->refresh()]);
+        session()->put('success', 'Customer updated');
+
+        return redirect()->back();
+        // return Inertia::render('Customer/CustomerDetails', ['customer' => $customer->refresh()]);
 
     }
 
-    public function delete(User $customer) {
+    public function delete(Customer $customer) {
+        $customer->delete();
 
+        return redirect()->route('customer.list')->with('success', 'Customer Deleted');
     }
 }

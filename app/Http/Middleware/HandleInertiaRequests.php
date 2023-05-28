@@ -39,6 +39,11 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'alert'=> [
+                'error' => session()->get('error'),
+                'info' => session()->get('info'),
+                'success' => session()->get('success'),
+            ]
         ]);
     }
 }

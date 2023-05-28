@@ -6,6 +6,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 
 import { ThemeProvider } from "@material-tailwind/react";
+import { NotificationProvider } from "./Context/NotificationContext";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -22,7 +23,9 @@ createInertiaApp({
 
         root.render(
             <ThemeProvider>
-                <App {...props} />
+                <NotificationProvider>
+                    <App {...props} />
+                </NotificationProvider>
             </ThemeProvider>
         );
     },

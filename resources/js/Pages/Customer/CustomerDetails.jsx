@@ -1,23 +1,28 @@
-import TextEditor from "@/Components/TextEditor";
+import { useNotificationContext } from "@/Context/NotificationContext";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, router, useForm } from "@inertiajs/react";
 import { Card, CardBody } from "@material-tailwind/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import CustomerDetailInput from "./CustomerDetailInput";
+import Notification from "@/Components/Notification";
+import { SUCCESS } from "@/Utility/constant";
+import { toast } from "react-toastify";
 
 const CustomerDetails = (props) => {
     const customer = props.customer;
 
+    const { open } = useNotificationContext();
     const [edit, setEdit] = useState(false);
     const { data, setData, patch, errors } = useForm({
         customerId: customer.alias_customer_id,
+        newCustomerId: customer.alias_customer_id,
         picName: customer.pic_name,
         phoneNumber: customer.phone_number,
         mobileNumber: customer.mobile_number,
         companyName: customer.company,
         address: customer.company_address,
-        additionalInfo: customer.additional_info,
+        // additionalInfo: customer.additional_info,
     });
 
     const handleOnChange = (event) => {
@@ -27,6 +32,11 @@ const CustomerDetails = (props) => {
     const handleSubmit = () => {
         patch(route("customer.update", customer.customer_id), {
             data: data,
+            preserveState: false,
+            preserveScroll: true,
+            onSuccess: () => {
+                open(props.alert.success, SUCCESS);
+            },
         });
     };
 
@@ -65,10 +75,10 @@ const CustomerDetails = (props) => {
                             <dl className="divide-y divide-gray-100">
                                 <CustomerDetailInput
                                     edit={edit}
-                                    value={data.customerId}
+                                    value={data.newCustomerId}
                                     handleChange={handleOnChange}
-                                    error={errors.customerId}
-                                    inputName="customerId"
+                                    error={errors.newCustomerId}
+                                    inputName="newCustomerId"
                                     field="Customer ID"
                                 />
 
@@ -112,16 +122,6 @@ const CustomerDetails = (props) => {
                                     inputName="address"
                                     field="Company Address"
                                 />
-
-                                <div className="mt-6">
-                                    <TextEditor
-                                        value={data.additionalInfo}
-                                        onChange={(value) =>
-                                            setData("additionalInfo", value)
-                                        }
-                                        height={500}
-                                    />
-                                </div>
                             </dl>
                         </div>
 
@@ -138,7 +138,8 @@ const CustomerDetails = (props) => {
                             </button>
                             <button
                                 type="submit"
-                                className="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                                disabled={!edit}
+                                className="disabled:cursor-not-allowed disabled:opacity-50 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                                 onClick={handleSubmit}
                             >
                                 Save

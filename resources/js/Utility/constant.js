@@ -11,3 +11,8 @@ export const TICKET_STATUS_DELETED = "DELETED";
 export const PRIORITY_HIGH = "High";
 export const PRIORITY_MEDIUM = "Medium";
 export const PRIORITY_LOW = "Low";
+
+// severity
+export const SUCCESS = "Success";
+export const ERROR = "Error";
+export const INFO = "Info";

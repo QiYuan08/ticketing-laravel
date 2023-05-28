@@ -10,10 +10,12 @@ import { debounce } from "lodash";
 import React, { useCallback, useEffect } from "react";
 import PaginationNumber from "@/Components/PaginationNumber";
 import Pagination from "@/Components/Pagination";
+import { useNotificationContext } from "@/Context/NotificationContext";
 
 const CustomerList = (props) => {
     let pagination = props.data;
 
+    const { showToast } = useNotificationContext();
     const { data, setData, post, processing, errors, reset } = useForm({
         searchTerm: null,
     });
@@ -28,6 +30,12 @@ const CustomerList = (props) => {
             preserveState: true,
         });
     });
+
+    const deleteCustomer = (customerId) => {
+        router.delete(route("customer.delete", customerId), {
+            onSuccess: () => {},
+        });
+    };
 
     const viewCustomerDetail = (customerId) => {
         router.visit(route("customer.details", customerId), {
@@ -91,18 +99,20 @@ const CustomerList = (props) => {
                                     (customer, idx) => {
                                         return (
                                             <tr
-                                                className="odd:bg-gray-100 cursor-pointer hover:shadow-gray-600"
+                                                className="odd:bg-gray-100 hover:shadow-gray-600"
                                                 key={idx}
-                                                onClick={() =>
-                                                    viewCustomerDetail(
-                                                        customer.customer_id
-                                                    )
-                                                }
                                             >
                                                 <td className="px-1 py-4 text-sm font-medium text-gray-800 text-center">
                                                     {customer.alias_customer_id}
                                                 </td>
-                                                <td className="px-3 py-4 text-sm font-medium text-gray-800 ">
+                                                <td
+                                                    className="px-3 py-4 text-sm font-medium text-gray-800 hover:font-bold hover:cursor-pointer"
+                                                    onClick={() =>
+                                                        viewCustomerDetail(
+                                                            customer.customer_id
+                                                        )
+                                                    }
+                                                >
                                                     {customer.pic_name}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800">
@@ -124,31 +134,21 @@ const CustomerList = (props) => {
                                                         customer.updated_at
                                                     )}
                                                 </td>
-                                                <td className="px-3 py-4 text-sm font-medium text-gray-800 text-left space-x-4 w-1/12">
+                                                <td className="px-3 py-4 text-sm font-medium text-gray-800 text-left space-x-4 w-1/12 hover:font-semibold">
                                                     <Link
-                                                        // href={route("customer", {
-                                                        //     agentID: customer.id,
-                                                        // })}
+                                                        href={route(
+                                                            "customer.details",
+                                                            customer.customer_id
+                                                        )}
+                                                        method="get"
                                                         as="button"
                                                         className="text-blue-700 hover:text-blue-800 "
-                                                        method="get"
                                                     >
                                                         Edit
                                                     </Link>
-                                                    <Link
-                                                        // href={route(
-                                                        //     "customer.delete",
-                                                        //     {
-                                                        //         agentID:
-                                                        //             customer.id,
-                                                        //     }
-                                                        // )}
-                                                        as="button"
-                                                        className="text-red-700 hover:text-red-800 "
-                                                        method="delete"
-                                                    >
+                                                    <button className="text-red-700 hover:text-red-800 ">
                                                         Delete
-                                                    </Link>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         );

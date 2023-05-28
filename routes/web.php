@@ -62,7 +62,7 @@ Route::middleware('auth')->name('customer.')->group(function() {
     Route::get('/customers', [CustomerController::class, 'create'])->name('list');
     Route::get('/customers/{customer}', [CustomerController::class, 'view'])->name('details');
     Route::patch('/customers/{customer}', [CustomerController::class, 'update'])->name('update');
-    Route::delete('/{customer}', [CustomerController::class, 'delete'])->name('delete');
+    Route::delete('/customers/{customer}', [CustomerController::class, 'delete'])->name('delete');
 
     Route::post('/new-customer', [AddCustomerController::class, 'store'])->name('create');
     Route::get('/new-customer', [AddCustomerController::class, 'create'])->name('create');
