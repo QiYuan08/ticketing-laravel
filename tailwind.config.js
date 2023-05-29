@@ -27,6 +27,7 @@ module.exports = withMT({
         },
         minHeight: {
             10: "40px",
+            30: "120px",
         },
     },
 

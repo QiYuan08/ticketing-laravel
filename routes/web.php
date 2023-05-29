@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\AddCustomerController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Customer\AddCustomerController;
+use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Customer\CustomerInfoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Settings\TicketTypeController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
 use App\Http\Controllers\User\NewAgentController;
 use App\Models\Ticket;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -58,14 +58,21 @@ Route::middleware('auth')->group(function () {
 });
 
 // CUSTOMER
-Route::middleware('auth')->name('customer.')->group(function() {
-    Route::get('/customers', [CustomerController::class, 'create'])->name('list');
-    Route::get('/customers/{customer}', [CustomerController::class, 'view'])->name('details');
-    Route::patch('/customers/{customer}', [CustomerController::class, 'update'])->name('update');
-    Route::delete('/customers/{customer}', [CustomerController::class, 'delete'])->name('delete');
-
+Route::middleware('auth')->name('customer.')->prefix('/customers')->group(function() {
+    Route::get('/', [CustomerController::class, 'create'])->name('list');
+    Route::get('/{customer}', [CustomerController::class, 'view'])->name('details');
+    Route::patch('/{customer}', [CustomerController::class, 'update'])->name('update');
+    Route::delete('/{customer}', [CustomerController::class, 'delete'])->name('delete');
+    
     Route::post('/new-customer', [AddCustomerController::class, 'store'])->name('create');
     Route::get('/new-customer', [AddCustomerController::class, 'create'])->name('create');
+
+});
+
+// CUSTOMER ADDITIONAL INFO
+Route::middleware('auth')->name('customer.info.')->prefix('/customers-info')->group(function() {
+        Route::get('/list', [CustomerInfoController::class, 'create'])->name('list');
+        Route::get('/{customer}', [CustomerInfoController::class, 'view'])->name('details');
 });
 
 // TICKET 
@@ -77,6 +84,15 @@ Route::middleware('auth')
     Route::delete('{ticketID}', [TicketController::class, 'delete'])->name('delete');
 
     Route::post('attachment/${ticket}', [TicketReplyController::class, 'reply'])->name('attachment.upload');
+});
+
+//SETTINGS
+Route::middleware('auth')->name('settings.')->prefix('setting')->group(function() {
+    Route::get('/list', [TicketTypeController::class, 'create'])->name('list');
+    Route::patch('/types/{type}', [TicketTypeController::class, 'update'])->name('type.update');
+    Route::post('/types', [TicketTypeController::class, 'store'])->name('type.create');
+    Route::delete('/types/{type}', [TicketTypeController::class, 'delete'])->name('type.delete');
+
 });
 
 require __DIR__.'/auth.php';

@@ -2,14 +2,14 @@ import Pagination from "@/Components/Pagination";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SearchBox from "@/Components/SearchBox";
 import Table from "@/Components/Table";
-import { useNotificationContext } from "@/Context/NotificationContext";
 import { useDebounce } from "@/Hooks/useDebounce";
+
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { Card, CardBody, CardFooter } from "@material-tailwind/react";
 
-const CustomerList = (props) => {
+const CustomerInfo = (props) => {
     let pagination = props.data;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -18,6 +18,7 @@ const CustomerList = (props) => {
 
     // debounce to call API
     const debounceSearchAPI = useDebounce(() => {
+        console.log("calling APi ");
         router.visit(route("customer.list"), {
             method: "get",
             data: data,
@@ -26,31 +27,19 @@ const CustomerList = (props) => {
         });
     });
 
-    const deleteCustomer = (customerId) => {
-        router.delete(route("customer.delete", customerId), {
-            onSuccess: () => {},
-        });
-    };
-
-    const viewCustomerInfo = (customerId) => {
-        router.visit(route("customer.info.details", customerId), {
-            method: "get",
-        });
-    };
-
     return (
         <Authenticated
             auth={props.auth}
             errors={props.errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer (View and manage your customer)
+                    Customer Details (View and edit your customer detailed
+                    information)
                 </h2>
             }
         >
-            <Head title="Customer List" />
-
-            <Card>
+            <Head title="Customer Details" />
+            <Card className="">
                 <CardBody>
                     <div className="max-w-8xl mx-auto sm:px-3 lg:px-4">
                         <div className="flex justify-between py-3 px-2">
@@ -103,7 +92,7 @@ const CustomerList = (props) => {
                                                 <td
                                                     className="px-3 py-4 text-sm font-medium text-gray-800 hover:font-bold hover:cursor-pointer"
                                                     onClick={() =>
-                                                        viewCustomerInfo(
+                                                        viewCustomerDetail(
                                                             customer.customer_id
                                                         )
                                                     }
@@ -129,10 +118,10 @@ const CustomerList = (props) => {
                                                         customer.updated_at
                                                     )}
                                                 </td>
-                                                <td className="flex items-center px-3 py-4 text-sm font-medium text-gray-800 text-left space-x-4 w-1/12 hover:font-semibold">
+                                                <td className="flex items-center px-3 py-4 text-sm font-medium text-gray-800 text-center space-x-4 w-1/12 hover:font-semibold">
                                                     <Link
                                                         href={route(
-                                                            "customer.details",
+                                                            "customer.info.details",
                                                             customer.customer_id
                                                         )}
                                                         method="get"
@@ -141,9 +130,6 @@ const CustomerList = (props) => {
                                                     >
                                                         Edit
                                                     </Link>
-                                                    <button className="text-red-700 hover:text-red-800 ">
-                                                        Delete
-                                                    </button>
                                                 </td>
                                             </tr>
                                         );
@@ -166,4 +152,4 @@ const CustomerList = (props) => {
     );
 };
 
-export default CustomerList;
+export default CustomerInfo;

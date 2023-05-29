@@ -27,7 +27,7 @@ class TicketFactory extends Factory
             'requestor_id' => fake()->numberBetween(1, 13),
             'subject' => $this->faker->realText(50),
             'priority_id' => $this->faker->numberBetween(1,3),
-            'status_id' => $this->faker->numberBetween(1,5),
+            'status_id' => $this->faker->numberBetween(1,4),
             'type_id' => $this->faker->numberBetween(1,3),
         ];
     }

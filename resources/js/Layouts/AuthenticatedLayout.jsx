@@ -3,6 +3,13 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
+import {
+    Button,
+    Menu,
+    MenuHandler,
+    MenuItem,
+    MenuList,
+} from "@material-tailwind/react";
 import { useState } from "react";
 
 export default function Authenticated({ auth, header, children, alerts }) {
@@ -34,11 +41,50 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                 >
                                     Agent
                                 </NavLink>
+                                <Menu>
+                                    <MenuHandler>
+                                        <button
+                                            className={`${
+                                                route()
+                                                    .current()
+                                                    .includes("customer")
+                                                    ? "text-gray-900"
+                                                    : "text-gray-500"
+                                            } text-sm font-medium leading-5 `}
+                                        >
+                                            Customer
+                                        </button>
+                                    </MenuHandler>
+                                    <MenuList>
+                                        <MenuItem>
+                                            <NavLink
+                                                href={route("customer.list")}
+                                                active={route().current(
+                                                    "customer.list"
+                                                )}
+                                            >
+                                                Manager Customer
+                                            </NavLink>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <NavLink
+                                                href={route(
+                                                    "customer.info.list"
+                                                )}
+                                                active={route().current(
+                                                    "customer.info.list"
+                                                )}
+                                            >
+                                                Customer Info
+                                            </NavLink>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
                                 <NavLink
-                                    href={route("customer.list")}
-                                    active={route().current("customer.list")}
+                                    href={route("settings.list")}
+                                    active={route().current("settings.list")}
                                 >
-                                    Customer
+                                    Settings
                                 </NavLink>
                             </div>
                         </div>
