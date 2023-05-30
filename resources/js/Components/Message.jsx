@@ -1,5 +1,6 @@
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import React from "react";
+import AttachmentDisplay from "./AttachmentDisplay";
 
 const Message = ({ message, userId }) => {
     return (
@@ -39,6 +40,18 @@ const Message = ({ message, userId }) => {
                     <div
                         dangerouslySetInnerHTML={{ __html: message.payload }}
                     />
+                    <div className="flex flex-col justify-start gap-y-1 mt-3">
+                        {message.attachment.map((item, idx) => {
+                            return (
+                                <AttachmentDisplay
+                                    name={item.attachment_name}
+                                    size={item.attachment_size}
+                                    isLink={true}
+                                    link={item.link}
+                                />
+                            );
+                        })}
+                    </div>
                     <div className="self-end">
                         {getDateFromBackend(message.updated_at)}
                     </div>

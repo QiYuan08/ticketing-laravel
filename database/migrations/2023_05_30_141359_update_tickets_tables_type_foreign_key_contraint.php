@@ -26,9 +26,9 @@ return new class extends Migration
 
         // add new foreign key
         Schema::table('tickets', function (Blueprint $table) {
-            $table->foreignIdFor(Priority::class, 'priority_id')->nullable()->constrained('priority', 'priority_id')->onDelete('cascade')->change();
-            $table->foreignIdFor(Status::class, 'status_id')->nullable()->constrained('status', 'status_id')->onDelete('cascade')->change();
-            $table->foreignIdFor(Type::class, 'type_id')->nullable()->constrained('type', 'type_id')->onDelete('cascade')->change();
+            $table->foreignIdFor(Priority::class, 'priority_id')->nullable()->constrained('priority', 'priority_id')->nullOnDelete()->cascadeOnUpdate()->change();
+            $table->foreignIdFor(Status::class, 'status_id')->nullable()->constrained('status', 'status_id')->nullOnDelete()->cascadeOnUpdate()->change();
+            $table->foreignIdFor(Type::class, 'type_id')->nullable()->constrained('type', 'type_id')->nullOnDelete()->cascadeOnUpdate()->change();
         });
 
         // populate new priorty, status, type

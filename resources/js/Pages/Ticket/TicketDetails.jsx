@@ -50,7 +50,10 @@ const TicketDetails = (props) => {
     };
 
     const handleSubmit = () => {
-        router.post(route("ticket.attachment.upload", ticket.ticket_id), data);
+        router.post(route("ticket.attachment.upload", ticket.ticket_id), data, {
+            preserveState: false,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -97,17 +100,17 @@ const TicketDetails = (props) => {
                             )}
                         />
                     </div>
-                    <div className="py-2 border-t-[1px] lg:border-gray-600 mt-1 px-3">
+                    <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
                         <div className="flex flex-wrap gap-x-4 justify-between">
                             <div className="flex flex-col justify-start items-start gap-y-1">
                                 <Typography variant="h5">Type</Typography>
                                 <Select
                                     items={type}
-                                    selected={data.type}
+                                    selected={data.type ?? ""}
                                     setSelected={(value) => {
                                         setData("type", value);
                                     }}
-                                    render={(item) => item.name}
+                                    render={(item) => item?.name}
                                     identifier="type_id"
                                 />
                             </div>
@@ -126,7 +129,7 @@ const TicketDetails = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="py-2 border-t-[1px] lg:border-gray-600 mt-1 px-3">
+                    <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
                         <div className="flex flex-col justify-start items-start gap-y-1">
                             <Typography variant="h5">Status</Typography>
                             <Select
@@ -143,7 +146,7 @@ const TicketDetails = (props) => {
                 </div>
 
                 {/* Main content */}
-                <div className="flex flex-col grow-[10] border-0 lg:border-l-[1px] lg:border-gray-700 ">
+                <div className="flex flex-col grow-[10] border-0 lg:border-l-[1px] lg:border-gray-500 ">
                     {/* subject */}
                     <div className="flex items-center grow-[1] max-h-10 p-3 box-border">
                         <Typography variant="paragraph">
@@ -152,7 +155,7 @@ const TicketDetails = (props) => {
                     </div>
 
                     {/* chat */}
-                    <div className=" grow-[8] lg:border-y-[1px] border-gray-700 w-full px-5 h-72 md:h-[400px] overflow-auto">
+                    <div className=" grow-[8] lg:border-y-[1px] border-gray-500 w-full px-5 h-72 md:h-[400px] overflow-auto">
                         <div className="flex flex-col my-4  gap-y-3">
                             {ticket.messages.map((message) => {
                                 return (
@@ -228,7 +231,7 @@ const TicketDetails = (props) => {
                                     </div>
                                 </div>
                             );
-                        })}{" "}
+                        })}
                     </div>
 
                     {/* submit */}

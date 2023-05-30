@@ -17,11 +17,23 @@ class TicketController extends Controller
 {
     public function create(Request $request) {
 
+
+        // query ticket and revelant relationships
+        $tickets = Ticket::where('ticket_id', '=', $request->ticketID)
+                            ->with(['priority','status','type', 'assignee', 'requestor', 'requestor.role', 'assignee.role', 'messages', 'messages.to', 'messages.from'])
+                            ->first();
+
+        // query the attachment
+        $tickets->messages->map(function($message){
+            $message->attachment = $message->getMessageMedia();
+        });
+
+        
+
         // dd($request->ticketID, Ticket::where('ticket_id', '=', $request->ticketID)->with(['priority','status','type', 'assignee', 'requestor'])->first());
         return Inertia::render('Ticket/TicketDetails', 
         [
-            'data' => Ticket::where('ticket_id', '=', $request->ticketID)
-                    ->with(['priority','status','type', 'assignee', 'requestor', 'requestor.role', 'assignee.role', 'messages', 'messages.to', 'messages.from'])->first(),
+            'data' => $tickets,
             'agents' => User::whereIn('role_id', [Role::where('name', '=', Role::AGENT)->first()->role_id, Role::where('name', '=', Role::ADMIN)->first()->role_id])
                             ->with('role')
                             ->get(),

@@ -14,6 +14,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import TicketType from "./TicketType";
 
 const Index = (props) => {
+    console.log(props);
     const data = [
         {
             label: "Ticket Type",

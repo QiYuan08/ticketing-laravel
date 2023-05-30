@@ -22,7 +22,7 @@ const StatusTag = ({ status }) => {
 
         case TICKET_STATUS_PENDING:
             text = "PENDING";
-            colour = "tag-orange text-orange-900";
+            colour = "bg-tag-orange text-orange-900";
             break;
 
         case TICKET_STATUS_DELETED:

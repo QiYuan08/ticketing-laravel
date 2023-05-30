@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ticket;
 
+use App\Constant\MediaCollection;
 use App\Http\Controllers\Controller;
 use App\Models\Messages;
 use App\Models\Ticket;
@@ -19,42 +20,32 @@ class TicketReplyController extends Controller
         // ]);
 
         // update the ticket
-        dd($request->input());
         $ticket->update([
-            'status_id' => $request->input('status')->status_id,
-            'priority_id' => $request->input('priority')->priority_id,
-            'assignee_id' => $request->input('assignee')->id,
-            'type_id' => $request->input('type')->type_id,
+            'status_id' => $request->input('status')['status_id'],
+            'priority_id' => $request->input('priority')['priority_id'],
+            'assignee_id' => $request->input('assignee')['id'],
+            'type_id' => $request->input('type')['type_id'],
         ]);
 
-        // create new message
-        Messages::create([
-            'ticket_id' => $ticket->ticket_id,
-
-        ]);
-
-
-        $attachments = $request->attachment;
-
-        dd($request, $request->attachment);
-        
-        // foreach($attachments as $file) {
-
-        //     // Generate a unique filename
-        //     $filename = $file->getClientOriginalName();
-        //     // dump($filename);
-
-        //     // $file->store($filename, 'do_spaces');
-
-        //     // Upload the file to DigitalOcean Spaces
-        //     Storage::disk('do_spaces')->put($filename, file_get_contents($file));
-
-        //     // Optionally, you can get the public URL of the uploaded file
-        //     $fileUrl = Storage::disk('do_spaces')->get($filename);
+        // create new message if provided
+        if ($request->input('message') !== null && $request->input('message') !== "") {
+            $message = Messages::create([
+                'ticket_id' => $ticket->ticket_id,
+                'payload' => $request->input('message'),
+                'from' => $request->user()->id,
+                'to' => $request->input('recepient')[0]['id'],
+                'internal_node' => $request->input('internal_node') ?? false,
+            ]);      
             
-        //     Debugbar::info($filename, $fileUrl);
-        // }
-        
+            $attachments = $request->attachment;
+
+
+            // add the respective media
+            foreach($attachments as $file) {
+                $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
+            }
+
+        }
         // Perform any additional actions as needed
 
         // Return a response or redirect

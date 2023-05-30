@@ -34,8 +34,12 @@ class TicketTypeController extends Controller
     public function store(Request $request) {
         $name = $request->input('name');
 
+        $request->validate([
+            'name' => ['required', 'unique:App\Models\Type,name'],
+        ]);
+
         Type::create([
-            'name' => $name
+            'name' => $request->input('name')
         ]);
 
         return redirect()->back()->with('success', "$name Added");
@@ -45,6 +49,6 @@ class TicketTypeController extends Controller
         
         $type->delete();
 
-        return redirect()->back()->with('success', "$type deleted");
+        return redirect()->route('settings.list')->with('success', "$type->name deleted");
     }
 }

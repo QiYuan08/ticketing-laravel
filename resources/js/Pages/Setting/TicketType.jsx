@@ -6,7 +6,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Input } from "@material-tailwind/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useNotificationContext } from "@/Context/NotificationContext";
-import { SUCCESS } from "@/Utility/constant";
+import { ERROR, SUCCESS } from "@/Utility/constant";
 
 const TicketType = ({ types, alert }) => {
     const { open } = useNotificationContext();
@@ -26,6 +26,9 @@ const TicketType = ({ types, alert }) => {
                 onSuccess: () => {
                     open(alert.success, SUCCESS);
                 },
+                onError: (errors) => {
+                    open(errors.name, ERROR);
+                },
             });
         } else {
             router.visit(route("settings.type.create"), {
@@ -34,6 +37,9 @@ const TicketType = ({ types, alert }) => {
                 preserveScroll: true,
                 onSuccess: () => {
                     open(alert.success, SUCCESS);
+                },
+                onError: (errors) => {
+                    open(errors.name, ERROR);
                 },
             });
         }
@@ -61,6 +67,7 @@ const TicketType = ({ types, alert }) => {
     const handleDeleteType = (id) => {
         router.visit(route("settings.type.delete", id), {
             method: "delete",
+            preserveState: false,
             onSuccess: () => {
                 open(alert.success, SUCCESS);
             },

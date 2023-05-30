@@ -8,6 +8,8 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ThemeProvider } from "@material-tailwind/react";
 import { NotificationProvider } from "./Context/NotificationContext";
 
+import.meta.glob(["../images/**"]);
+
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
@@ -30,6 +32,6 @@ createInertiaApp({
         );
     },
     progress: {
-        color: "#4B5563",
+        color: "#14b8a6",
     },
 });

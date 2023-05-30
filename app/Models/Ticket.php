@@ -16,6 +16,14 @@ class Ticket extends Model implements HasMedia
     protected $model = 'tickets';
 
     protected $with = ['priority', 'status', 'type'];
+
+    protected $fillable = [
+        'status_id',
+        'subject',
+        'priority_id',
+        'assignee_id',
+        'type_id'
+    ];
     
     public function messages()
     {
