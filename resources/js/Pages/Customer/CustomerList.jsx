@@ -44,7 +44,7 @@ const CustomerList = (props) => {
             errors={props.errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer (View and manage your customer)
+                    Manage Customer (Manage your customer pool)
                 </h2>
             }
         >

@@ -169,7 +169,7 @@ export default function Dashboard(props) {
                                                 {row.type?.name}
                                             </td>
                                             <td className="px-2 py-4 text-sm text-gray-800 w-1/6">
-                                                {row.requestor.name}
+                                                {row.requestor.pic_name}
                                             </td>
                                             <td className="px-2 py-4 text-sm text-gray-800 w-1/6">
                                                 {row.assignee.name}

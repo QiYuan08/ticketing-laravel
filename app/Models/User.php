@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
-
+    use HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -59,5 +60,17 @@ class User extends Authenticatable
     // all the ticket this users is handling
     public function handle() {
         return $this->hasMany(Ticket::class, 'assignee_id');
+    }
+
+    // messages send
+    public function send()
+    {
+        return $this->morphMany(Messages::class, 'sender');
+    }
+
+    // messaged received
+    public function received()
+    {
+        return $this->morphMany(Messages::class, 'recipient');
     }
 }

@@ -15,13 +15,7 @@ class CustomerController extends Controller
 
         $searchTerm = $request->get('searchTerm');
 
-        $query = Customer::when($searchTerm,         
-        fn($query) => $query->where(function (Builder $query) use ($searchTerm) {
-            $query->where('pic_name', 'ILIKE', "%$searchTerm%")
-            ->orWhere('customer_id', 'ILIKE', "%$searchTerm%")
-            ->orWhere('company', 'ILIKE', "%$searchTerm%");
-          
-        }))
+        $query = Customer::filter($request)
         ->orderBy('updated_at', 'desc')
         ->paginate(15);
 

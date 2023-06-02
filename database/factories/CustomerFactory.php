@@ -25,6 +25,7 @@ class CustomerFactory extends Factory
             'customer_id' => fake()->uuid(),
             'alias_customer_id' => fake()->text(5),
             'pic_name' => fake()->name(),
+            'email' => fake()->email(),
             'phone_number' => fake()->phoneNumber(),
             'mobile_number' => fake()->phoneNumber(),
             'company' => fake()->company(),

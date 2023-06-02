@@ -1,0 +1,25 @@
+import Pagination from "@/Components/Pagination";
+import StatusTag from "@/Components/StatusTag";
+import Table from "@/Components/Table";
+import TicketTable from "@/Components/TicketTable";
+import { getDateFromBackend } from "@/Utility/globalFunction";
+import { Link } from "@inertiajs/react";
+import { Card, CardBody, CardFooter } from "@material-tailwind/react";
+import React from "react";
+
+const CustomerTicketsTab = ({ tickets }) => {
+    return (
+        <Card>
+            <CardBody>
+                <div className="max-w-8xl mx-auto sm:px-2 lg:px-1.5">
+                    <TicketTable data={tickets.data} />
+                </div>
+            </CardBody>
+            <CardFooter>
+                <Pagination pagination={tickets} data={tickets.data} />
+            </CardFooter>
+        </Card>
+    );
+};
+
+export default CustomerTicketsTab;

@@ -7,10 +7,12 @@ const Message = ({ message, userId }) => {
         <div className="">
             <div
                 className={`${
-                    message.from.id === userId ? "justify-end" : "justify-start"
+                    message.sender.id === userId
+                        ? "justify-end"
+                        : "justify-start"
                 } flex mb-4"`}
             >
-                {message.from.id !== userId && (
+                {message.sender.id !== userId && (
                     // icon
                     <img
                         src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
@@ -22,7 +24,7 @@ const Message = ({ message, userId }) => {
                 {/* message body */}
                 <div
                     className={`${
-                        message.from.id === userId
+                        message.sender.id === userId
                             ? "mr-2 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl"
                             : " ml-2 rounded-tl-xl rounded-br-3xl rounded-tr-3xl"
                     } flex flex-col gap-y-2 py-3 px-4 bg-gray-200`}
@@ -30,11 +32,11 @@ const Message = ({ message, userId }) => {
                     <div className="flex flex-col gap-y-1">
                         <div className="inline-flex gap-x-1 items-center">
                             <b>To:</b>
-                            {message.to.name}
+                            {message.recipient.name}
                         </div>
                         <div className="inline-flex gap-x-1 items-center">
                             <b>From:</b>
-                            {message.from.name}
+                            {message.sender.name}
                         </div>
                     </div>
                     <div
@@ -44,6 +46,7 @@ const Message = ({ message, userId }) => {
                         {message.attachment.map((item, idx) => {
                             return (
                                 <AttachmentDisplay
+                                    key={idx}
                                     name={item.attachment_name}
                                     size={item.attachment_size}
                                     isLink={true}
@@ -56,7 +59,7 @@ const Message = ({ message, userId }) => {
                         {getDateFromBackend(message.updated_at)}
                     </div>
                 </div>
-                {message.from.id === userId && (
+                {message.sender.id === userId && (
                     /* icon */
                     <img
                         src="https://source.unsplash.com/vpOeXr5wmR4/600x600"

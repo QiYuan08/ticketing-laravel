@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constant\MediaCollection;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -13,21 +14,27 @@ class Messages extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory;
+    use HasUuids;
+
+    protected $primaryKey = 'message_id';
+
 
     protected $fillable = [
         'ticket_id',
         'internal_node',
         'payload',
-        'from',
-        'to',
+        'recipient_id',
+        'recipient_typ',
+        'sender_id',
+        'sender_type',
     ];
 
-    public function to() {
-        return $this->belongsTo(User::class, 'to');
-    }
+    public function recipient() {
+            return $this->morphTo();
+    }    
 
-    public function from() {
-        return $this->belongsTo(User::class, 'from');
+    public function sender() {
+        return $this->morphTo();
     }
 
     public function getMessageMedia() {

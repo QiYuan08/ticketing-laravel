@@ -25,24 +25,18 @@ return new class extends Migration
                 // Insert role into role table
                 DB::table('status')->insert([
                     [   
-                        'status_id' => 1,
                         'name' => Status::TICKET_STATUS_OPEN,
                         'description' => 'Ticket Open'
                     ],
                     [
-                        'status_id' => 2,
-
                         'name' => Status::TICKET_STATUS_PENDING,
                         'description' => 'Ticket Pending'        
                     ],
                     [
-                        'status_id' => 3,
-
                         'name' => Status::TICKET_STATUS_SOLVED,
                         'description' => 'Ticket Solved'        
                     ],
                     [
-                        'status_id' => 4,
                         'name' => Status::TICKET_STATUS_DELETED,
                         'description' => 'Ticket Deleted'        
                     ]

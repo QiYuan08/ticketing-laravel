@@ -73,6 +73,8 @@ Route::middleware('auth')->name('customer.')->prefix('/customers')->group(functi
 Route::middleware('auth')->name('customer.info.')->prefix('/customers-info')->group(function() {
         Route::get('/list', [CustomerInfoController::class, 'create'])->name('list');
         Route::get('/{customer}', [CustomerInfoController::class, 'view'])->name('details');
+
+        Route::patch('/{customer}', [CustomerInfoController::class, 'store'])->name('update');
 });
 
 // TICKET 

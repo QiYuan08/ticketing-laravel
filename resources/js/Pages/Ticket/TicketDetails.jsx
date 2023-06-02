@@ -29,7 +29,8 @@ const TicketDetails = (props) => {
         priority: ticket.priority,
         type: ticket.type,
         internalNode: false,
-        recepient: [ticket.requestor],
+        recepient: ticket.requestor,
+        cc: [],
         message: "",
         attachment: [],
     });
@@ -75,8 +76,8 @@ const TicketDetails = (props) => {
                         <div className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-7 gap-y-1">
                             <Typography variant="h4">Requestor</Typography>
                             <TextAvatar
-                                text={ticket.requestor.name}
-                                subtext={ticket.requestor.role.name}
+                                text={ticket.requestor.pic_name}
+                                subtext="Customer"
                                 img=""
                             />
                         </div>
@@ -193,9 +194,18 @@ const TicketDetails = (props) => {
                                 </>
                             )}
                             <p className="ml-1">To:</p>
-                            {data.recepient.map((recipient) => {
+                            {data.recepient && (
+                                <div className="inline-flex items-center rounded-sm bg-blue-gray-200 px-1">
+                                    {data.recepient.email}
+                                </div>
+                            )}
+
+                            {data.cc.map((recipient, idx) => {
                                 return (
-                                    <div className="inline-flex items-center rounded-sm bg-blue-gray-200 px-1">
+                                    <div
+                                        key={idx}
+                                        className="inline-flex items-center rounded-sm bg-blue-gray-200 px-1"
+                                    >
                                         {recipient.email}
                                     </div>
                                 );

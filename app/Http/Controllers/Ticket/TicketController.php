@@ -20,7 +20,7 @@ class TicketController extends Controller
 
         // query ticket and revelant relationships
         $tickets = Ticket::where('ticket_id', '=', $request->ticketID)
-                            ->with(['priority','status','type', 'assignee', 'requestor', 'requestor.role', 'assignee.role', 'messages', 'messages.to', 'messages.from'])
+                            ->with(['priority','status','type', 'assignee', 'requestor', 'assignee.role', 'messages', 'messages.recipient', 'messages.sender'])
                             ->first();
 
         // query the attachment

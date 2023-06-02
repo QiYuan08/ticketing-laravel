@@ -9,7 +9,7 @@ import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { Card, CardBody, CardFooter } from "@material-tailwind/react";
 
-const CustomerInfo = (props) => {
+const CustomerInfoList = (props) => {
     let pagination = props.data;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -19,7 +19,7 @@ const CustomerInfo = (props) => {
     // debounce to call API
     const debounceSearchAPI = useDebounce(() => {
         console.log("calling APi ");
-        router.visit(route("customer.list"), {
+        router.visit(route("customer.info.list"), {
             method: "get",
             data: data,
             preserveScroll: true,
@@ -33,7 +33,7 @@ const CustomerInfo = (props) => {
             errors={props.errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer Details (View and edit your customer detailed
+                    Customer Info (View and edit your customer detailed
                     information)
                 </h2>
             }
@@ -152,4 +152,4 @@ const CustomerInfo = (props) => {
     );
 };
 
-export default CustomerInfo;
+export default CustomerInfoList;

@@ -20,20 +20,36 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(15)->create();
-        Type::create([
-            'type_id' => 1,
-            'name' => 'SAP Sales',
-        ]);
+        User::factory(15)->create();
+
+        Customer::factory(30)->create();
+
+        // Type::create([
+        //     'type_id' => 1,
+        //     'name' => 'SAP Sales',
+        // ]);
         
-        Ticket::factory(10)->create(
-            ['type_id' => 1]
-        );
+        Ticket::factory(50)->create();
 
 
-        // Messages::factory(10)->create();
+        // Messages::factory()
+        // ->count(3)
+        // ->for(
+        //     User::factory(), 'recipient'
+        // )
+        // ->for(
+        //     User::factory(), 'sender'
+        // )
+        // ->for(
+        //     Customer::factory(), 'recipient'
+        // )
+        // ->for(
+        //     Customer::factory(), 'sender'
+        // )
+        // ->create();
 
-        // Customer::factory(30)->create();
+        // Messages::factory(100)->create();
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

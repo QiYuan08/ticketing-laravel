@@ -20,8 +20,6 @@ class MessagesFactory extends Factory
             'ticket_id' => fake()->numberBetween(1, 50),
             'payload' => fake()->randomHtml(4, 5),
             'internal_node' => false,
-            'from' => fake()->numberBetween(1, 15),
-            'to' => fake()->numberBetween(1, 15),
         ];
     }
 }

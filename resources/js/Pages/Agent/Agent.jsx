@@ -43,7 +43,6 @@ const Agent = (props) => {
                                 searchRoute={"agent"}
                                 haveFilter={false}
                                 header={[
-                                    "Agent ID",
                                     "Name",
                                     "Email",
                                     "Created On",
@@ -57,9 +56,6 @@ const Agent = (props) => {
                                             className="odd:bg-gray-100"
                                             key={idx}
                                         >
-                                            <td className="px-3 py-4 text-sm font-medium text-gray-800 text-center">
-                                                {agents.id}
-                                            </td>
                                             <td className="px-3 py-4 text-sm font-medium text-gray-800 ">
                                                 {agents.name}
                                             </td>
