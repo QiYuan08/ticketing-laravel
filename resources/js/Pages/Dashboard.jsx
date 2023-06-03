@@ -1,5 +1,6 @@
 import Checkbox from "@/Components/Checkbox";
 import Filter from "@/Components/Filter";
+import Pagination from "@/Components/Pagination";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SearchBox from "@/Components/SearchBox";
 import StatusTag from "@/Components/StatusTag";
@@ -17,7 +18,6 @@ import {
 import { useState } from "react";
 
 export default function Dashboard(props) {
-    const [searchTerm, setSearchTerm] = useState("");
     const { data, setData, post, processing, errors, reset } = useForm({
         all: true,
         high: true,
@@ -64,10 +64,7 @@ export default function Dashboard(props) {
                     <div className="max-w-8xl mx-auto sm:px-3 lg:px-4">
                         <div className="flex justify-between py-3 px-2">
                             <SearchBox
-                                searchValue={
-                                    "Search by subject, requestor, assignee"
-                                }
-                                searchRoute={""}
+                                searchValue={"Search by ticket ID, subject"}
                                 searchTerm={data.searchTerm}
                                 setSearchTerm={(value) => {
                                     setData("searchTerm", value);
@@ -131,9 +128,6 @@ export default function Dashboard(props) {
                         </div>
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg "></div>
                         <Table
-                            searchValue={
-                                "Seach by ticket ID, requestor, type, subject"
-                            }
                             header={[
                                 "Ticket ID",
                                 "Status",
@@ -143,12 +137,11 @@ export default function Dashboard(props) {
                                 "Assignee",
                                 "Requested At",
                                 "Priority",
-                                "Edit",
-                                "Delete",
+                                "Action",
                             ]}
                             bodyRow={
-                                props.data &&
-                                props.data.map((row, idx) => {
+                                props.data.data &&
+                                props.data.data.map((row, idx) => {
                                     return (
                                         <tr
                                             className="odd:bg-gray-100 break-words"
@@ -184,7 +177,7 @@ export default function Dashboard(props) {
                                                     status={row.priority?.name}
                                                 />
                                             </td>
-                                            <td className="px-2 py-4 text-sm font-medium text-left ">
+                                            <td className="flex items-center gap-2.5 justify-evenly px-2 py-4 text-sm font-medium text-left ">
                                                 <Link
                                                     href={route("ticket.get", {
                                                         ticketID: row.ticket_id,
@@ -195,8 +188,6 @@ export default function Dashboard(props) {
                                                 >
                                                     Edit
                                                 </Link>
-                                            </td>
-                                            <td className="px-2 py-4 text-sm font-medium text-left ">
                                                 <Link
                                                     href={route(
                                                         "ticket.delete",
@@ -219,8 +210,9 @@ export default function Dashboard(props) {
                         />
                     </div>
                 </CardBody>
-                <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                    <Typography
+                <CardFooter className="flex items-center justify-end border-t border-blue-gray-50 p-4 px-8">
+                    <Pagination pagination={props.data} data={data} />
+                    {/* <Typography
                         variant="small"
                         color="blue-gray"
                         className="font-normal"
@@ -230,7 +222,7 @@ export default function Dashboard(props) {
                     <div className="flex gap-2">
                         <PrimaryButton>Previous</PrimaryButton>
                         <PrimaryButton>Next</PrimaryButton>
-                    </div>
+                    </div> */}
                 </CardFooter>
             </Card>
         </AuthenticatedLayout>

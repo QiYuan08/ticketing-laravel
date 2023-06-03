@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmailTemplate;
 use App\Models\Type;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
@@ -14,7 +15,10 @@ class TicketTypeController extends Controller
 
         $typeQuery = Type::orderBy('created_at')->paginate(15);
 
-        return Inertia::render('Setting/Index', ['type' => $typeQuery]);
+        return Inertia::render('Setting/Index', [
+            'type' => $typeQuery,
+            'mailTemplate' => EmailTemplate::orderBy('template_name')->get(),
+        ]);
     }
 
     public function update(Request $request, Type $type) {

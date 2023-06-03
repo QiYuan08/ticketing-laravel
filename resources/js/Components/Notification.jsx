@@ -16,7 +16,7 @@ const Notification = ({ message, severity }) => {
 
     return (
         <div
-            className="right-3 top-12 z-99 fixed bg-white border-l-4 border-red p-4 py-1.5 rounded shadow-lg flex items-center justify-between delay-75 transition-all ease-in-out duration-500 -translate-x-5"
+            className="z-50 right-3 top-12 fixed bg-white border-l-4 border-red p-4 py-1.5 rounded shadow-lg flex items-center justify-between delay-75 transition-all ease-in-out duration-500 -translate-x-5"
             role="alert"
         >
             <div className={`h-full w-1 ${colour()} absolute left-0`}></div>

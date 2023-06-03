@@ -8,6 +8,7 @@ import { Card, CardBody, CardFooter } from "@material-tailwind/react";
 import React from "react";
 
 const CustomerTicketsTab = ({ tickets }) => {
+    console.log(tickets);
     return (
         <Card>
             <CardBody>
@@ -16,7 +17,7 @@ const CustomerTicketsTab = ({ tickets }) => {
                 </div>
             </CardBody>
             <CardFooter>
-                <Pagination pagination={tickets} data={tickets.data} />
+                <Pagination pagination={tickets} preserveState={true} />
             </CardFooter>
         </Card>
     );

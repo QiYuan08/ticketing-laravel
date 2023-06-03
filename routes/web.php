@@ -6,6 +6,7 @@ use App\Http\Controllers\Customer\CustomerInfoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Settings\EmailTemplateController;
 use App\Http\Controllers\Settings\TicketTypeController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
@@ -90,10 +91,17 @@ Route::middleware('auth')
 
 //SETTINGS
 Route::middleware('auth')->name('settings.')->prefix('setting')->group(function() {
+    
+    // Ticket types
     Route::get('/list', [TicketTypeController::class, 'create'])->name('list');
     Route::patch('/types/{type}', [TicketTypeController::class, 'update'])->name('type.update');
     Route::post('/types', [TicketTypeController::class, 'store'])->name('type.create');
     Route::delete('/types/{type}', [TicketTypeController::class, 'delete'])->name('type.delete');
+
+    // Email reply template
+    Route::patch('/mail-template/{template}', [EmailTemplateController::class, 'update'])->name('mail-template.update');
+    Route::post('/mail-template', [EmailTemplateController::class, 'store'])->name('mail-template.store');
+    Route::delete('/mail-template.{template}', [EmailTemplateController::class, 'delete'])->name('mail-template.delete');
 
 });
 

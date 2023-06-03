@@ -3,13 +3,13 @@ import { MdFirstPage, MdLastPage } from "react-icons/md";
 import PaginationNumber from "./PaginationNumber";
 import { router } from "@inertiajs/react";
 
-const Pagination = ({ pagination, data }) => {
+const Pagination = ({ pagination, data, preserveState = false }) => {
     const changePage = (url) => {
         router.visit(url, {
             method: "get",
             data: data,
             preserveScroll: true,
-            preserveState: false,
+            preserveState: preserveState,
         });
     };
 

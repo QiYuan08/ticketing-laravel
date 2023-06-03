@@ -27,7 +27,8 @@ class DashboardController extends Controller
         $query = Ticket::
         when($searchTerm, 
         fn($query) => $query->where(function (Builder $query) use ($searchTerm) {
-            $query->where('subject', 'ILIKE', "%$searchTerm%");
+            $query->where('subject', 'ILIKE', "%$searchTerm%")
+            ->orWhere('ticket_id', 'ILIKE', "%$searchTerm%");
             // ->whereHas('assignee', function (Builder $query) use ($searchTerm) {
             //     $query->orWhere('name', 'ILIKE', "%$searchTerm%");
             // })
@@ -40,7 +41,7 @@ class DashboardController extends Controller
                 $query->where('requestor_id', '=', request()->user()->id)
                 ->when(
                     $searchTerm,
-                    fn ($query) => $query->orWhere('name', 'ILIKE', "%$searchTerm%")
+                    fn ($query) => $query->orWhere('pic_name', 'ILIKE', "%$searchTerm%")
                 );
             });
             $query->orWhereHas('assignee', function (Builder $query) use ($searchTerm) {
@@ -90,7 +91,7 @@ class DashboardController extends Controller
             );
         })
         ->with(['requestor', 'assignee'])
-        ->get();
+        ->paginate(2);
 
         return Inertia::render('Dashboard', [
             'data' => $query

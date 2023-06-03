@@ -9,12 +9,15 @@ import {
     TabsBody,
     TabsHeader,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiCategoryAlt } from "react-icons/bi";
+import { MdMarkEmailUnread } from "react-icons/md";
 import TicketType from "./TicketType";
+import EmailTemplate from "./EmailTemplate";
 
 const Index = (props) => {
-    console.log(props);
+    const [orientation, setOrientation] = useState("vertical");
+
     const data = [
         {
             label: "Ticket Type",
@@ -22,7 +25,27 @@ const Index = (props) => {
             icon: <BiCategoryAlt className="w-5 h-5" />,
             desc: <TicketType types={props.type} alert={props.alert} />,
         },
+        {
+            label: "Email Template",
+            value: "email",
+            icon: <MdMarkEmailUnread className="w-5 h-5" />,
+            desc: (
+                <EmailTemplate
+                    templates={props.mailTemplate}
+                    alert={props.alert}
+                />
+            ),
+        },
     ];
+
+    useEffect(() => {
+        // if it's mobile then use horizontal tab
+        if (window.innerWidth <= 768) {
+            setOrientation("horizontal");
+        } else {
+            setOrientation("vertical");
+        }
+    }, []);
 
     return (
         <Authenticated
@@ -30,26 +53,22 @@ const Index = (props) => {
             errors={props.errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Settings
+                    Settings (Customize the behaviour of your apps)
                 </h2>
             }
         >
             <Head title="Ticket Settings" />
 
-            <div className="max-w-7xl mx-auto">
-                <Tabs value="type" orientation="vertical">
+            <div className="max-w-8xl mx-auto">
+                <Tabs value="email" orientation={orientation}>
                     <TabsHeader className="w-48 min-h-30 bg-white mr-5">
                         {data.map(({ label, value, icon }) => (
-                            <div
-                                key={value}
-                                value={value}
-                                className="bg-white p-3 m-0.5 rounded-md place-items-start z-1"
-                            >
-                                <div className="flex items-center gap-2 z-1">
+                            <Tab key={value} value={value}>
+                                <div className="flex items-center gap-2">
                                     {icon}
                                     {label}
                                 </div>
-                            </div>
+                            </Tab>
                         ))}
                     </TabsHeader>
                     <TabsBody>
