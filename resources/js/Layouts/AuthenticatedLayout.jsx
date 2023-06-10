@@ -86,6 +86,12 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                 >
                                     Settings
                                 </NavLink>
+                                <NavLink
+                                    href={route("views.list")}
+                                    active={route().current("views.list")}
+                                >
+                                    Views
+                                </NavLink>
                             </div>
                         </div>
 

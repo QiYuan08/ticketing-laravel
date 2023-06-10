@@ -9,7 +9,7 @@ import {
     handleAttachmentDeleteUtil,
     handleAttachmentUtil,
 } from "@/Utility/globalFunction";
-import { router, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { Typography } from "@material-tailwind/react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { BsReplyFill } from "react-icons/bs";
@@ -67,6 +67,12 @@ const TicketDetails = (props) => {
                 </h2>
             }
         >
+            <div
+                className="pb-2 underline text-md font-semibold text-light-blue-800 cursor-pointer"
+                onClick={() => window.history.back()}
+            >
+                Back
+            </div>
             <div className="flex flex-col lg:flex-row bg-white min-h-full">
                 {/* <Typography variant="h6">Ticket Details</Typography> */}
                 {/* Sidebar */}
@@ -94,8 +100,8 @@ const TicketDetails = (props) => {
                             }}
                             render={(item) => (
                                 <TextAvatar
-                                    text={item.name}
-                                    subtext={item.role.name}
+                                    text={item?.name ?? ""}
+                                    subtext={item?.role?.name ?? ""}
                                     img=""
                                 />
                             )}

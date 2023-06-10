@@ -14,37 +14,42 @@ const Pagination = ({ pagination, data, preserveState = false }) => {
     };
 
     return (
-        <div className="flex justify-end items-center gap-2">
-            {pagination.first_page_url && (
-                <MdFirstPage
-                    className="cursor-pointer"
-                    size={20}
-                    aria-disabled={!pagination.first_page_url}
-                    onClick={() => changePage(pagination.first_page_url)}
-                />
-            )}
-            {pagination.prev_page_url && (
+        <div className="flex justify-between">
+            <div className="flex justify-end items-center gap-2">
+                {pagination.first_page_url && (
+                    <MdFirstPage
+                        className="cursor-pointer"
+                        size={20}
+                        aria-disabled={!pagination.first_page_url}
+                        onClick={() => changePage(pagination.first_page_url)}
+                    />
+                )}
+                {pagination.prev_page_url && (
+                    <PaginationNumber
+                        value={pagination.current_page - 1}
+                        isActive={false}
+                        onClick={() => changePage(pagination.prev_page_url)}
+                    />
+                )}
                 <PaginationNumber
-                    value={pagination.current_page - 1}
-                    isActive={false}
-                    onClick={() => changePage(pagination.prev_page_url)}
+                    value={pagination.current_page}
+                    isActive={true}
                 />
-            )}
-            <PaginationNumber value={pagination.current_page} isActive={true} />
-            {pagination.next_page_url && (
-                <PaginationNumber
-                    value={pagination.current_page + 1}
-                    isActive={false}
-                    onClick={() => changePage(pagination.next_page_url)}
-                />
-            )}
-            {pagination.last_page_url && (
-                <MdLastPage
-                    className="cursor-pointer"
-                    size={20}
-                    onClick={() => changePage(pagination.last_page_url)}
-                />
-            )}
+                {pagination.next_page_url && (
+                    <PaginationNumber
+                        value={pagination.current_page + 1}
+                        isActive={false}
+                        onClick={() => changePage(pagination.next_page_url)}
+                    />
+                )}
+                {pagination.last_page_url && (
+                    <MdLastPage
+                        className="cursor-pointer"
+                        size={20}
+                        onClick={() => changePage(pagination.last_page_url)}
+                    />
+                )}
+            </div>
         </div>
     );
 };

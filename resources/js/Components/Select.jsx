@@ -11,7 +11,7 @@ const Select = ({
     identifier = "id",
 }) => {
     return (
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-md min-w-30">
             <Listbox value={selected} onChange={setSelected}>
                 <div className="relative mt-1">
                     <Listbox.Button className="relative min-h-10 h-max min-w-max w-32 cursor-default rounded-[3px] bg-white py-1 pl-3 pr-10 text-left border-gray-600 border-[1px] focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm z-0">
@@ -47,8 +47,9 @@ const Select = ({
                                     {() => (
                                         <>
                                             {render(item)}
-                                            {selected[identifier] ===
-                                            item[identifier] ? (
+                                            {selected &&
+                                            selected[identifier] ===
+                                                item[identifier] ? (
                                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                                                     <CheckIcon
                                                         className="h-5 w-5"

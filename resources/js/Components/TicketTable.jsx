@@ -4,9 +4,12 @@ import StatusTag from "./StatusTag";
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Link } from "@inertiajs/react";
 
-const TicketTable = ({ data }) => {
+const TicketTable = ({ data, pagination }) => {
     return (
         <div>
+            <p className="pl-4 text-sm font-semibold text-gray-800">
+                Page {pagination.current_page} of {pagination.last_page}
+            </p>
             <Table
                 searchValue={"Seach by ticket ID, requestor, type, subject"}
                 header={[
@@ -33,7 +36,9 @@ const TicketTable = ({ data }) => {
                                         {row.ticket_id}
                                     </td>
                                     <td className="px-2 py-4 text-sm font-medium text-gray-800  w-1 ">
-                                        <StatusTag status={row.status?.name} />
+                                        <StatusTag
+                                            status={row.status?.name ?? ""}
+                                        />
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800 w-3/12">
                                         {row.subject}
@@ -45,7 +50,7 @@ const TicketTable = ({ data }) => {
                                         {row.requestor.pic_name}
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800 w-1/6">
-                                        {row.assignee.name}
+                                        {row.assignee?.name}
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800 w-2/12">
                                         {getDateFromBackend(row.created_at)}

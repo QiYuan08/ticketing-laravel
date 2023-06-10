@@ -32,6 +32,7 @@ export default function Dashboard(props) {
 
     const handleCheckbox = (event) => {
         setData(event.target.id, event.target.checked);
+        debounceSearchAPI();
     };
 
     // debounce to call API
@@ -44,8 +45,6 @@ export default function Dashboard(props) {
             preserveState: true,
         });
     });
-
-    // const setSearchTerm = (value) => {};
 
     return (
         <AuthenticatedLayout

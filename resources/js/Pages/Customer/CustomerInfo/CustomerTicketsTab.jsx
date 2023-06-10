@@ -13,7 +13,7 @@ const CustomerTicketsTab = ({ tickets }) => {
         <Card>
             <CardBody>
                 <div className="max-w-8xl mx-auto sm:px-2 lg:px-1.5">
-                    <TicketTable data={tickets.data} />
+                    <TicketTable data={tickets.data} pagination={tickets} />
                 </div>
             </CardBody>
             <CardFooter>

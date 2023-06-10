@@ -11,6 +11,7 @@ use App\Http\Controllers\Settings\TicketTypeController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
 use App\Http\Controllers\User\NewAgentController;
+use App\Http\Controllers\View\ViewController;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -104,5 +105,12 @@ Route::middleware('auth')->name('settings.')->prefix('setting')->group(function(
     Route::delete('/mail-template.{template}', [EmailTemplateController::class, 'delete'])->name('mail-template.delete');
 
 });
+
+// VIEW
+Route::middleware('auth')->name('views.')->prefix('view')->group(function() {
+    Route::get('/list', [ViewController::class, 'create'])->name('list');
+    
+});
+
 
 require __DIR__.'/auth.php';

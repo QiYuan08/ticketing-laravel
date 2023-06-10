@@ -9,13 +9,13 @@ class Priority extends Model
 {
     use HasFactory;
 
-    public const HIGH = 'High';
-    public const MEDIUM = 'Medium'    ;
-    public const LOW = 'Low';
+    // public const HIGH = 'High';
+    // public const MEDIUM = 'Medium'    ;
+    // public const LOW = 'Low';
 
-    public const HIGH_ID = 1;
-    public const MEDIUM_ID = 2;
-    public const LOW_ID = 3;
+    // public const HIGH_ID = 1;
+    // public const MEDIUM_ID = 2;
+    // public const LOW_ID = 3;
 
     protected $primaryKey = 'priority_id';
 

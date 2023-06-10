@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Constant\Priority;
+use App\Constant\Status;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -26,9 +30,6 @@ class Ticket extends Model implements HasMedia
         });
     }
 
-    protected $primaryKey = 'ticket_id';
-    protected $model = 'tickets';
-
     /**
      * The data type of the auto-incrementing ID.
      *
@@ -36,7 +37,17 @@ class Ticket extends Model implements HasMedia
      */
     protected $keyType = 'string';
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
     protected $with = ['priority', 'status', 'type', 'requestor', 'assignee'];
+
+
+    protected $primaryKey = 'ticket_id';
+    protected $model = 'tickets';
+
 
     protected $fillable = [
         'status_id',
@@ -84,6 +95,82 @@ class Ticket extends Model implements HasMedia
         }
 
         return "$date$count";
+    }
+
+    // auxliary function for scopeFilter function
+    private function getVal(Request $request, $key) {
+        return $request->get($key) === 'true' ? true : false;
+    }
+
+    public function scopeFilter($query, Request $request) {
+
+        $searchTerm = $request->get('searchTerm');
+
+        $query->when($request->get('searchTerm'), 
+        fn($query) => $query->where(function (Builder $query) use ($searchTerm) {
+            $query->where('subject', 'ILIKE', "%$searchTerm%")
+            ->orWhere('ticket_id', 'ILIKE', "%$searchTerm%");
+            // ->whereHas('assignee', function (Builder $query) use ($searchTerm) {
+            //     $query->orWhere('name', 'ILIKE', "%$searchTerm%");
+            // })
+            // ->orWhereHas('requestor', function (Builder $query) use ($searchTerm) {
+            //     $query->orWhere('name', 'ILIKE', "%$searchTerm%");
+            // });
+        }))
+        ->where(function (Builder $query) use ($searchTerm) {
+            $query->whereHas('requestor', function (Builder $query) use ($searchTerm) {
+                $query->where('requestor_id', '=', request()->user()->id)
+                ->when(
+                    $searchTerm,
+                    fn ($query) => $query->orWhere('pic_name', 'ILIKE', "%$searchTerm%")
+                );
+            });
+            $query->orWhereHas('assignee', function (Builder $query) use ($searchTerm) {
+                $query->where('assignee_id', '=', request()->user()->id)
+                ->when(
+                    $searchTerm,
+                    fn ($query) => $query->orWhere('name', 'ILIKE', "%$searchTerm%")
+                );
+            });
+        })
+        ->where(function (Builder $query) use ($request) {
+            $query->when( 
+                $this->getVal($request, 'high'), 
+                fn ($query, $value) => $query->orWhere('priority_id', '=', Priority::HIGH_ID)
+            )
+            ->when( 
+                $this->getVal($request, 'medium'), 
+                fn ($query, $value) => $query->orWhere('priority_id', '=', Priority::MEDIUM_ID)
+
+            )
+            ->when( 
+                $this->getVal($request, 'low'), 
+                fn ($query, $value) => $query->orWhere('priority_id', '=', Priority::LOW_ID)
+
+            );
+        })
+        ->where(function (Builder $query) use ($request) {
+            $query->when( 
+                $this->getVal($request, 'open'), 
+                fn ($query, $value) => $query->orWhere('status_id', '=', Status::TICKET_STATUS_OPEN_ID)
+
+            )
+            ->when( 
+                $this->getVal($request, 'deleted'), 
+                fn ($query, $value) => $query->orWhere('status_id', '=', Status::TICKET_STATUS_DELETED_ID)
+
+            )
+            ->when( 
+                $this->getVal($request, 'pending'), 
+                fn ($query, $value) => $query->orWhere('status_id', '=', Status::TICKET_STATUS_PENDING_ID)
+
+            )
+            ->when( 
+                $this->getVal($request, 'solved'), 
+                fn ($query, $value) => $query->orWhere('status_id', '=', Status::TICKET_STATUS_SOLVED_ID)
+
+            );
+        });
     }
 
 }

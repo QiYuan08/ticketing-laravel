@@ -1,5 +1,5 @@
 export const getDateFromBackend = (datetime) => {
-    let date = new Date(datetime).toUTCString();
+    let date = new Date(datetime).toLocaleString();
 
     return date.toString().slice(0, date.toString().length - 3);
 };

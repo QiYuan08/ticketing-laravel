@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Constant\MediaCollection;
 use App\Http\Controllers\Controller;
+use App\Mail\GeneralMail;
 use App\Models\Customer;
+use App\Models\Media;
 use App\Models\Messages;
 use App\Models\Ticket;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\Mail;
 
 class TicketReplyController extends Controller
 {
@@ -41,16 +45,24 @@ class TicketReplyController extends Controller
             $message->internal_node = $request->input('internal_node') ?? false;
 
             // dd($message);
-            $message->save();
-
+            
             $attachments = $request->attachment;
-
-
+            
+            
             // add the respective media/attachment
             foreach($attachments as $file) {
                 $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
             }
-
+            
+            $message->save();
+            
+            // send the email
+            Mail::to($ticket->requestor->email)
+            ->queue(new GeneralMail((object) [
+                'subject' => $ticket->subject,
+                'content' => $request->input('message'),
+            ], $message));
+            
         }
 
         // Return a response or redirect

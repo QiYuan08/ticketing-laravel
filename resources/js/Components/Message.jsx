@@ -36,7 +36,7 @@ const Message = ({ message, userId }) => {
                         </div>
                         <div className="inline-flex gap-x-1 items-center">
                             <b>From:</b>
-                            {message.sender.name}
+                            {message.sender.pic_name}
                         </div>
                     </div>
                     <div

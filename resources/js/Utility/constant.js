@@ -1,6 +1,9 @@
 export const ADMIN = "Admin";
 export const AGENT = "Agent";
 
+export const AGENT_LVL = 3;
+export const ADMIN_LVL = 4;
+
 // ticket status
 export const TICKET_STATUS_OPEN = "OPEN";
 export const TICKET_STATUS_PENDING = "PENDING";
