@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Constant\Priority;
 use App\Constant\Status;
+use App\Models\Priority as ModelsPriority;
+use App\Models\Status as ModelsStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -54,7 +56,8 @@ class Ticket extends Model implements HasMedia
         'subject',
         'priority_id',
         'assignee_id',
-        'type_id'
+        'type_id',
+        'latest_reference',
     ];
     
     public function messages()
@@ -63,11 +66,11 @@ class Ticket extends Model implements HasMedia
     }
 
     public function priority() {
-        return $this->belongsTo(Priority::class, 'priority_id');
+        return $this->belongsTo(ModelsPriority::class, 'priority_id');
     }
 
     public function status() {
-        return $this->belongsTo(Status::class, 'status_id');
+        return $this->belongsTo(ModelsStatus::class, 'status_id');
     }
 
     public function type() {
@@ -117,22 +120,7 @@ class Ticket extends Model implements HasMedia
             //     $query->orWhere('name', 'ILIKE', "%$searchTerm%");
             // });
         }))
-        ->where(function (Builder $query) use ($searchTerm) {
-            $query->whereHas('requestor', function (Builder $query) use ($searchTerm) {
-                $query->where('requestor_id', '=', request()->user()->id)
-                ->when(
-                    $searchTerm,
-                    fn ($query) => $query->orWhere('pic_name', 'ILIKE', "%$searchTerm%")
-                );
-            });
-            $query->orWhereHas('assignee', function (Builder $query) use ($searchTerm) {
-                $query->where('assignee_id', '=', request()->user()->id)
-                ->when(
-                    $searchTerm,
-                    fn ($query) => $query->orWhere('name', 'ILIKE', "%$searchTerm%")
-                );
-            });
-        })
+
         ->where(function (Builder $query) use ($request) {
             $query->when( 
                 $this->getVal($request, 'high'), 

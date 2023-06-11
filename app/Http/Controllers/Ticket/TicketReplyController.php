@@ -6,14 +6,11 @@ use App\Constant\MediaCollection;
 use App\Http\Controllers\Controller;
 use App\Mail\GeneralMail;
 use App\Models\Customer;
-use App\Models\Media;
 use App\Models\Messages;
 use App\Models\Ticket;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class TicketReplyController extends Controller
 {
@@ -25,17 +22,20 @@ class TicketReplyController extends Controller
         // ]);
 
         // update the ticket
-        $ticket->update([
-            'status_id' => $request->input('status')['status_id'],
-            'priority_id' => $request->input('priority')['priority_id'],
-            'assignee_id' => $request->input('assignee')['id'],
-            'type_id' => $request->input('type')['type_id'],
-        ]);
+        $request->input('status') && $ticket->status_id = $request->input('status')['status_id'];
+        $request->input('priority') && $ticket->priority_id = $request->input('priority')['priority_id'];
+        $request->input('assignee') && $ticket->assignee_id = $request->input('assignee')['id'];
+        $request->input('type') && $ticket->type_id = $request->input('type')['type_id'];
+
+        $ticket->save();
 
         // create new message if provided
         if ($request->input('message') !== null && $request->input('message') !== "") {
-            $message = new Messages();      
+            $message = new Messages();
             
+            $messageId = (string) Str::uuid();
+            $messageIdStr = "s$messageId@magit.sg";
+
             $message->ticket_id =  $ticket->ticket_id;
             $message->payload = $request->input('message');
             $message->sender_id = $request->user()->id;
@@ -43,9 +43,10 @@ class TicketReplyController extends Controller
             $message->recipient_id = Customer::find($request->input('recepient')['customer_id'])->customer_id;
             $message->recipient_type = Customer::class;
             $message->internal_node = $request->input('internal_node') ?? false;
+            $message->in_reply_to = $ticket->latest_reference;
+            $message->messageId = "<$messageIdStr>";
 
             // dd($message);
-            
             $attachments = $request->attachment;
             
             
@@ -53,14 +54,17 @@ class TicketReplyController extends Controller
             foreach($attachments as $file) {
                 $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
             }
-            
+
             $message->save();
             
             // send the email
             Mail::to($ticket->requestor->email)
             ->queue(new GeneralMail((object) [
+                'ticketID' => $ticket->ticket_id,
                 'subject' => $ticket->subject,
                 'content' => $request->input('message'),
+                'references' => Messages::getReferences($ticket->ticket_id),
+                'messageId' => $messageIdStr
             ], $message));
             
         }

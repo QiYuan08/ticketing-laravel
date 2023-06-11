@@ -5,7 +5,7 @@ import SearchBox from "@/Components/SearchBox";
 import TicketTable from "@/Components/TicketTable";
 import { useDebounce } from "@/Hooks/useDebounce";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { Card, CardBody, CardFooter } from "@material-tailwind/react";
 import React from "react";
 

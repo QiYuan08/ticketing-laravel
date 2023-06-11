@@ -7,7 +7,7 @@ import { Link } from "@inertiajs/react";
 const TicketTable = ({ data, pagination }) => {
     return (
         <div>
-            <p className="pl-4 text-sm font-semibold text-gray-800">
+            <p className="pl-4 py-2.5 text-sm font-semibold text-gray-800">
                 Page {pagination.current_page} of {pagination.last_page}
             </p>
             <Table

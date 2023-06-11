@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Constant\Priority;
-use App\Constant\Status;
-use App\Models\Staus;
+
 use App\Models\Ticket;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
@@ -24,6 +22,22 @@ class DashboardController extends Controller
 
         // TODO: add the requestor and assignee search Term
         $query = Ticket::filter($request)
+        ->where(function (Builder $query) use ($searchTerm) {
+            $query->whereHas('requestor', function (Builder $query) use ($searchTerm) {
+                $query->where('requestor_id', '=', request()->user()->id)
+                ->when(
+                    $searchTerm,
+                    fn ($query) => $query->orWhere('pic_name', 'ILIKE', "%$searchTerm%")
+                );
+            });
+            $query->orWhereHas('assignee', function (Builder $query) use ($searchTerm) {
+                $query->where('assignee_id', '=', request()->user()->id)
+                ->when(
+                    $searchTerm,
+                    fn ($query) => $query->orWhere('name', 'ILIKE', "%$searchTerm%")
+                );
+            });
+        })
         ->paginate(20);
 
         return Inertia::render('Dashboard', [

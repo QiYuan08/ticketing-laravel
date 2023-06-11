@@ -67,12 +67,13 @@ const TicketDetails = (props) => {
                 </h2>
             }
         >
-            <div
+            // TODO: finish the back button
+            {/* <div
                 className="pb-2 underline text-md font-semibold text-light-blue-800 cursor-pointer"
-                onClick={() => window.history.back()}
+                onClick={() => }
             >
                 Back
-            </div>
+            </div> */}
             <div className="flex flex-col lg:flex-row bg-white min-h-full">
                 {/* <Typography variant="h6">Ticket Details</Typography> */}
                 {/* Sidebar */}
@@ -164,7 +165,7 @@ const TicketDetails = (props) => {
                     {/* chat */}
                     <div className=" grow-[8] lg:border-y-[1px] border-gray-500 w-full px-5 h-72 md:h-[400px] overflow-auto">
                         <div className="flex flex-col my-4  gap-y-3">
-                            {ticket.messages.map((message) => {
+                            {props.messages.map((message) => {
                                 return (
                                     <Message
                                         message={message}

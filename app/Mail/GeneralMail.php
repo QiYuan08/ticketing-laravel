@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Constant\MediaCollection;
+use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,6 +12,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Mail\Mailables\Headers;
+use Illuminate\Support\Str;
 
 class GeneralMail extends Mailable
 {
@@ -31,18 +34,6 @@ class GeneralMail extends Mailable
         $this->afterCommit = true;
     }
 
-    // /**
-    //  * Build the message.
-    //  *
-    //  * @return $this
-    //  */
-    // public function build()
-    // {
-    //     return $this->subject($this->mailData->subject)
-    //                 ->view('email/general_mail')
-    //                 ->attach($this->message->getFirstMedia(MediaCollection::MESSAGE_ATTACHMENT)->mailAttachment());
-    // }
-
     /**
      * Get the message envelope.
      *
@@ -51,8 +42,28 @@ class GeneralMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->mailData->subject,
+            subject: $this->mailData->subject
         );
+    }
+
+    /**
+    * Get the message headers.
+    */
+    public function headers(): Headers
+    {
+        $header = new Headers (
+            messageId: $this->mailData->messageId,
+        );
+
+        if ($this->mailData->references) {
+            $header->references($this->mailData->references);
+        }
+
+        //save the references to ticket
+        Ticket::where('ticket_id', '=', $this->mailData->ticketID)
+            ->update(['latest_reference' =>  $this->mailData->messageId]);
+
+        return $header;
     }
 
     /**
@@ -76,13 +87,6 @@ class GeneralMail extends Mailable
      */
     public function attachments()
     {  
-
-    //     Log::debug('Sending mail with attachment', ['attachmentPath' => $this->message
-    //     ->getMedia(MediaCollection::MESSAGE_ATTACHMENT)
-    //     ->map(function ($media){
-    //         return Attachment::fromStorageDisk('do_spaces', $media->getPath());
-    //    })->toArray()]);
-
        return $this->message
                 ->getMedia(MediaCollection::MESSAGE_ATTACHMENT)
                 ->map(function ($media){

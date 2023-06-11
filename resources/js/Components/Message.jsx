@@ -20,7 +20,6 @@ const Message = ({ message, userId }) => {
                         alt=""
                     />
                 )}
-
                 {/* message body */}
                 <div
                     className={`${
@@ -32,11 +31,12 @@ const Message = ({ message, userId }) => {
                     <div className="flex flex-col gap-y-1">
                         <div className="inline-flex gap-x-1 items-center">
                             <b>To:</b>
-                            {message.recipient.name}
+                            {message.recipient.name ??
+                                message.recipient.pic_name}
                         </div>
                         <div className="inline-flex gap-x-1 items-center">
                             <b>From:</b>
-                            {message.sender.pic_name}
+                            {message.sender.pic_name ?? message.sender.name}
                         </div>
                     </div>
                     <div

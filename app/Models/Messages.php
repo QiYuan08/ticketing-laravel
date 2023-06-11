@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -27,6 +28,8 @@ class Messages extends Model implements HasMedia
         'recipient_typ',
         'sender_id',
         'sender_type',
+        'in_reply_to',
+        'messageId',
     ];
 
     public function recipient() {
@@ -45,5 +48,9 @@ class Messages extends Model implements HasMedia
                 'link' => $item->getTemporaryUrl(Carbon::now()->addHours(2))
             ];
         });
+    }
+
+    public static function getReferences($ticketId){        
+        return Messages::where('ticket_id', '=', $ticketId)->orderBy('created_at', 'asc')->get()->pluck('messageId')->toArray();
     }
 }
