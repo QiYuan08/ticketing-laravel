@@ -54,14 +54,6 @@ const CustomerInfoList = (props) => {
                                     debounceSearchAPI();
                                 }}
                             />
-
-                            <PrimaryButton
-                                onClick={() => {
-                                    router.visit(route("customer.create"));
-                                }}
-                            >
-                                Add Customer
-                            </PrimaryButton>
                         </div>
 
                         <div className=" ">

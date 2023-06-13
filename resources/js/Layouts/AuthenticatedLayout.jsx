@@ -2,6 +2,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { ADMIN_LVL } from "@/Utility/constant";
 import { Link } from "@inertiajs/react";
 import {
     Button,
@@ -30,27 +31,25 @@ export default function Authenticated({ auth, header, children, alerts }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink
+                                    className="active:no-underline"
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink
-                                    href={route("agent.get")}
-                                    active={route().current("agent.get")}
-                                >
-                                    Agent
-                                </NavLink>
+                                {auth.access_lvl === ADMIN_LVL && (
+                                    <NavLink
+                                        href={route("agent.get")}
+                                        active={route().current("agent.get")}
+                                    >
+                                        Agent
+                                    </NavLink>
+                                )}
+
                                 <Menu>
                                     <MenuHandler>
                                         <button
-                                            className={`${
-                                                route()
-                                                    .current()
-                                                    .includes("customer")
-                                                    ? "text-gray-900"
-                                                    : "text-gray-500"
-                                            } text-sm font-medium leading-5 `}
+                                            className={`text-gray-500 text-sm font-medium leading-5 `}
                                         >
                                             Customer
                                         </button>
@@ -80,12 +79,17 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
-                                <NavLink
-                                    href={route("settings.list")}
-                                    active={route().current("settings.list")}
-                                >
-                                    Settings
-                                </NavLink>
+                                {auth.access_lvl && (
+                                    <NavLink
+                                        href={route("settings.list")}
+                                        active={route().current(
+                                            "settings.list"
+                                        )}
+                                    >
+                                        Settings
+                                    </NavLink>
+                                )}
+
                                 <NavLink
                                     href={route("views.list")}
                                     active={route().current("views.list")}

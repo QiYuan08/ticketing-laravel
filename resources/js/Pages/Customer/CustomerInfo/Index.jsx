@@ -16,7 +16,7 @@ import CustomerTicketsTab from "./CustomerTicketsTab";
 const CustomerInfoIndex = (props) => {
     const tabs = [
         {
-            label: "CustomerInfo",
+            label: "Customer Info",
             value: "info",
             icon: <GrCircleInformation size={20} />,
             desc: (
@@ -28,7 +28,7 @@ const CustomerInfoIndex = (props) => {
             ),
         },
         {
-            label: "CustomerTicket",
+            label: "Ticket History",
             value: "tickets",
             icon: <AiOutlineHistory size={20} />,
             desc: <CustomerTicketsTab tickets={props.tickets} />,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ticket;
 
+use App\Constant\Status as ConstantStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Messages;
 use App\Models\Priority;
@@ -50,7 +51,14 @@ class TicketController extends Controller
         ]);
     }
 
-    public function delete(Request $request) {
-        dd($request->ticketID);
+    public function delete(Ticket $ticket) {
+
+        $ticket->update([
+            'status_id' => ConstantStatus::TICKET_STATUS_DELETED_ID
+        ]);
+
+        return redirect(route('views.list'))->with('success', 'Ticket Deleted');
     }
+
+
 }

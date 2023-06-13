@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class AddCustomerController extends Controller
 {
     public function create() {
-
+        dd(2);
         return Inertia::render('Customer/AddCustomer');
 
     }

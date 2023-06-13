@@ -8,6 +8,8 @@ use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Settings\EmailTemplateController;
 use App\Http\Controllers\Settings\TicketTypeController;
+use App\Http\Controllers\Ticket\GenerateTicketHistoryController;
+use App\Http\Controllers\Ticket\MergeTicketController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
 use App\Http\Controllers\User\NewAgentController;
@@ -61,13 +63,13 @@ Route::middleware('auth')->group(function () {
 
 // CUSTOMER
 Route::middleware('auth')->name('customer.')->prefix('/customers')->group(function() {
-    Route::get('/', [CustomerController::class, 'create'])->name('list');
+    Route::get('/list', [CustomerController::class, 'create'])->name('list');
     Route::get('/{customer}', [CustomerController::class, 'view'])->name('details');
     Route::patch('/{customer}', [CustomerController::class, 'update'])->name('update');
     Route::delete('/{customer}', [CustomerController::class, 'delete'])->name('delete');
     
-    Route::post('/new-customer', [AddCustomerController::class, 'store'])->name('create');
-    Route::get('/new-customer', [AddCustomerController::class, 'create'])->name('create');
+    Route::post('/create-new-customer', [AddCustomerController::class, 'store'])->name('create');
+    Route::get('/new-customer-page', [AddCustomerController::class, 'create'])->name('create-new');
 
 });
 
@@ -85,9 +87,13 @@ Route::middleware('auth')
     ->name('ticket.')
     ->group(function () {
     Route::get('{ticketID}', [TicketController::class, 'create'])->name('get');
-    Route::delete('{ticketID}', [TicketController::class, 'delete'])->name('delete');
+    Route::delete('{ticket}', [TicketController::class, 'delete'])->name('delete');
+
+    Route::post('ticket-list', [MergeTicketController::class, 'getIdList'])->name('get-id-list');
+    Route::post('merge-ticket/{combinedTicket}/{mergerTicket}', [MergeTicketController::class, 'mergeTicket'])->name('merge-ticket');
 
     Route::post('attachment/${ticket}', [TicketReplyController::class, 'reply'])->name('attachment.upload');
+
 });
 
 //SETTINGS
@@ -112,5 +118,10 @@ Route::middleware('auth')->name('views.')->prefix('view')->group(function() {
     
 });
 
+// OTHERS
+Route::middleware('auth')->name('utility.')->prefix('utility')->group(function() {
+    Route::get('/generate-ticket-pdf', [GenerateTicketHistoryController::class, 'generate'])->name('generate-ticket-pdf');
+    
+});
 
 require __DIR__.'/auth.php';

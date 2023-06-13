@@ -68,7 +68,8 @@ const CustomerList = (props) => {
 
                             <PrimaryButton
                                 onClick={() => {
-                                    router.visit(route("customer.create"));
+                                    console.log(2);
+                                    router.get(route("customer.create-new"));
                                 }}
                             >
                                 Add Customer

@@ -10,11 +10,24 @@ import {
     handleAttachmentUtil,
 } from "@/Utility/globalFunction";
 import { Link, router, useForm } from "@inertiajs/react";
-import { Typography } from "@material-tailwind/react";
+import { BsThreeDots } from "react-icons/bs";
+import {
+    Button,
+    IconButton,
+    Menu,
+    MenuHandler,
+    MenuItem,
+    MenuList,
+    Typography,
+} from "@material-tailwind/react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { BsReplyFill } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { BiCommentDetail } from "react-icons/bi";
+import MergeTicketModal from "./MergeTicketModal";
+import { useState } from "react";
+import { ERROR, INFO } from "@/Utility/constant";
+import { useNotificationContext } from "@/Context/NotificationContext";
 
 const TicketDetails = (props) => {
     const ticket = props.data;
@@ -23,6 +36,8 @@ const TicketDetails = (props) => {
     const priority = props.priority;
     const status = props.status;
 
+    const { open } = useNotificationContext();
+    const [openMerge, setOpenMerge] = useState(false);
     const { data, setData, post, progress } = useForm({
         assignee: ticket.assignee,
         status: ticket.status,
@@ -33,6 +48,7 @@ const TicketDetails = (props) => {
         cc: [],
         message: "",
         attachment: [],
+        internalNode: false,
     });
 
     const deleteAttachment = (file) => {
@@ -57,6 +73,17 @@ const TicketDetails = (props) => {
         });
     };
 
+    const goToCustomerDetails = () => {
+        console.log(1);
+        if (!ticket.requestor.unknown) {
+            router.visit(
+                route("customer.info.details", ticket.requestor.customer_id)
+            );
+        } else {
+            open("Customer not found in customer list", INFO);
+        }
+    };
+
     return (
         <Authenticated
             auth={props.auth}
@@ -67,7 +94,7 @@ const TicketDetails = (props) => {
                 </h2>
             }
         >
-            // TODO: finish the back button
+            {/* // TODO: finish the back button */}
             {/* <div
                 className="pb-2 underline text-md font-semibold text-light-blue-800 cursor-pointer"
                 onClick={() => }
@@ -80,7 +107,10 @@ const TicketDetails = (props) => {
                 <div className="flex flex-row lg:flex-col flex-wrap grow-[1] box-border lg:max-w-md">
                     <div className="p-3">
                         {/* requestor */}
-                        <div className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-7 gap-y-1">
+                        <div
+                            className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-2 gap-y-1 cursor-pointer"
+                            onClick={goToCustomerDetails}
+                        >
                             <Typography variant="h4">Requestor</Typography>
                             <TextAvatar
                                 text={ticket.requestor.pic_name}
@@ -137,6 +167,7 @@ const TicketDetails = (props) => {
                             </div>
                         </div>
                     </div>
+                    {/* Status */}
                     <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
                         <div className="flex flex-col justify-start items-start gap-y-1">
                             <Typography variant="h5">Status</Typography>
@@ -156,15 +187,32 @@ const TicketDetails = (props) => {
                 {/* Main content */}
                 <div className="flex flex-col grow-[10] border-0 lg:border-l-[1px] lg:border-gray-500 ">
                     {/* subject */}
-                    <div className="flex items-center grow-[1] max-h-10 p-3 box-border">
+                    <div className="flex justify-between items-center grow-[1] max-h-10 p-3 box-border">
                         <Typography variant="paragraph">
                             Ticket {ticket.ticket_id} : {ticket.subject}
                         </Typography>
+
+                        <Menu placement="bottom-end">
+                            <MenuHandler>
+                                <IconButton
+                                    color="white"
+                                    style={{ boxShadow: "none", border: 0 }}
+                                >
+                                    <BsThreeDots size={22} />
+                                </IconButton>
+                            </MenuHandler>
+                            <MenuList>
+                                <MenuItem onClick={() => setOpenMerge(true)}>
+                                    Merge Ticket To
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
                     </div>
 
                     {/* chat */}
                     <div className=" grow-[8] lg:border-y-[1px] border-gray-500 w-full px-5 h-72 md:h-[400px] overflow-auto">
                         <div className="flex flex-col my-4  gap-y-3">
+                            {console.log(props.messages)};
                             {props.messages.map((message) => {
                                 return (
                                     <Message
@@ -273,6 +321,13 @@ const TicketDetails = (props) => {
                     </div>
                 </div>
             </div>
+
+            {/* merge ticket modal */}
+            <MergeTicketModal
+                open={openMerge}
+                ticket={ticket}
+                handleMergeTicketOpen={setOpenMerge}
+            />
         </Authenticated>
     );
 };

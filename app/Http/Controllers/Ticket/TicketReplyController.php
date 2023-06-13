@@ -42,7 +42,7 @@ class TicketReplyController extends Controller
             $message->sender_type = get_class($request->user());
             $message->recipient_id = Customer::find($request->input('recepient')['customer_id'])->customer_id;
             $message->recipient_type = Customer::class;
-            $message->internal_node = $request->input('internal_node') ?? false;
+            $message->internal_node = $request->input('internalNode') ?? false;
             $message->in_reply_to = $ticket->latest_reference;
             $message->messageId = "<$messageIdStr>";
 
@@ -57,16 +57,19 @@ class TicketReplyController extends Controller
 
             $message->save();
             
-            // send the email
-            Mail::to($ticket->requestor->email)
-            ->queue(new GeneralMail((object) [
-                'ticketID' => $ticket->ticket_id,
-                'subject' => $ticket->subject,
-                'content' => $request->input('message'),
-                'references' => Messages::getReferences($ticket->ticket_id),
-                'messageId' => $messageIdStr
-            ], $message));
-            
+            // if it's not a internal node send the message
+            if(!$request->input('internalNode')){
+                // send the email
+                Mail::to($ticket->requestor->email)
+                ->queue(new GeneralMail((object) [
+                    'ticketID' => $ticket->ticket_id,
+                    'subject' => $ticket->subject,
+                    'content' => $request->input('message'),
+                    'references' => Messages::getReferences($ticket->ticket_id),
+                    'messageId' => $messageIdStr
+                ], $message));
+            }
+                
         }
 
         // Return a response or redirect

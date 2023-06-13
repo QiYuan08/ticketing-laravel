@@ -26,8 +26,17 @@ const Message = ({ message, userId }) => {
                         message.sender.id === userId
                             ? "mr-2 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl"
                             : " ml-2 rounded-tl-xl rounded-br-3xl rounded-tr-3xl"
-                    } flex flex-col gap-y-2 py-3 px-4 bg-gray-200`}
+                    } flex flex-col gap-y-2 py-3 px-4 bg-gray-200 ${
+                        message.internal_node ? "bg-orange-200" : ""
+                    } `}
                 >
+                    {message.internal_node && (
+                        <div className="text-center italic">
+                            **Internal message**
+                        </div>
+                    )}
+
+                    {console.log(message)}
                     <div className="flex flex-col gap-y-1">
                         <div className="inline-flex gap-x-1 items-center">
                             <b>To:</b>
@@ -38,6 +47,12 @@ const Message = ({ message, userId }) => {
                             <b>From:</b>
                             {message.sender.pic_name ?? message.sender.name}
                         </div>
+                        {message.source_ticket && (
+                            <div className="inline-flex gap-x-1 items-center">
+                                <b>Merged from:</b>
+                                {message.source_ticket}
+                            </div>
+                        )}
                     </div>
                     <div
                         dangerouslySetInnerHTML={{ __html: message.payload }}

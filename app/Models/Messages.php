@@ -25,11 +25,12 @@ class Messages extends Model implements HasMedia
         'internal_node',
         'payload',
         'recipient_id',
-        'recipient_typ',
+        'recipient_type',
         'sender_id',
         'sender_type',
         'in_reply_to',
         'messageId',
+        'source_ticket',
     ];
 
     public function recipient() {

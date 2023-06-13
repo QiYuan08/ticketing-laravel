@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
-                'access_lvl' => $request->user()->role->access_lvl,
+                'access_lvl' => $request->user()?->role->access_lvl,
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
@@ -44,6 +44,9 @@ class HandleInertiaRequests extends Middleware
                 'error' => session()->get('error'),
                 'info' => session()->get('info'),
                 'success' => session()->get('success'),
+            ],
+            'additionalInfo'=> [
+                'sessionData' => session()->get('sessionData')
             ]
         ]);
     }

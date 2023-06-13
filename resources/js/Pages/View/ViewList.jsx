@@ -120,6 +120,7 @@ const ViewList = (props) => {
                     <TicketTable
                         data={props.data.data}
                         pagination={props.data}
+                        // alert={props.alert}
                     />
                 </CardBody>
                 <CardFooter>

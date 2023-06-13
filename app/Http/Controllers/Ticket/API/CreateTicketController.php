@@ -31,6 +31,7 @@ class CreateTicketController extends Controller
             $user = Customer::create([
                 'email' => $request->input('from'),
                 'pic_name' => $request->input('fromName') ?? $request->input('from'),
+                'unknown' => true,
             ]);
         }
 

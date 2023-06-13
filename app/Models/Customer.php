@@ -36,7 +36,8 @@ class Customer extends Model
         'mobile_number',
         'company',
         'company_address',
-        'additional_info'
+        'additional_info',
+        'unknown',
     ];
 
     public function send()
@@ -58,7 +59,8 @@ class Customer extends Model
             $query->where('pic_name', 'ILIKE', "%$searchTerm%")
             ->orWhere('alias_customer_id', 'ILIKE', "%$searchTerm%")
             ->orWhere('company', 'ILIKE', "%$searchTerm%");
-        }));
+        }))
+        ->where('unknown', '=', false);
     }
     
 }

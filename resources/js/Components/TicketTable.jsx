@@ -2,9 +2,23 @@ import React from "react";
 import Table from "./Table";
 import StatusTag from "./StatusTag";
 import { getDateFromBackend } from "@/Utility/globalFunction";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
+import { useNotificationContext } from "@/Context/NotificationContext";
+import { SUCCESS } from "@/Utility/constant";
 
 const TicketTable = ({ data, pagination }) => {
+    const { open } = useNotificationContext();
+
+    const deleteTicket = (ticketId) => {
+        router.visit(route("ticket.delete", ticketId), {
+            method: "delete",
+            onSuccess: (response) => {
+                console.log(response);
+                open(response.props.alert.success, SUCCESS);
+            },
+            preserveScroll: true,
+        });
+    };
     return (
         <div>
             <p className="pl-4 py-2.5 text-sm font-semibold text-gray-800">
@@ -73,16 +87,14 @@ const TicketTable = ({ data, pagination }) => {
                                         </Link>
                                     </td>
                                     <td className="px-2 py-4 text-sm font-medium text-left ">
-                                        <Link
-                                            href={route("ticket.delete", {
-                                                ticketID: row.ticket_id,
-                                            })}
-                                            as="button"
+                                        <button
+                                            onClick={() =>
+                                                deleteTicket(row.ticket_id)
+                                            }
                                             className="text-red-700 hover:text-red-800 "
-                                            method="delete"
                                         >
                                             Delete
-                                        </Link>
+                                        </button>
                                     </td>
                                 </tr>
                             );
