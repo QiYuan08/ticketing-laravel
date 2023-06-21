@@ -19,6 +19,10 @@ class Messages extends Model implements HasMedia
 
     protected $primaryKey = 'message_id';
 
+    protected $with = [
+        'recipient',
+        'sender',
+    ];
 
     protected $fillable = [
         'ticket_id',

@@ -200,10 +200,7 @@ export default function Dashboard(props) {
                                                     <Link
                                                         href={route(
                                                             "ticket.delete",
-                                                            {
-                                                                ticketID:
-                                                                    row.ticket_id,
-                                                            }
+                                                            row.ticket_id
                                                         )}
                                                         as="button"
                                                         className="text-red-700 hover:text-red-800 "

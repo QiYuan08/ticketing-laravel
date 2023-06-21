@@ -7,7 +7,36 @@
 	<title>Ticket History</title>
 
 	<style>
-		        .table-products {
+		body {
+			font-family: 'Open Sans', sans-serif;
+		}
+
+		.container {
+			width: 98%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.header {
+			display: -webkit-box; /* wkhtmltopdf uses this one for flexbox */
+    		-webkit-box-pack: start; /* wkhtmltopdf uses this one */
+			-webkit-box-align: center;
+
+			display: flex;
+			column-gap: 5px;
+			padding: 10px;
+
+			border-bottom: 1.5px solid #a5832b;
+		}
+		
+		.logo {
+			width: 100px;
+			height: 100px;
+		}
+
+		.table-products {
+			margin-top: 15px;
+			table-layout: fixed;
             width: 100%;
             border:none;
             outline:none;
@@ -38,8 +67,8 @@
             -webkit-backface-visibility: hidden;
         }
 
-        .table-products tbody tr:last-child {
-            background-color: #f1f5f8;
+        .table-products tbody {
+            background-color: #e2dede;
         }
 
         .table-products .sc-item {
@@ -48,65 +77,154 @@
             color: #3D4852;
         }
 
-        .table-products > tbody > tr:nth-child(even) {
+        /* .table-products > tbody > tr:nth-child(even) {
             background-color: #EDF2F7;
         }
 
         .table-products > tbody > tr:nth-child(odd) {
             background-color: white;
-        }
+        } */
+
+		.ticket {
+		}
+
+		.messages_cotainer {
+			width: 100%;
+			padding: 5px;
+			margin-top: 20px;
+		}
+
+		.messages_header {
+			display: -webkit-box; /* wkhtmltopdf uses this one for flexbox */
+    		-webkit-box-pack: end; /* wkhtmltopdf uses this one */
+
+			background-color: #e8d69a;
+			font-weight: 500;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		.messages_header > :first-child {
+			padding-right: 6px;
+			border-right: 1px solid gray;
+		}
+
+		.messages_header > :last-child {
+			padding-left: 6px;
+		}
+
+		.messages_body {
+			display: -webkit-box; /* wkhtmltopdf uses this one for flexbox */
+    		-webkit-box-pack: end; /* wkhtmltopdf uses this one */
+			box-orient: horizontal;
+
+			padding-left: 10px;
+			padding-right: 10px;
+			margin-top: 5px;
+			background-color: #fafacd;
+		}
+
+		.page-break {
+			page-break-after: always;
+
+		}
+
 	</style>
 </head>
     <body>
-		<div class="flex flex-col gap-3 w-10/12">
-			<h2>Ticket History Report</h2>
+		<div class='container'>
+			<div class='header'>
+				<div class="company">
+					<img src="{!! public_path('images/logo.jpg') !!}" class="logo"/>
+				</div>
+				<h3>MAG - IT Support</h3>
+			</div>
+			<h2>{{$requestor}} - Ticket History Report</h2>
+			
+			<p style="padding-bottom: 0px, margin-bottom: 0px">
+				System: Admin - MAGIT
+			</p>
+			<p style="margin-top: 0px, padding-top: 0px">
+				Printed on: {{$date}}
+			</p>
 
-			<table class="table-products">
-				{{-- <tr style="background-color: #9fe3de; color: #404040" >
-					<th></th>
-					<th width="40px">RoomNo</th>
-					<th width="40px">FloorNo</th>
-					<th>RoomType</th>
-					<th width="200px">Description</th>
-					<th width="100px">RoomStatus</th>
-				</tr> --}}
-				<tr>
-					<td style="width: 30%, background-color: rgb(203 213 225)">
-						Ticket No.
-					</td>
-					<td style="background-color: lightskyblue">
-						23060080
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 40%, background-color: rgb(203 213 225)">
-						Ticket Title
-					</td>
-					<td style="background-color: lightskyblue">
-						We are here to help
-					</td>
+			@foreach ($tickets as $ticket)
+				<table class="table-products">
+					<tr>
+						<td style="width: 30%">
+							Ticket No.
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['ticket_id']}}
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 30%">
+							Requested on
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['created_at']}}
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 30%">
+							Ticket Title
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['subject']}}
+						</td>
 
-				</tr>
-				<tr>
-					<td style="width: 40%, background-color: rgb(203 213 225)">
-						Requestor Name
-					</td>
-					<td style="background-color: lightskyblue">
-						23060080
-					</td>
+					</tr>
+					<tr>
+						<td style="width: 30%">
+							Requestor Name
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['requestor']['pic_name']}}
+						</td>
 
-				</tr>
-				<tr>
-					<td style="width: 40%, background-color: rgb(203 213 225)">
-						Requestor Email
-					</td>
-					<td style="background-color: lightskyblue">
-						23060080
-					</td>
-				</tr>
+					</tr>
+					<tr>
+						<td style="width: 30%">
+							Requestor email
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['requestor']['email']}}
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 30%">
+							Ticket status
+						</td>
+						<td style="background-color: #e2f0f9">
+							{{$ticket['status']['name']}}
+						</td>
+					</tr>
+				</table>
 
-	
-			</table>
+				<div class="ticket">
+					@foreach ($ticket['messages'] as $message) 
+						<div class="messages_cotainer">
+							<div class="messages_header">
+								<p>{{$message['created_at']}}</p>
+								<p>
+									{{$message['sender']['pic_name'] ?? $message['sender']['name']}} ({{$message['sender']['email'] ?? $message['sender']['email']}})
+								</p>
+								</div>
+							<div class="messages_body">
+								{!! $message['payload'] !!}
+								<p>fdafdsfasdf</p>
+								<p>asdfhfjnbfg</p>
+							</div>
+						</div>
+						
+					@endforeach
+				</div>
+
+				<div class='page-break'></div>
+			@endforeach
+
+		</div>
 
 	</body>
 </html>

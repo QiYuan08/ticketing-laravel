@@ -1,7 +1,7 @@
 import { router } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-const SearchBox = ({ searchValue, searchRoute, setSearchTerm, searchTerm }) => {
+const SearchBox = ({ searchValue, setSearchTerm }) => {
     const handleChange = (event) => {
         if (event.target.value.trim() === "") {
             setSearchTerm(null);

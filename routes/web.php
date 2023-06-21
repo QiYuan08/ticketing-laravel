@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agent\UpdateAgentController;
 use App\Http\Controllers\Customer\AddCustomerController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\CustomerInfoController;
@@ -59,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
     
     Route::delete('/agent/{agentID}', [AgentController::class, 'delete'])->name('agent.delete');
+
+    //edit
+    Route::get('/agent/edit/{agent}', [UpdateAgentController::class, 'create'])->name('agent.update-view');
 });
 
 // CUSTOMER
@@ -120,7 +124,7 @@ Route::middleware('auth')->name('views.')->prefix('view')->group(function() {
 
 // OTHERS
 Route::middleware('auth')->name('utility.')->prefix('utility')->group(function() {
-    Route::get('/generate-ticket-pdf', [GenerateTicketHistoryController::class, 'generate'])->name('generate-ticket-pdf');
+    Route::post('/generate-ticket-pdf', [GenerateTicketHistoryController::class, 'generate'])->name('generate-ticket-pdf');
     
 });
 

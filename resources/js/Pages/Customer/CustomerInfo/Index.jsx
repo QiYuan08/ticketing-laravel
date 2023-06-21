@@ -31,7 +31,12 @@ const CustomerInfoIndex = (props) => {
             label: "Ticket History",
             value: "tickets",
             icon: <AiOutlineHistory size={20} />,
-            desc: <CustomerTicketsTab tickets={props.tickets} />,
+            desc: (
+                <CustomerTicketsTab
+                    tickets={props.tickets}
+                    customer_id={props.data.customer_id}
+                />
+            ),
         },
     ];
 

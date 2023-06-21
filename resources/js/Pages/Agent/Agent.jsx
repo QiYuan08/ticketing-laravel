@@ -2,12 +2,26 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SearchBox from "@/Components/SearchBox";
 import StatusTag from "@/Components/StatusTag";
 import Table from "@/Components/Table";
+import { useDebounce } from "@/Hooks/useDebounce";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import { Head, Link, router } from "@inertiajs/react";
 import { Card, CardBody } from "@material-tailwind/react";
+import { useState } from "react";
 
 const Agent = (props) => {
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // debounce to call API
+    const debounceSearchAPI = useDebounce(() => {
+        router.visit(route("agent.get"), {
+            method: "get",
+            data: { searchTerm: searchTerm },
+            preserveScroll: true,
+            preserveState: true,
+        });
+    });
+
     return (
         <Authenticated
             auth={props.auth}
@@ -25,7 +39,10 @@ const Agent = (props) => {
                         <div className="flex justify-between py-3 px-2">
                             <SearchBox
                                 searchValue={"Search by agent name, email"}
-                                searchRoute={""}
+                                setSearchTerm={(value) => {
+                                    setSearchTerm(value);
+                                    debounceSearchAPI();
+                                }}
                             />
 
                             <PrimaryButton
@@ -79,9 +96,10 @@ const Agent = (props) => {
                                             </td>
                                             <td className="px-3 py-4 text-sm font-medium text-gray-800 text-left space-x-3">
                                                 <Link
-                                                    href={route("agent.get", {
-                                                        agentID: agents.id,
-                                                    })}
+                                                    href={route(
+                                                        "agent.update-view",
+                                                        agents.id
+                                                    )}
                                                     as="button"
                                                     className="text-blue-700 hover:text-blue-800 "
                                                     method="get"
