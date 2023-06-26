@@ -28,6 +28,7 @@ import MergeTicketModal from "./MergeTicketModal";
 import { useState } from "react";
 import { ERROR, INFO } from "@/Utility/constant";
 import { useNotificationContext } from "@/Context/NotificationContext";
+import TemplateModal from "./TemplateModal";
 
 const TicketDetails = (props) => {
     const ticket = props.data;
@@ -35,15 +36,16 @@ const TicketDetails = (props) => {
     const type = props.type;
     const priority = props.priority;
     const status = props.status;
+    const templates = props.templates;
 
     const { open } = useNotificationContext();
     const [openMerge, setOpenMerge] = useState(false);
+    const [openTemplate, setOpenTemplate] = useState(false);
     const { data, setData, post, progress } = useForm({
         assignee: ticket.assignee,
         status: ticket.status,
         priority: ticket.priority,
         type: ticket.type,
-        internalNode: false,
         recepient: ticket.requestor,
         cc: [],
         message: "",
@@ -67,14 +69,13 @@ const TicketDetails = (props) => {
     };
 
     const handleSubmit = () => {
-        router.post(route("ticket.attachment.upload", ticket.ticket_id), data, {
+        router.post(route("ticket.reply", ticket.ticket_id), data, {
             preserveState: false,
             preserveScroll: true,
         });
     };
 
     const goToCustomerDetails = () => {
-        console.log(1);
         if (!ticket.requestor.unknown) {
             router.visit(
                 route("customer.info.details", ticket.requestor.customer_id)
@@ -82,6 +83,12 @@ const TicketDetails = (props) => {
         } else {
             open("Customer not found in customer list", INFO);
         }
+    };
+
+    const goToGeneratePdf = () => {
+        router.visit(route("ticket.generate-site-pdf", ticket.ticket_id), {
+            method: "get",
+        });
     };
 
     return (
@@ -205,6 +212,12 @@ const TicketDetails = (props) => {
                                 <MenuItem onClick={() => setOpenMerge(true)}>
                                     Merge Ticket To
                                 </MenuItem>
+                                <MenuItem onClick={() => setOpenTemplate(true)}>
+                                    Template
+                                </MenuItem>
+                                <MenuItem onClick={goToGeneratePdf}>
+                                    Generate Site Visit PDF
+                                </MenuItem>
                             </MenuList>
                         </Menu>
                     </div>
@@ -327,6 +340,14 @@ const TicketDetails = (props) => {
                 open={openMerge}
                 ticket={ticket}
                 handleMergeTicketOpen={setOpenMerge}
+            />
+
+            {/* email template modal */}
+            <TemplateModal
+                open={openTemplate}
+                handleOpen={setOpenTemplate}
+                templates={templates}
+                ticket={ticket}
             />
         </Authenticated>
     );

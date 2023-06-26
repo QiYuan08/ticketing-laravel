@@ -17,12 +17,14 @@ const EmailTemplate = ({ templates, alert }) => {
     const [editedTemplateId, setEditedTemplateId] = useState("");
     const { data, setData, post, errors } = useForm({
         templateName: "",
+        default: false,
     });
 
     const handleTemplateChange = (id) => {
         let template = templates.find((template) => template.template_id == id);
 
         setEditedTemplate(template.content);
+        setData("default", template.default);
         setEditedTemplateId(id);
     };
 
@@ -105,6 +107,7 @@ const EmailTemplate = ({ templates, alert }) => {
             {editedTemplateId && (
                 <div className="mt-2 flex justify-end items-center gap-x-4">
                     <SecondaryButton
+                        disabled={data.default}
                         onClick={handleDeleteTemplate}
                         className="hover:bg-red-600 hover:text-white"
                     >

@@ -36,7 +36,6 @@ const Message = ({ message, userId }) => {
                         </div>
                     )}
 
-                    {console.log(message)}
                     <div className="flex flex-col gap-y-1">
                         <div className="inline-flex gap-x-1 items-center">
                             <b>To:</b>

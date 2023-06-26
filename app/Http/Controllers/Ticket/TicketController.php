@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Constant\Status as ConstantStatus;
 use App\Http\Controllers\Controller;
+use App\Models\EmailTemplate;
 use App\Models\Messages;
 use App\Models\Priority;
 use App\Models\Role;
@@ -45,6 +46,7 @@ class TicketController extends Controller
                             ->with('role')
                             ->get(),
             'type' => Type::all(),
+            'templates' => EmailTemplate::all(),
             'status' => Status::all(),
             'priority' => Priority::all(),
             

@@ -51,8 +51,10 @@ class TicketReplyController extends Controller
             
             
             // add the respective media/attachment
-            foreach($attachments as $file) {
-                $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
+            if ($attachments) {
+                foreach($attachments as $file) {
+                    $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
+                }
             }
 
             $message->save();

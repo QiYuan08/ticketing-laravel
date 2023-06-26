@@ -9,6 +9,7 @@ use App\Http\Controllers\User\AgentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Settings\EmailTemplateController;
 use App\Http\Controllers\Settings\TicketTypeController;
+use App\Http\Controllers\Ticket\GenerateSiteVisitPdfController;
 use App\Http\Controllers\Ticket\GenerateTicketHistoryController;
 use App\Http\Controllers\Ticket\MergeTicketController;
 use App\Http\Controllers\Ticket\TicketController;
@@ -87,16 +88,20 @@ Route::middleware('auth')->name('customer.info.')->prefix('/customers-info')->gr
 
 // TICKET 
 Route::middleware('auth')
-    ->prefix('ticket/')
     ->name('ticket.')
+    ->prefix('ticket/')
     ->group(function () {
     Route::get('{ticketID}', [TicketController::class, 'create'])->name('get');
     Route::delete('{ticket}', [TicketController::class, 'delete'])->name('delete');
 
+    Route::get('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'create'])->name('generate-site-pdf');
+    Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('generate-site-pdf');
+
     Route::post('ticket-list', [MergeTicketController::class, 'getIdList'])->name('get-id-list');
     Route::post('merge-ticket/{combinedTicket}/{mergerTicket}', [MergeTicketController::class, 'mergeTicket'])->name('merge-ticket');
 
-    Route::post('attachment/${ticket}', [TicketReplyController::class, 'reply'])->name('attachment.upload');
+    Route::post('attachment/${ticket}', [TicketReplyController::class, 'reply'])->name('reply');
+
 
 });
 
