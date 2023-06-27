@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Constant\MediaCollection;
 use App\Http\Controllers\Controller;
+use App\Mail\GeneralMail;
+use App\Mail\SiteVisitMail;
 use App\Models\Customer;
 use App\Models\Messages;
 use App\Models\Ticket;
 use AWS\CRT\HTTP\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -69,7 +72,7 @@ class GenerateSiteVisitPdfController extends Controller
         $message->sender_type = get_class($request->user());
         $message->recipient_id = $ticket->requestor->customer_id;
         $message->recipient_type = Customer::class;
-        $message->internal_node = false;
+        $message->internal_node = true;
         $message->in_reply_to = $ticket->latest_reference;
         $message->messageId = "<$messageIdStr>";
 
@@ -82,6 +85,19 @@ class GenerateSiteVisitPdfController extends Controller
 
         // delete the tmp signature
         Storage::disk('public')->delete($name);
+
+        // send the email
+        Mail::to($request->input('email') ?? $ticket->requestor->email)
+        ->queue(new SiteVisitMail((object) [
+            'ticketID' => $ticket->ticket_id,
+            'name' =>  $request->input('requestorName') ?? $ticket->requestor->pic_name,
+            'date' => now()->toDateString(),
+            'subject' => 'MAGIT Site Visit Summary',
+            'content' => $message->payload,
+            'messageId' => $messageIdStr
+        ], $message));
+
+
 
         return redirect()->route('ticket.get', ['ticketID' => $ticket->ticket_id]);
 
