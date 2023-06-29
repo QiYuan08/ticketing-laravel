@@ -6,6 +6,7 @@ import { Card, CardBody } from "@material-tailwind/react";
 
 const AddCustomer = (props) => {
     const { data, setData, post, errors, reset } = useForm({
+        email: "",
         customerId: "",
         picName: "",
         phoneNumber: "",
@@ -63,6 +64,7 @@ const AddCustomer = (props) => {
                                                     id="customerId"
                                                     name="customerId"
                                                     type="text"
+                                                    defaultValue=""
                                                     value={data.customerId}
                                                     onChange={handleChange}
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -142,6 +144,29 @@ const AddCustomer = (props) => {
                                             </div>
                                             <InputError
                                                 message={errors.mobileNumber}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div className="col-span-6 sm:col-span-4 sm:col-start-1">
+                                            <label
+                                                htmlFor="companyName"
+                                                className="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Email
+                                            </label>
+                                            <div className="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="email"
+                                                    id="email"
+                                                    value={data.email}
+                                                    onChange={handleChange}
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                />
+                                            </div>
+                                            <InputError
+                                                message={errors.email}
                                                 className="mt-2"
                                             />
                                         </div>
@@ -239,7 +264,7 @@ const AddCustomer = (props) => {
 };
 
 AddCustomer.layout = (page) => (
-    <AuthenticatedLayout
+    <Authenticated
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">

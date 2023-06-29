@@ -24,7 +24,6 @@ const MsgNotificationDrawer = ({
         setShowNotification(false);
     };
 
-    console.log(messages);
     return (
         <Drawer
             placement="right"

@@ -56,7 +56,7 @@ const CustomerInfoTab = ({ customer, customerId, alert }) => {
             <Card className="order-1 lg:order-2 lg:col-span-1 max-h-96">
                 <CardBody className="flex flex-col flex-wrap">
                     <h3 className="text-base font-semibold leading-7 text-gray-900">
-                        FAQ Information
+                        Customer Information
                     </h3>
                     <CustomerDetailInput
                         value={customer.alias_customer_id}

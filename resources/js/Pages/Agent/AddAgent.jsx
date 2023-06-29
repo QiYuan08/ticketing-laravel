@@ -258,7 +258,7 @@ const AddAgent = (props) => {
 };
 
 AddAgent.layout = (page) => (
-    <AuthenticatedLayout
+    <Authenticated
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">

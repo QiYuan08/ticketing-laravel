@@ -30,8 +30,10 @@ class AgentController extends Controller
         ]);
     }
 
-    public function delete (Request $request) {
-        dd($request->query());
+    public function delete (User $agent) {
+        $agent->delete();
+
+        return redirect()->back();
     }
 
 }

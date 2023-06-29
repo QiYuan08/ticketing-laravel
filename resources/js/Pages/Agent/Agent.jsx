@@ -102,9 +102,10 @@ const Agent = (props) => {
                                                     href={route(
                                                         "agent.delete",
                                                         {
-                                                            agentID: agents.id,
+                                                            agent: agents.id,
                                                         }
                                                     )}
+                                                    preserveScroll
                                                     as="button"
                                                     className="text-red-700 hover:text-red-800 "
                                                     method="delete"
@@ -125,7 +126,7 @@ const Agent = (props) => {
 };
 
 Agent.layout = (page) => (
-    <AuthenticatedLayout
+    <Authenticated
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">

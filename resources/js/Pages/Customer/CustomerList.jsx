@@ -28,7 +28,9 @@ const CustomerList = (props) => {
 
     const deleteCustomer = (customerId) => {
         router.delete(route("customer.delete", customerId), {
-            onSuccess: () => {},
+            onSuccess: () => {
+                console.log("success");
+            },
         });
     };
 
@@ -61,7 +63,12 @@ const CustomerList = (props) => {
                             <PrimaryButton
                                 onClick={() => {
                                     console.log(2);
-                                    router.get(route("customer.create-new"));
+                                    router.get(
+                                        route(
+                                            "customer.new",
+                                            "7487f175-c868-3f80-9b9f-93184d41f44a"
+                                        )
+                                    );
                                 }}
                             >
                                 Add Customer
@@ -90,11 +97,18 @@ const CustomerList = (props) => {
                                                 className="even:bg-gray-100 hover:shadow-gray-600"
                                                 key={idx}
                                             >
-                                                <td className="px-1 py-4 text-sm font-medium text-gray-800 text-center">
+                                                <td
+                                                    className="px-1 py-4 text-sm font-medium text-gray-800 text-center hover:font-bold cursor-pointer"
+                                                    onClick={() =>
+                                                        viewCustomerInfo(
+                                                            customer.customer_id
+                                                        )
+                                                    }
+                                                >
                                                     {customer.alias_customer_id}
                                                 </td>
                                                 <td
-                                                    className="px-3 py-4 text-sm font-medium text-gray-800 hover:font-bold hover:cursor-pointer"
+                                                    className="px-3 py-4 text-sm font-medium text-gray-800 hover:font-bold cursor-pointer"
                                                     onClick={() =>
                                                         viewCustomerInfo(
                                                             customer.customer_id
@@ -134,7 +148,10 @@ const CustomerList = (props) => {
                                                     >
                                                         Edit
                                                     </Link>
-                                                    <button className="text-red-700 hover:text-red-800 ">
+                                                    <button
+                                                        className="text-red-700 hover:text-red-800"
+                                                        onClick={deleteCustomer}
+                                                    >
                                                         Delete
                                                     </button>
                                                 </td>
@@ -160,7 +177,7 @@ const CustomerList = (props) => {
 };
 
 CustomerList.layout = (page) => (
-    <AuthenticatedLayout
+    <Authenticated
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">

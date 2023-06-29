@@ -61,21 +61,21 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
     
-    Route::delete('/agent/{agentID}', [AgentController::class, 'delete'])->name('agent.delete');
+    Route::delete('/agent/{agent}', [AgentController::class, 'delete'])->name('agent.delete');
 
     //edit
     Route::get('/agent/edit/{agent}', [UpdateAgentController::class, 'create'])->name('agent.update-view');
 });
 
 // CUSTOMER
-Route::middleware('auth')->name('customer.')->prefix('/customers')->group(function() {
+Route::middleware('auth')->name('customer.')->prefix('customers')->group(function() {
     Route::get('/list', [CustomerController::class, 'create'])->name('list');
     Route::get('/{customer}', [CustomerController::class, 'view'])->name('details');
     Route::patch('/{customer}', [CustomerController::class, 'update'])->name('update');
     Route::delete('/{customer}', [CustomerController::class, 'delete'])->name('delete');
     
-    Route::post('/create-new-customer', [AddCustomerController::class, 'store'])->name('create');
-    Route::get('/new-customer-page', [AddCustomerController::class, 'create'])->name('create-new');
+    Route::post('/create', [AddCustomerController::class, 'store'])->name('create');
+    Route::get('/new/{customer}', [AddCustomerController::class, 'create'])->name('new');
 
 });
 

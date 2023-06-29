@@ -1,5 +1,4 @@
 import { useDebounce } from "@/Hooks/useDebounce";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, router, useForm } from "@inertiajs/react";
 import {
     Tab,
@@ -12,6 +11,7 @@ import { AiOutlineHistory } from "react-icons/ai";
 import { GrCircleInformation } from "react-icons/gr";
 import CustomerInfoTab from "./CustomerInfoTab";
 import CustomerTicketsTab from "./CustomerTicketsTab";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 const CustomerInfoIndex = (props) => {
     const tabs = [
@@ -87,7 +87,7 @@ const CustomerInfoIndex = (props) => {
 };
 
 CustomerInfoIndex.layout = (page) => (
-    <AuthenticatedLayout
+    <Authenticated
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">

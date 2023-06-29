@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             'additionalInfo'=> [
                 'sessionData' => session()->get('sessionData'),
                 'unreadNotificationCount' => $request->user()?->unreadNotifications()->count(),
-                'unreadNotification' => DB::table('notifications')
+                'unreadNotification' => $request->user() ? DB::table('notifications')
                                             ->where('notifiable_id', '=', $request->user()->id)
                                             ->whereNull('read_at')
                                             ->get()
@@ -58,7 +58,7 @@ class HandleInertiaRequests extends Middleware
                                                     'data' => json_decode($msg->data),
                                                     'id' =>$msg->id
                                                 ];
-                                            })
+                                            }) : []
                                             // ->pluck('created_at', 'data')
             ]
         ]);
