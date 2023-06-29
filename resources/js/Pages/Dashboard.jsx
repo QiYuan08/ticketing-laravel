@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 
-export default function Dashboard(props) {
+function Dashboard(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         all: true,
         high: true,
@@ -49,15 +49,7 @@ export default function Dashboard(props) {
     });
 
     return (
-        <AuthenticatedLayout
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard (View and edit ticket assigned to you)
-                </h2>
-            }
-        >
+        <>
             <Head title="Dashboard" />
 
             <Card>
@@ -230,18 +222,31 @@ export default function Dashboard(props) {
                 <CardFooter className="flex items-center justify-end border-t border-blue-gray-50 p-4 px-8">
                     <Pagination pagination={props.data} data={data} />
                     {/* <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                    >
-                        Page 1 of 10
-                    </Typography>
-                    <div className="flex gap-2">
-                        <PrimaryButton>Previous</PrimaryButton>
-                        <PrimaryButton>Next</PrimaryButton>
-                    </div> */}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal"
+                >
+                    Page 1 of 10
+                </Typography>
+                <div className="flex gap-2">
+                    <PrimaryButton>Previous</PrimaryButton>
+                    <PrimaryButton>Next</PrimaryButton>
+                </div> */}
                 </CardFooter>
             </Card>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+Dashboard.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Dashboard (View and edit ticket assigned to you)
+            </h2>
+        }
+    />
+);
+
+export default Dashboard;

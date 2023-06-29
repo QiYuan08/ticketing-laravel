@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\NewTicket;
 use App\Listeners\AutoReplyNewTicket;
+use App\Listeners\NewTicketNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,7 +22,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         NewTicket::class => [
-            AutoReplyNewTicket:: class
+            AutoReplyNewTicket:: class,
+            NewTicketNotification::class
         ]
     ];
 

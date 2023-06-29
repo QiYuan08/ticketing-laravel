@@ -89,15 +89,7 @@ const GenerateSiteVisitPdf = (props) => {
 
     return (
         <div>
-            <Authenticated
-                auth={props.auth}
-                errors={props.errors}
-                header={
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Generate Site Visit Pdf
-                    </h2>
-                }
-            >
+            <>
                 <div className="grid grid-cols-[1fr] md:grid-cols-2 gap-3 rounded-sm bg-white p-2 md:p-4">
                     <div className="p-2 border-2 border-gray-500">
                         <div className="grid grid-cols-2 gap-y-3">
@@ -293,7 +285,7 @@ const GenerateSiteVisitPdf = (props) => {
                         Generate PDF
                     </PrimaryButton>
                 </div>
-            </Authenticated>
+            </>
 
             {/* signature modal */}
             <Dialog open={openModal} handler={setOpenModal}>
@@ -317,5 +309,16 @@ const GenerateSiteVisitPdf = (props) => {
         </div>
     );
 };
+
+GenerateSiteVisitPdf.layout = (page) => (
+    <Authenticated
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Generate Site Visit Pdf
+            </h2>
+        }
+    />
+);
 
 export default GenerateSiteVisitPdf;

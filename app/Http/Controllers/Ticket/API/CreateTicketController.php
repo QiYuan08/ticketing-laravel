@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Messages;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Notifications\NewMailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -38,8 +39,25 @@ class CreateTicketController extends Controller
         // check if the ticket exist
         $subject = $request->input('subject');
 
-        // if ticket subject potentially has ticket number, create / update
-        if (Str::contains($subject, '#')) {
+        
+        // if email has references, check if the reference exist in db and update
+        if ($request->input('inReplyTo') !== "" && $request->input('inReplyTo') !== null) {
+            $messageId = $request->input('inReplyTo');
+
+            Log::debug('create ticket reply to', [
+                'messageId' => $request->input('inReplyTo'),
+                'message' => Messages::where('messageId', '=', $messageId)->first(),
+            ]);
+            $message = Messages::where('messageId', '=', $messageId)->first();
+
+            $ticket = Ticket::find($message->ticket_id);
+
+            // update ticket with message
+            return $this->updateTicket($request, $ticket, $user);
+
+
+            
+        } else if (Str::contains($subject, '#')) {   // if ticket subject potentially has ticket number, create / update
             // get all the occurence
             $subjectArr = Str::of($subject)->explode('#');
             
@@ -69,20 +87,6 @@ class CreateTicketController extends Controller
                     }
                 }
              }
-        } else if ($request->input('inReplyTo') !== "" && $request->input('inReplyTo') !== null) { // if email has references, check if the reference exist in db and update
-
-            $messageId = $request->input('inReplyTo');
-
-            Log::debug('create ticket reply to', [
-                'messageId' => $request->input('inReplyTo'),
-                'message' => Messages::where('messageId', '=', $messageId)->first(),
-            ]);
-            $message = Messages::where('messageId', '=', $messageId)->first();
-
-            $ticket = Ticket::find($message->ticket_id);
-
-            // update ticket with message
-            return $this->updateTicket($request, $ticket, $user);
 
         } else {
             // create the new ticket
@@ -114,6 +118,11 @@ class CreateTicketController extends Controller
         // update the ticket latest references
         $ticket->latest_reference = $request->input('messageId');
         $ticket->save();
+
+        // send the notification to the assignee, if the ticket is assigned
+        if ($ticket->assignee_id) {
+            $ticket->assignee->notify(new NewMailNotification($ticket->refresh(), now()->toDateString()));
+        }
 
         return response()->json([
             'success' => true,

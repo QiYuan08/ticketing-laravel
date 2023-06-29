@@ -38,15 +38,7 @@ const ViewList = (props) => {
         });
     });
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard (View and edit ticket assigned to you)
-                </h2>
-            }
-        >
+        <>
             <Head title="Dashboard" />
 
             <Card>
@@ -127,8 +119,19 @@ const ViewList = (props) => {
                     <Pagination pagination={props.data} preserveState={true} />
                 </CardFooter>
             </Card>
-        </Authenticated>
+        </>
     );
 };
+
+ViewList.layout = (page) => (
+    <Authenticated
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Dashboard (View and edit ticket assigned to you)
+            </h2>
+        }
+    />
+);
 
 export default ViewList;

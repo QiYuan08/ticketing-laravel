@@ -3,22 +3,66 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { ADMIN_LVL } from "@/Utility/constant";
-import { Link } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import {
+    Avatar,
+    Badge,
     Button,
     Menu,
     MenuHandler,
     MenuItem,
     MenuList,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { GrNotification } from "react-icons/gr";
+import { useEffect, useState } from "react";
+import { useMessageNotificationContext } from "@/Context/MailNotificationContext";
+import MsgNotificationDrawer from "@/Components/shared/MsgNotificationDrawer";
 
-export default function Authenticated({ auth, header, children, alerts }) {
+const Authenticated = ({ header, children }) => {
+    const { auth, additionalInfo } = usePage().props;
+    const [messages, setMessages] = useState(additionalInfo.unreadNotification);
+    const [notificationCount, setNotificationCount] = useState(
+        additionalInfo.unreadNotificationCount
+    );
+    const [showNotification, setShowNotification] = useState(false);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    useEffect(() => {
+        setMessages(additionalInfo.unreadNotification);
+    }, [additionalInfo.unreadNotification]);
+
+    useEffect(() => {
+        setNotificationCount(additionalInfo.unreadNotificationCount);
+    }, [additionalInfo.unreadNotificationCount]);
+
+    // listen to incoming message from client
+    window.Echo.private(`App.Models.User.${auth.user.id}`).notification(
+        (notification) => {
+            let data = {
+                id: notification.id,
+                data: {
+                    subject: notification.subject,
+                    ticket_id: notification.ticket_id,
+                    time: notification.time,
+                },
+            };
+
+            console.log([data].concat(messages));
+
+            setMessages([data].concat(messages));
+            setNotificationCount(notificationCount + 1);
+        }
+    );
+
     return (
         <div className="min-h-screen bg-gray-100">
+            <MsgNotificationDrawer
+                messages={messages}
+                showNotification={showNotification}
+                setShowNotification={setShowNotification}
+            />
+
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -37,7 +81,7 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                {auth.access_lvl === ADMIN_LVL && (
+                                {auth?.access_lvl === ADMIN_LVL && (
                                     <NavLink
                                         href={route("agent.get")}
                                         active={route().current("agent.get")}
@@ -79,7 +123,7 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
-                                {auth.access_lvl && (
+                                {auth?.access_lvl && (
                                     <NavLink
                                         href={route("settings.list")}
                                         active={route().current(
@@ -108,7 +152,7 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {auth.user.name}
+                                                {auth?.user?.name}
 
                                                 <svg
                                                     className="ml-2 -mr-0.5 h-4 w-4"
@@ -141,6 +185,24 @@ export default function Authenticated({ auth, header, children, alerts }) {
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
+                            </div>
+
+                            <div className="ml-3 relative">
+                                <Badge
+                                    content={notificationCount ?? 0}
+                                    withBorder
+                                    overlap="circular"
+                                    placement="top-end"
+                                >
+                                    <div
+                                        className="p-1.5 cursor-pointer"
+                                        onClick={() =>
+                                            setShowNotification(true)
+                                        }
+                                    >
+                                        <GrNotification className="w-5 h-5" />
+                                    </div>
+                                </Badge>
                             </div>
                         </div>
 
@@ -243,4 +305,6 @@ export default function Authenticated({ auth, header, children, alerts }) {
             </main>
         </div>
     );
-}
+};
+
+export default Authenticated;

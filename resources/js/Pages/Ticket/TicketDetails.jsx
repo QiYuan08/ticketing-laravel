@@ -92,15 +92,7 @@ const TicketDetails = (props) => {
     };
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Ticket Details (View the current ticket)
-                </h2>
-            }
-        >
+        <>
             {/* // TODO: finish the back button */}
             {/* <div
                 className="pb-2 underline text-md font-semibold text-light-blue-800 cursor-pointer"
@@ -225,7 +217,6 @@ const TicketDetails = (props) => {
                     {/* chat */}
                     <div className=" grow-[8] lg:border-y-[1px] border-gray-500 w-full px-5 h-72 md:h-[400px] overflow-auto">
                         <div className="flex flex-col my-4  gap-y-3">
-                            {console.log(props.messages)};
                             {props.messages.map((message) => {
                                 return (
                                     <Message
@@ -349,8 +340,19 @@ const TicketDetails = (props) => {
                 templates={templates}
                 ticket={ticket}
             />
-        </Authenticated>
+        </>
     );
 };
+
+TicketDetails.layout = (page) => (
+    <Authenticated
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Ticket Details (View the current ticket)
+            </h2>
+        }
+    />
+);
 
 export default TicketDetails;

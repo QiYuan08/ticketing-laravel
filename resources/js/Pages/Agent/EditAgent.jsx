@@ -40,15 +40,7 @@ const EditAgent = (props) => {
     };
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Agent (View and manage your team)
-                </h2>
-            }
-        >
+        <>
             <Head title="Agent List" />
             <div className="py-8">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -146,8 +138,19 @@ const EditAgent = (props) => {
                     </div>
                 </div>
             </div>
-        </Authenticated>
+        </>
     );
 };
+
+EditAgent.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Agent (View and manage your team)
+            </h2>
+        }
+    />
+);
 
 export default EditAgent;

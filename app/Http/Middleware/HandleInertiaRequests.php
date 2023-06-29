@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -46,7 +47,19 @@ class HandleInertiaRequests extends Middleware
                 'success' => session()->get('success'),
             ],
             'additionalInfo'=> [
-                'sessionData' => session()->get('sessionData')
+                'sessionData' => session()->get('sessionData'),
+                'unreadNotificationCount' => $request->user()?->unreadNotifications()->count(),
+                'unreadNotification' => DB::table('notifications')
+                                            ->where('notifiable_id', '=', $request->user()->id)
+                                            ->whereNull('read_at')
+                                            ->get()
+                                            ->map(function ($msg) {
+                                                return (object) [
+                                                    'data' => json_decode($msg->data),
+                                                    'id' =>$msg->id
+                                                ];
+                                            })
+                                            // ->pluck('created_at', 'data')
             ]
         ]);
     }

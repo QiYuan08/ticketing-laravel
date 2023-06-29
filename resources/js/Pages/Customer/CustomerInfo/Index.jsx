@@ -56,16 +56,7 @@ const CustomerInfoIndex = (props) => {
     });
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer Details (View and edit your customer detailed
-                    information)
-                </h2>
-            }
-        >
+        <>
             <Head title="Customer Details" />
 
             <div className="max-w-7xl mx-auto">
@@ -91,8 +82,20 @@ const CustomerInfoIndex = (props) => {
                     </TabsBody>
                 </Tabs>
             </div>
-        </Authenticated>
+        </>
     );
 };
+
+CustomerInfoIndex.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Customer Details (View and edit your customer detailed
+                information)
+            </h2>
+        }
+    />
+);
 
 export default CustomerInfoIndex;

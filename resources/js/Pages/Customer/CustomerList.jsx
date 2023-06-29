@@ -39,15 +39,7 @@ const CustomerList = (props) => {
     };
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Manage Customer (Manage your customer pool)
-                </h2>
-            }
-        >
+        <>
             <Head title="Customer List" />
 
             <Card>
@@ -163,8 +155,19 @@ const CustomerList = (props) => {
                     </div>
                 </CardFooter>
             </Card>
-        </Authenticated>
+        </>
     );
 };
+
+CustomerList.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Manage Customer (Manage your customer pool)
+            </h2>
+        }
+    />
+);
 
 export default CustomerList;

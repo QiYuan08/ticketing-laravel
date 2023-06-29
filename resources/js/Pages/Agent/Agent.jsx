@@ -23,15 +23,7 @@ const Agent = (props) => {
     });
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Agent (View and manage your team)
-                </h2>
-            }
-        >
+        <>
             <Head title="Agent List" />
             <Card>
                 <CardBody>
@@ -128,8 +120,19 @@ const Agent = (props) => {
                     </div>
                 </CardBody>
             </Card>
-        </Authenticated>
+        </>
     );
 };
+
+Agent.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Agent (View and manage your team)
+            </h2>
+        }
+    />
+);
 
 export default Agent;

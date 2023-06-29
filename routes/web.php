@@ -11,6 +11,7 @@ use App\Http\Controllers\Settings\EmailTemplateController;
 use App\Http\Controllers\Settings\TicketTypeController;
 use App\Http\Controllers\Ticket\GenerateSiteVisitPdfController;
 use App\Http\Controllers\Ticket\GenerateTicketHistoryController;
+use App\Http\Controllers\Ticket\MailNotificationController;
 use App\Http\Controllers\Ticket\MergeTicketController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
@@ -91,7 +92,7 @@ Route::middleware('auth')
     ->name('ticket.')
     ->prefix('ticket/')
     ->group(function () {
-    Route::get('{ticketID}', [TicketController::class, 'create'])->name('get');
+    Route::get('{ticketID}/{notificationId?}', [TicketController::class, 'create'])->name('get');
     Route::delete('{ticket}', [TicketController::class, 'delete'])->name('delete');
 
     Route::get('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'create'])->name('generate-site-pdf');
@@ -124,6 +125,13 @@ Route::middleware('auth')->name('settings.')->prefix('setting')->group(function(
 // VIEW
 Route::middleware('auth')->name('views.')->prefix('view')->group(function() {
     Route::get('/list', [ViewController::class, 'create'])->name('list');
+    
+});
+
+// notification
+Route::middleware('auth')->name('notification.')->prefix('notification')->group(function() {
+    Route::get('/{ticket}', [MailNotificationController::class, 'toggle'])->name('toggle');
+    Route::get('/read/{ticketId}/{notificationId}', [MailNotificationController::class, 'readNotification'])->name('read');
     
 });
 

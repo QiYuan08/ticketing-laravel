@@ -12,16 +12,7 @@ const CustomerInfoDetails = (props) => {
     });
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer Info (View and edit your customer detailed
-                    information)
-                </h2>
-            }
-        >
+        <>
             <Head title="Customer Details" />
 
             <div className="px-4 py-6 sm:grid lg:grid-cols-4 sm:gap-4 sm:px-0 max-w-8xl mx-auto">
@@ -79,8 +70,19 @@ const CustomerInfoDetails = (props) => {
                     </CardBody>
                 </Card>
             </div>
-        </Authenticated>
+        </>
     );
 };
+
+CustomerInfoDetails.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Customer Info (View and edit your customer detailed information)
+            </h2>
+        }
+    />
+);
 
 export default CustomerInfoDetails;

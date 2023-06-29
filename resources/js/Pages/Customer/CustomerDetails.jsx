@@ -41,16 +41,7 @@ const CustomerDetails = (props) => {
     };
 
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Customer Details (View and edit your customer detailed
-                    information)
-                </h2>
-            }
-        >
+        <>
             <Head title="Customer Details" />
 
             <Card className="max-w-5xl mx-auto">
@@ -148,8 +139,20 @@ const CustomerDetails = (props) => {
                     </div>
                 </CardBody>
             </Card>
-        </Authenticated>
+        </>
     );
 };
+
+CustomerDetails.layout = (page) => (
+    <AuthenticatedLayout
+        children={page}
+        header={
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Customer Details (View and edit your customer detailed
+                information)
+            </h2>
+        }
+    />
+);
 
 export default CustomerDetails;
