@@ -64,7 +64,7 @@ const GenerateSiteVisitPdf = (props) => {
     };
 
     const handleSubmit = () => {
-        post(route("ticket.generate-site-pdf", ticket.ticket_id));
+        post(route("ticket.post-generate-site-pdf", ticket.ticket_id));
     };
 
     console.log(errors);

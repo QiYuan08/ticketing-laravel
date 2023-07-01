@@ -87,7 +87,7 @@ const TicketDetails = (props) => {
     };
 
     const goToGeneratePdf = () => {
-        router.get(route("ticket.generate-site-pdf", ticket.ticket_id));
+        router.get(route("ticket.get-generate-site-pdf", ticket.ticket_id));
     };
 
     return (

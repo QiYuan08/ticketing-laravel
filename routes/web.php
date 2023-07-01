@@ -56,8 +56,8 @@ Route::middleware('auth')->group(function () {
 
 // AGENT
 Route::middleware('auth')->group(function () {
-    Route::get('/new-agent', [NewAgentController::class, 'create'])->name('new-agent');
-    Route::post('/new-agent', [NewAgentController::class, 'store'])->name('new-agent');
+    Route::get('/new-agent', [NewAgentController::class, 'create'])->name('get-new-agent');
+    Route::post('/new-agent', [NewAgentController::class, 'store'])->name('post-new-agent');
 
     Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
     Route::delete('/agent/{agent}', [AgentController::class, 'delete'])->name('agent.delete');
@@ -94,8 +94,8 @@ Route::middleware('auth')
     ->prefix('ticket/')
     ->group(function () {
 
-    Route::get('generate-site-visit/{ticket}/{name?}', [GenerateSiteVisitPdfController::class, 'create'])->name('generate-site-pdf');
-    Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('generate-site-pdf');
+    Route::get('generate-site-visit/{ticket}/{name?}', [GenerateSiteVisitPdfController::class, 'create'])->name('get-generate-site-pdf');
+    Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('post-generate-site-pdf');
 
     Route::get('{ticketID}/{notificationId?}', [TicketController::class, 'create'])->name('get');
     Route::delete('{ticket}', [TicketController::class, 'delete'])->name('delete');
