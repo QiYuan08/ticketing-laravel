@@ -2,8 +2,18 @@ user: laravel
 userpwd: laravel
 
 DEPLOYMENT CHECKLIST
-1. npm run build
-2. php artisan migrate
-3. php artisan notification
-4. php artisan config:clear
-5. php artisan route:clear
+usermod -aG sudo laravel (give access)
+must clone with laravel user
+
+
+1. composer install
+2. modify env file 
+3. npm install && npm run build
+3. php artisan migrate
+5. php artisan config:clear
+6. php artisan route:clear
+7. start the queue worker (inside /etc/supervisor/conf.d/queue-worker.conf
+	- sudo supervisorctl reread
+	- sudo supervisorctl update
+	- sudo supervisorctl start queueworker:*
+
