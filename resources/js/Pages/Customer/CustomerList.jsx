@@ -150,7 +150,11 @@ const CustomerList = (props) => {
                                                     </Link>
                                                     <button
                                                         className="text-red-700 hover:text-red-800"
-                                                        onClick={deleteCustomer}
+                                                        onClick={() =>
+                                                            deleteCustomer(
+                                                                customer.customer_id
+                                                            )
+                                                        }
                                                     >
                                                         Delete
                                                     </button>

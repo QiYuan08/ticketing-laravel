@@ -13,5 +13,5 @@ class EmailTemplate extends Model
 
     protected $primaryKey = 'template_id';
 
-    protected $fillable = ['content', 'template_name'];
+    protected $fillable = ['content', 'template_name', 'templated_id'];
 }

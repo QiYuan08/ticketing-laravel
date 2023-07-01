@@ -36,12 +36,15 @@ class AddCustomerController extends Controller
             $customer->alias_customer_id = $customerId;
             $customer->pic_name = $request->input('picName');
             $customer->email = $request->input('email');
+            $customer->unknown = false;
             $request->input('phoneNumber') && $customer->phone_number = $request->input('phoneNumber');
             $request->input('mobileNumber') &&  $customer->mobile_number = $request->input('mobileNumber');
             $request->input('companyName') && $customer->company = $request->input('companyName');
             $request->input('address') && $customer->company_address = $request->input('address');
             $request->input('additionalInfo') && $customer->additional_info = $request->input('additionalInfo'); 
 
+            $customer->save();
+            
         } else {
 
             Customer::create([
@@ -52,7 +55,8 @@ class AddCustomerController extends Controller
                 'mobile_number' => $request->input('mobileNumber'),
                 'company' => $request->input('companyName'),
                 'company_address' => $request->input('address'),
-                'additional_info' => $request->input('additionalInfo') 
+                'additional_info' => $request->input('additionalInfo'),
+                'unknown' => false 
             ]);
         }
         

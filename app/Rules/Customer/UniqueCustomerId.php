@@ -28,7 +28,6 @@ class UniqueCustomerId implements Rule
     {
         return !Customer::where('alias_customer_id', '=', $value)
         ->where('unknown', false)
-        ->withTrashed()
         ->exists();
     }
 

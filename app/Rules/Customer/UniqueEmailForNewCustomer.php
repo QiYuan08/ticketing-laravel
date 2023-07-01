@@ -29,7 +29,6 @@ class UniqueEmailForNewCustomer implements Rule
         // check if customer with the email and unknown column is not there
         return !Customer::where('email', '=', $value)
             ->where('unknown', false)
-            ->withTrashed()
             ->exists();
     }
 
