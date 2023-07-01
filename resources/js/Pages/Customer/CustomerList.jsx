@@ -83,10 +83,10 @@ const CustomerList = (props) => {
                                 header={[
                                     "Customer ID",
                                     "PIC Name",
+                                    "Email",
                                     "Phone Number",
                                     "Mobile Number",
                                     "Company Name",
-                                    "Created On",
                                     "Updated On",
                                     "Action",
                                 ]}
@@ -118,6 +118,9 @@ const CustomerList = (props) => {
                                                     {customer.pic_name}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800">
+                                                    {customer.email}
+                                                </td>
+                                                <td className="px-3 py-4 text-sm font-medium text-gray-800">
                                                     {customer.phone_number}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800">
@@ -125,11 +128,6 @@ const CustomerList = (props) => {
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800">
                                                     {customer.company}
-                                                </td>
-                                                <td className="px-3 py-4 text-sm font-medium text-gray-800 w-1/6">
-                                                    {getDateFromBackend(
-                                                        customer.created_at
-                                                    )}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm font-medium text-gray-800 w-1/6">
                                                     {getDateFromBackend(
