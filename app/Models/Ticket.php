@@ -86,9 +86,9 @@ class Ticket extends Model implements HasMedia
     }
 
     protected static function generateNewId(): string {
-        $count = DB::table('tickets')->count() + 1;
         $date = Carbon::now()->format('ym');
-
+        $count = DB::table('tickets')->where('ticket_id', 'LIKE', $date.'%')->count() + 1;
+        
         if ($count < 10) {
             $count = "000$count";
         } elseif ($count < 100) {

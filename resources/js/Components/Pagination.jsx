@@ -15,7 +15,7 @@ const Pagination = ({ pagination, data, preserveState = false }) => {
 
     return (
         <div className="flex justify-end items-center gap-2">
-            {pagination.first_page_url && (
+            {pagination?.first_page_url && (
                 <MdFirstPage
                     className="cursor-pointer"
                     size={20}
@@ -23,22 +23,25 @@ const Pagination = ({ pagination, data, preserveState = false }) => {
                     onClick={() => changePage(pagination.first_page_url)}
                 />
             )}
-            {pagination.prev_page_url && (
+            {pagination?.prev_page_url && (
                 <PaginationNumber
                     value={pagination.current_page - 1}
                     isActive={false}
                     onClick={() => changePage(pagination.prev_page_url)}
                 />
             )}
-            <PaginationNumber value={pagination.current_page} isActive={true} />
-            {pagination.next_page_url && (
+            <PaginationNumber
+                value={pagination?.current_page}
+                isActive={true}
+            />
+            {pagination?.next_page_url && (
                 <PaginationNumber
                     value={pagination.current_page + 1}
                     isActive={false}
                     onClick={() => changePage(pagination.next_page_url)}
                 />
             )}
-            {pagination.last_page_url && (
+            {pagination?.last_page_url && (
                 <MdLastPage
                     className="cursor-pointer"
                     size={20}

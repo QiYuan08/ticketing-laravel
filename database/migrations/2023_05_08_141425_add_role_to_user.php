@@ -25,10 +25,10 @@ return new class extends Migration
                 'name' => Role::AGENT,
                 'description' => 'Can manage all tickets'        
             ],
-            [
-                'name' => Role::CUSTOMER,
-                'description' => 'End users'        
-            ]
+            // [
+            //     'name' => Role::CUSTOMER,
+            //     'description' => 'End users'        
+            // ]
         ]);
 
         Schema::table('users', function (Blueprint $table) {

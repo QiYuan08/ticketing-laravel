@@ -12,6 +12,7 @@ use App\Models\Messages;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\NewMailNotification;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -42,6 +43,8 @@ class CreateTicketController extends Controller
         
         // if email has references, check if the reference exist in db and update
         if ($request->input('inReplyTo') !== "" && $request->input('inReplyTo') !== null) {
+            Log::debug('enter reply to');
+
             $messageId = $request->input('inReplyTo');
 
             Log::debug('create ticket reply to', [
@@ -58,6 +61,9 @@ class CreateTicketController extends Controller
 
             
         } else if (Str::contains($subject, '#')) {   // if ticket subject potentially has ticket number, create / update
+
+            Log::debug('enter string one');
+
             // get all the occurence
             $subjectArr = Str::of($subject)->explode('#');
             
@@ -89,6 +95,8 @@ class CreateTicketController extends Controller
              }
 
         } else {
+            Log::debug('enter create ticket');
+
             // create the new ticket
             return $this->createTicket($request, $user);
         }
@@ -130,43 +138,63 @@ class CreateTicketController extends Controller
     }
 
     private function createTicket(Request $request, Customer $user){
-        // create the ticket
-        $ticket = new Ticket();
+    
+        try {
 
-        $ticket->requestor_id = $user->customer_id;
-        $ticket->subject = $request->input('subject');
-        $ticket->priority_id = ConstantPriority::LOW_ID;
-        $ticket->status_id = ConstantStatus::TICKET_STATUS_OPEN_ID;
-        $ticket->latest_reference = $request->input('messageId');
+            Log::debug('user', ['user' => $user, 'subject', $request->input('subject'), 'messageId' => $request->input('messageId')]);
+            
+            // create the ticket
+            $ticket = new Ticket();
+            
+            $ticket->requestor_id = $user->customer_id;
+            $ticket->subject = $request->input('subject');
+            $ticket->priority_id = ConstantPriority::LOW_ID;
+            $ticket->status_id = ConstantStatus::TICKET_STATUS_OPEN_ID;
+            $ticket->latest_reference = $request->input('messageId');
+            
+            Log::debug('ticket data complete');
+            try {
+                $ticket->save();
 
-        $ticket->save();
-
-        // create the message
-        $message = new Messages();
-
-        $message->ticket_id =  $ticket->ticket_id;
-        $message->payload = $request->input('message');
-        $message->sender_id = $user->customer_id;
-        $message->sender_type = get_class($user);
-        $message->recipient_id = '9950c600-ee08-42d2-9e4c-5a1785ff16a4';
-        $message->recipient_type = User::class;
-        $message->internal_node = false;
-        $message->messageId = $request->input('messageId');
-
-        $message->save();
-
-        // save the attachment
-        foreach($request->file() as $file) {
-            $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
+            } catch (Exception $exception) {
+                dd('error');
+                dd($exception);
+            }
+            
+            Log::debug('ticket', ['ticket' => $ticket]);
+            
+            // create the message
+            $message = new Messages();
+            
+            $message->ticket_id =  $ticket->ticket_id;
+            $message->payload = $request->input('message');
+            $message->sender_id = $user->customer_id;
+            $message->sender_type = get_class($user);
+            $message->recipient_id = '9950c600-ee08-42d2-9e4c-5a1785ff16a4';
+            $message->recipient_type = User::class;
+            $message->internal_node = false;
+            $message->messageId = $request->input('messageId');
+            
+            $message->save();
+            
+            Log::debug('ticket message', ['message' => $message]);
+            
+            // save the attachment
+            foreach($request->file() as $file) {
+                $message->addMedia($file)->toMediaCollection(MediaCollection::MESSAGE_ATTACHMENT);
+            }
+            
+            Log::debug('ticket created successfully', ['ticketID' => $ticket->ticket_id]);
+            
+            // dispatch event to trigger auto reply
+            NewTicket::dispatch($ticket->refresh());
+            
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (Exception $error) {
+            return $error;
         }
-
-        Log::debug('ticket created successfully', ['ticketID' => $ticket->ticket_id]);
-
-        // dispatch event to trigger auto reply
-        NewTicket::dispatch($ticket->refresh());
-
-        return response()->json([
-            'success' => true,
-        ]);
+        }
     }
-}
+    

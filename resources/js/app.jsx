@@ -18,11 +18,13 @@ const appName =
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
-        const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
-        let page = pages[`./Pages/${name}.jsx`];
-        page.default.layout =
-            page.default.layout ||
-            ((page) => <Authenticated children={page} />);
+        const page = resolvePageComponent(
+            `./Pages/${name}.jsx`,
+            import.meta.glob("./Pages/**/*.jsx")
+        );
+        page.then((module) => {
+            module.default.layout = module.default.layout || DefaultLayoutFile;
+        });
         return page;
     },
     setup({ el, App, props }) {

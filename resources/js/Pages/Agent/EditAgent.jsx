@@ -5,26 +5,29 @@ import TextInput from "@/Components/TextInput";
 import WarningButton from "@/Components/WarningButton";
 import { useNotificationContext } from "@/Context/NotificationContext";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { SUCCESS } from "@/Utility/constant";
+import { ADMIN, AGENT, SUCCESS } from "@/Utility/constant";
 import { Transition } from "@headlessui/react";
 import { Head, router, useForm } from "@inertiajs/react";
-import { Card, CardBody } from "@material-tailwind/react";
+import { Card, CardBody, Option, Select } from "@material-tailwind/react";
 import React from "react";
 
 const EditAgent = (props) => {
     let agent = props.agent;
+    let agentList = props.agentList;
+
     const { open } = useNotificationContext();
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name: agent.name,
-            email: agent.email,
+            role: agent.role_id,
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        console.log(agent);
+        patch(route("agent.update", agent.id));
     };
 
     const passwordReset = () => {
@@ -93,19 +96,40 @@ const EditAgent = (props) => {
                                         <TextInput
                                             id="email"
                                             type="email"
-                                            className="mt-1 block w-full"
-                                            value={data.email}
-                                            onChange={(e) =>
-                                                setData("email", e.target.value)
-                                            }
+                                            disabled
+                                            defaultValue={agent.email}
+                                            className="mt-1 block w-full text-gray-500"
                                             required
-                                            autoComplete="username"
                                         />
 
                                         <InputError
                                             className="mt-2"
                                             message={errors.email}
                                         />
+                                    </div>
+
+                                    <div>
+                                        <Select
+                                            name="role"
+                                            className="mt-1 block "
+                                            variant="outlined"
+                                            value={data.role}
+                                            label="Select Role"
+                                            onChange={(role) =>
+                                                setData("role", role)
+                                            }
+                                        >
+                                            {agentList.map((agent, idx) => {
+                                                return (
+                                                    <Option
+                                                        key={idx}
+                                                        value={agent.role_id}
+                                                    >
+                                                        {`${agent.name} (${agent.description})`}
+                                                    </Option>
+                                                );
+                                            })}
+                                        </Select>
                                     </div>
 
                                     <div className="flex justify-end items-center gap-4">

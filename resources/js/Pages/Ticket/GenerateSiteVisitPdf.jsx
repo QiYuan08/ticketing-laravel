@@ -1,3 +1,4 @@
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
@@ -25,7 +26,7 @@ const GenerateSiteVisitPdf = (props) => {
     const sigCanvas = useRef();
     const [imageURL, setImageURL] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const { data, setData, post } = useForm({
+    const { data, setData, post, errors } = useForm({
         company: ticket.requestor.company ?? "",
         picName: ticket.requestor.pic_name ?? "",
         email: ticket.requestor.email ?? "",
@@ -63,29 +64,10 @@ const GenerateSiteVisitPdf = (props) => {
     };
 
     const handleSubmit = () => {
-        // axios
-        //     .post(route("ticket.generate-site-pdf", ticket.ticket_id), {
-        //         responseType: "blob",
-        //         data,
-        //     })
-        //     .then((response) => {
-        //         const url = window.URL.createObjectURL(
-        //             new Blob([response.data])
-        //         );
-        //         const link = document.createElement("a");
-        //         link.href = url;
-
-        //         console.log(response, link, url);
-        //         link.setAttribute("download", "ticket_history.pdf");
-        //         document.body.appendChild(link);
-        //         link.click();
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error generating PDF:", error);
-        //     });
-
         post(route("ticket.generate-site-pdf", ticket.ticket_id));
     };
+
+    console.log(errors);
 
     return (
         <div>
@@ -102,6 +84,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 name="company"
                                 onChange={handleInputChange}
                             />
+                            <InputError
+                                message={errors.company}
+                                className="mt-2"
+                            />
 
                             <label className="font-semibold">PIC</label>
                             <input
@@ -110,6 +96,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 name="picName"
                                 onChange={handleInputChange}
                             />
+                            <InputError
+                                message={errors.picName}
+                                className="mt-2"
+                            />
 
                             <label className="font-semibold">Email</label>
                             <input
@@ -117,6 +107,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 name="email"
                                 value={data.email}
                                 onChange={handleInputChange}
+                            />
+                            <InputError
+                                message={errors.email}
+                                className="mt-2"
                             />
 
                             <label className="font-semibold">
@@ -127,6 +121,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 value={data.contact}
                                 name="contact"
                                 onChange={handleInputChange}
+                            />
+                            <InputError
+                                message={errors.contact}
+                                className="mt-2"
                             />
                         </div>
                     </div>
@@ -140,6 +138,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 name="Date"
                                 onChange={handleInputChange}
                             />
+                            <InputError
+                                message={errors.Date}
+                                className="mt-2"
+                            />
 
                             <label className="font-semibold">Time</label>
                             <input
@@ -147,6 +149,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 value={data.time}
                                 name="time"
                                 onChange={handleInputChange}
+                            />
+                            <InputError
+                                message={errors.time}
+                                className="mt-2"
                             />
 
                             <label className="font-semibold">Customer ID</label>
@@ -156,6 +162,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 name="customerId"
                                 onChange={handleInputChange}
                             />
+                            <InputError
+                                message={errors.customerId}
+                                className="mt-2"
+                            />
 
                             <label className="font-semibold">Engineer</label>
                             <input
@@ -163,6 +173,10 @@ const GenerateSiteVisitPdf = (props) => {
                                 value={data.engineer}
                                 name="engineer"
                                 onChange={handleInputChange}
+                            />
+                            <InputError
+                                message={errors.engineer}
+                                className="mt-2"
                             />
                         </div>
                     </div>
@@ -211,6 +225,7 @@ const GenerateSiteVisitPdf = (props) => {
                             name="problem"
                             onChange={handleInputChange}
                         />
+                        <InputError message={errors.problem} className="mt-2" />
                     </div>
 
                     <div className="flex flex-col md:col-span-2">

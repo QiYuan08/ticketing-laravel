@@ -21,11 +21,18 @@ class GenerateSiteVisitPdfController extends Controller
 {
     public function create(Ticket $ticket) {
         
+        // dd($ticket);
         return Inertia::render('Ticket/GenerateSiteVisitPdf', ['ticket' => $ticket]);
     }
 
     public function store(Request $request, Ticket $ticket) {
         
+        $request->validate([
+            'email' => ['required',], // if, is known, check if the email is unique
+            'problem' => ['required'],
+            'Date' => ['required'],
+        ]);
+
         $file = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->input('imageURL'))); 
     
         $name = Str::random(15).'_signature.png'; 

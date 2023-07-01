@@ -1,24 +1,27 @@
 import { getDateFromBackend } from "@/Utility/globalFunction";
 import React from "react";
 import AttachmentDisplay from "./AttachmentDisplay";
+import { Avatar } from "@material-tailwind/react";
+import { FaUserAlt } from "react-icons/fa";
 
 const Message = ({ message, userId }) => {
     return (
         <div className="">
             <div
                 className={`${
-                    message.sender.id === userId
-                        ? "justify-end"
-                        : "justify-start"
+                    message.sender.id ? "justify-end" : "justify-start"
                 } flex mb-4"`}
             >
-                {message.sender.id !== userId && (
-                    // icon
-                    <img
-                        src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                        className="object-cover h-8 w-8 rounded-full"
-                        alt=""
+                {message.sender.profilePicture ? (
+                    <Avatar
+                        src={message.sender.profilePicture}
+                        alt="avatar"
+                        size="md"
                     />
+                ) : (
+                    <div className="rounded-full border-[1px] border-gray-600 border-box p-1.5 h-9 w-9">
+                        <FaUserAlt color="gray" size={23} />
+                    </div>
                 )}
                 {/* message body */}
                 <div

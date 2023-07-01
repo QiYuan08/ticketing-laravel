@@ -2,7 +2,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ADMIN_LVL } from "@/Utility/constant";
+import { ADMIN, ADMIN_LVL } from "@/Utility/constant";
 import { Link, router, usePage } from "@inertiajs/react";
 import {
     Avatar,
@@ -29,12 +29,18 @@ const Authenticated = ({ header, children }) => {
         useState(false);
 
     useEffect(() => {
+        console.log("user changed");
+    }, [auth.user]);
+
+    useEffect(() => {
         setMessages(additionalInfo.unreadNotification);
     }, [additionalInfo.unreadNotification]);
 
     useEffect(() => {
         setNotificationCount(additionalInfo.unreadNotificationCount);
     }, [additionalInfo.unreadNotificationCount]);
+
+    const isAdmin = (role) => role === ADMIN;
 
     // listen to incoming message from client
     window.Echo.private(`App.Models.User.${auth.user.id}`).notification(
@@ -90,40 +96,45 @@ const Authenticated = ({ header, children }) => {
                                     </NavLink>
                                 )}
 
-                                <Menu>
-                                    <MenuHandler>
-                                        <button
-                                            className={`text-gray-500 text-sm font-medium leading-5 `}
-                                        >
-                                            Customer
-                                        </button>
-                                    </MenuHandler>
-                                    <MenuList>
-                                        <MenuItem>
-                                            <NavLink
-                                                href={route("customer.list")}
-                                                active={route().current(
-                                                    "customer.list"
-                                                )}
+                                {isAdmin(auth.user.role.name) && (
+                                    <Menu>
+                                        <MenuHandler>
+                                            <button
+                                                className={`text-gray-500 text-sm font-medium leading-5 `}
                                             >
-                                                Manager Customer
-                                            </NavLink>
-                                        </MenuItem>
-                                        <MenuItem>
-                                            <NavLink
-                                                href={route(
-                                                    "customer.info.list"
-                                                )}
-                                                active={route().current(
-                                                    "customer.info.list"
-                                                )}
-                                            >
-                                                Customer Info
-                                            </NavLink>
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
-                                {auth?.access_lvl && (
+                                                Customer
+                                            </button>
+                                        </MenuHandler>
+                                        <MenuList>
+                                            <MenuItem>
+                                                <NavLink
+                                                    href={route(
+                                                        "customer.list"
+                                                    )}
+                                                    active={route().current(
+                                                        "customer.list"
+                                                    )}
+                                                >
+                                                    Manager Customer
+                                                </NavLink>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <NavLink
+                                                    href={route(
+                                                        "customer.info.list"
+                                                    )}
+                                                    active={route().current(
+                                                        "customer.info.list"
+                                                    )}
+                                                >
+                                                    Customer Info
+                                                </NavLink>
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                )}
+
+                                {isAdmin(auth.user.role.name) && (
                                     <NavLink
                                         href={route("settings.list")}
                                         active={route().current(

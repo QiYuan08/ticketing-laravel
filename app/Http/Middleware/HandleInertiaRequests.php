@@ -31,9 +31,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
+        if ($user) {
+            $user->profilePicture = $user->getProfilePic();
+        }
+
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
                 'access_lvl' => $request->user()?->role->access_lvl,
             ],
             'ziggy' => function () use ($request) {

@@ -6,4 +6,5 @@ class MediaCollection
 {
     public const MESSAGE_ATTACHMENT = 'message-attachment';
     public const SITE_VISIT_PDF = 'site-visit-pdf';
+    public const AGENT_PROFILE = 'agent-profile';
 }

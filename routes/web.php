@@ -60,11 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/new-agent', [NewAgentController::class, 'store'])->name('new-agent');
 
     Route::get('/agent/{searchTerm?}', [AgentController::class, 'index'])->name('agent.get');
-    
     Route::delete('/agent/{agent}', [AgentController::class, 'delete'])->name('agent.delete');
-
+    
     //edit
+    Route::patch('/agent/{agent}', [UpdateAgentController::class, 'store'])->name('agent.update');
     Route::get('/agent/edit/{agent}', [UpdateAgentController::class, 'create'])->name('agent.update-view');
+    Route::post('/agent/updatePhoto/{agent}', [UpdateAgentController::class, 'updatePhoto'])->name('agent.update-photo');
 });
 
 // CUSTOMER
@@ -92,11 +93,13 @@ Route::middleware('auth')
     ->name('ticket.')
     ->prefix('ticket/')
     ->group(function () {
+
+    Route::get('generate-site-visit/{ticket}/{name?}', [GenerateSiteVisitPdfController::class, 'create'])->name('generate-site-pdf');
+    Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('generate-site-pdf');
+
     Route::get('{ticketID}/{notificationId?}', [TicketController::class, 'create'])->name('get');
     Route::delete('{ticket}', [TicketController::class, 'delete'])->name('delete');
 
-    Route::get('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'create'])->name('generate-site-pdf');
-    Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('generate-site-pdf');
 
     Route::post('ticket-list', [MergeTicketController::class, 'getIdList'])->name('get-id-list');
     Route::post('merge-ticket/{combinedTicket}/{mergerTicket}', [MergeTicketController::class, 'mergeTicket'])->name('merge-ticket');

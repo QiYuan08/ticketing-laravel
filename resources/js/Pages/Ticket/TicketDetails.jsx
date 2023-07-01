@@ -3,16 +3,18 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Select from "@/Components/Select";
 import TextAvatar from "@/Components/TextAvatar";
 import TextEditor from "@/Components/TextEditor";
+import { useNotificationContext } from "@/Context/NotificationContext";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { INFO } from "@/Utility/constant";
 import {
     getAttachmentSize,
     handleAttachmentDeleteUtil,
     handleAttachmentUtil,
 } from "@/Utility/globalFunction";
-import { Link, router, useForm } from "@inertiajs/react";
-import { BsThreeDots } from "react-icons/bs";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { router, useForm } from "@inertiajs/react";
 import {
-    Button,
+    Drawer,
     IconButton,
     Menu,
     MenuHandler,
@@ -20,14 +22,12 @@ import {
     MenuList,
     Typography,
 } from "@material-tailwind/react";
-import { AiOutlinePaperClip } from "react-icons/ai";
-import { BsReplyFill } from "react-icons/bs";
-import { MdDelete } from "react-icons/md";
-import { BiCommentDetail } from "react-icons/bi";
-import MergeTicketModal from "./MergeTicketModal";
 import { useState } from "react";
-import { ERROR, INFO } from "@/Utility/constant";
-import { useNotificationContext } from "@/Context/NotificationContext";
+import { AiOutlinePaperClip, AiOutlinePlus } from "react-icons/ai";
+import { BiCommentDetail } from "react-icons/bi";
+import { BsReplyFill, BsThreeDots } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
+import MergeTicketModal from "./MergeTicketModal";
 import TemplateModal from "./TemplateModal";
 
 const TicketDetails = (props) => {
@@ -40,9 +40,10 @@ const TicketDetails = (props) => {
 
     const { open } = useNotificationContext();
     const [openMerge, setOpenMerge] = useState(false);
+    const [openSidebar, setOpenSidebar] = useState(false);
     const [openTemplate, setOpenTemplate] = useState(false);
     const { data, setData, post, progress } = useForm({
-        assignee: ticket.assignee,
+        assignee: ticket?.assignee,
         status: ticket.status,
         priority: ticket.priority,
         type: ticket.type,
@@ -86,9 +87,7 @@ const TicketDetails = (props) => {
     };
 
     const goToGeneratePdf = () => {
-        router.visit(route("ticket.generate-site-pdf", ticket.ticket_id), {
-            method: "get",
-        });
+        router.get(route("ticket.generate-site-pdf", ticket.ticket_id));
     };
 
     return (
@@ -103,7 +102,7 @@ const TicketDetails = (props) => {
             <div className="flex flex-col lg:flex-row bg-white min-h-full">
                 {/* <Typography variant="h6">Ticket Details</Typography> */}
                 {/* Sidebar */}
-                <div className="flex flex-row lg:flex-col flex-wrap grow-[1] box-border lg:max-w-md">
+                <div className="hidden lg:flex flex-row lg:flex-col flex-wrap grow-[1] box-border lg:max-w-md ">
                     <div className="p-3">
                         {/* requestor */}
                         <div
@@ -132,7 +131,7 @@ const TicketDetails = (props) => {
                                 <TextAvatar
                                     text={item?.name ?? ""}
                                     subtext={item?.role?.name ?? ""}
-                                    img=""
+                                    img={item?.profilePicture}
                                 />
                             )}
                         />
@@ -183,6 +182,118 @@ const TicketDetails = (props) => {
                     </div>
                 </div>
 
+                {/* Sidebar for small screen */}
+                <div className="lg:hidden">
+                    <Drawer
+                        placement="left"
+                        open={openSidebar}
+                        size={400}
+                        onClose={() => setOpenSidebar(false)}
+                        className="p-4"
+                    >
+                        <div className="mb-3 flex items-center justify-between">
+                            <Typography variant="h5" color="blue-gray">
+                                Ticket Details
+                            </Typography>
+                            <IconButton
+                                variant="text"
+                                color="blue-gray"
+                                onClick={() => setOpenSidebar(false)}
+                            >
+                                <XMarkIcon
+                                    strokeWidth={2}
+                                    className="h-5 w-5"
+                                />
+                            </IconButton>
+                        </div>
+                        <div className="flex-col">
+                            <div className="p-3">
+                                {/* requestor */}
+                                <div
+                                    className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-2 gap-y-1 cursor-pointer"
+                                    onClick={goToCustomerDetails}
+                                >
+                                    <Typography variant="h4">
+                                        Requestor
+                                    </Typography>
+                                    <TextAvatar
+                                        text={ticket.requestor.pic_name}
+                                        subtext="Customer"
+                                        img=""
+                                    />
+                                </div>
+                            </div>
+                            {/* assignee */}
+                            <div className="flex flex-col justify-items-center items-start ml-2 lg:mt-2 gap-y-1 p-3">
+                                <Typography variant="h4">Assignee</Typography>
+
+                                <Select
+                                    items={agents}
+                                    selected={data.assignee}
+                                    setSelected={(value) => {
+                                        setData("assignee", value);
+                                    }}
+                                    render={(item) => (
+                                        <TextAvatar
+                                            text={item?.name ?? ""}
+                                            subtext={item?.role?.name ?? ""}
+                                            img=""
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
+                                <div className="flex flex-wrap gap-x-4 gap-y-3 justify-between">
+                                    <div className="flex flex-col justify-start items-start gap-y-1">
+                                        <Typography variant="h5">
+                                            Type
+                                        </Typography>
+                                        <Select
+                                            items={type}
+                                            selected={data.type ?? ""}
+                                            setSelected={(value) => {
+                                                setData("type", value);
+                                            }}
+                                            render={(item) => item?.name}
+                                            identifier="type_id"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col justify-start items-start gap-y-1">
+                                        <Typography variant="h5">
+                                            Priority
+                                        </Typography>
+                                        <Select
+                                            items={priority}
+                                            selected={data.priority}
+                                            setSelected={(value) => {
+                                                setData("priority", value);
+                                            }}
+                                            identifier="priority_id"
+                                            render={(item) => item.name}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Status */}
+                            <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
+                                <div className="flex flex-col justify-start items-start gap-y-1">
+                                    <Typography variant="h5">Status</Typography>
+                                    <Select
+                                        items={status}
+                                        selected={data.status}
+                                        setSelected={(value) => {
+                                            setData("status", value);
+                                        }}
+                                        render={(item) => item.name}
+                                        identifier="status_id"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </Drawer>
+                </div>
+
                 {/* Main content */}
                 <div className="flex flex-col grow-[10] border-0 lg:border-l-[1px] lg:border-gray-500 ">
                     {/* subject */}
@@ -191,27 +302,38 @@ const TicketDetails = (props) => {
                             Ticket {ticket.ticket_id} : {ticket.subject}
                         </Typography>
 
-                        <Menu placement="bottom-end">
-                            <MenuHandler>
-                                <IconButton
-                                    color="white"
-                                    style={{ boxShadow: "none", border: 0 }}
-                                >
-                                    <BsThreeDots size={22} />
-                                </IconButton>
-                            </MenuHandler>
-                            <MenuList>
-                                <MenuItem onClick={() => setOpenMerge(true)}>
-                                    Merge Ticket To
-                                </MenuItem>
-                                <MenuItem onClick={() => setOpenTemplate(true)}>
-                                    Template
-                                </MenuItem>
-                                <MenuItem onClick={goToGeneratePdf}>
-                                    Generate Site Visit PDF
-                                </MenuItem>
-                            </MenuList>
-                        </Menu>
+                        <div className="flex justify-end items-center gap-x-3 px-1">
+                            <AiOutlinePlus
+                                size={20}
+                                className="lg:hidden cursor-pointer"
+                                onClick={() => setOpenSidebar(true)}
+                            />
+                            <Menu placement="bottom-end">
+                                <MenuHandler>
+                                    <IconButton
+                                        color="white"
+                                        style={{ boxShadow: "none", border: 0 }}
+                                    >
+                                        <BsThreeDots size={22} />
+                                    </IconButton>
+                                </MenuHandler>
+                                <MenuList>
+                                    <MenuItem
+                                        onClick={() => setOpenMerge(true)}
+                                    >
+                                        Merge Ticket To
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => setOpenTemplate(true)}
+                                    >
+                                        Template
+                                    </MenuItem>
+                                    <MenuItem onClick={goToGeneratePdf}>
+                                        Generate Site Visit PDF
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                        </div>
                     </div>
 
                     {/* chat */}

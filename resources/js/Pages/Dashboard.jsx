@@ -35,8 +35,6 @@ function Dashboard(props) {
         debounceSearchAPI();
     };
 
-    console.log(props);
-
     // debounce to call API
     const debounceSearchAPI = useDebounce(() => {
         console.log("calling APi ");

@@ -1,0 +1,36 @@
+import:
+  - recipe/laravel.php
+  - contrib/php-fpm.php
+  - contrib/npm.php
+
+config:
+  application: "magit-ticketing"
+  repository: "https://github.com/QiYuan08/ticketing-laravel.git"
+  php_fpm_version: "8.0"
+
+hosts:
+  magit-prod:
+    remote_user: root
+    hostname: 178.128.88.116
+    deploy_path: "/var/www/production.app"
+    identity_file: "C:/Users/YUAN/.ssh/digital_ocean_laravel"
+    ssh_multiplexing: false
+    forward_agent: true
+
+tasks:
+  deploy:
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:view:cache
+    - artisan:config:cache
+    - artisan:migrate
+    - npm:install
+    - npm:run:prod
+    - deploy:publish
+    - php-fpm:reload
+  npm:run:prod:
+    - run: "cd {{release_path}} && npm run prod"
+
+after:
+  deploy:failed: deploy:unlock

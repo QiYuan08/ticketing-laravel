@@ -6,7 +6,7 @@ const TextAvatar = ({ text, subtext, img }) => {
     return (
         <div className="flex items-center gap-4">
             {img ? (
-                <Avatar src={img} alt="avatar" />
+                <Avatar src={img} alt="avatar" size="md" />
             ) : (
                 <div className="rounded-3xl border-[1px] border-gray-600 border-box p-1.5">
                     <FaUserAlt color="gray" size={23} />

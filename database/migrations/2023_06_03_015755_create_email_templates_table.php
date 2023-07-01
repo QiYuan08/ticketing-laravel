@@ -24,7 +24,7 @@ return new class extends Migration
         // create default template
         EmailTemplate::create([
             'template_name' => 'Default',
-            'content' => ""
+            'content' => "p><span style=\"font-size: 10.0pt; font-family: 'Helvetica',sans-serif;\">Dear {{customer}},<br><br>We have received your request and the <strong>Case #{{ticketNumber}}</strong> has been assigned. Meanwhile, we suggest replying with case #{{ticketNumber}} in any further communication for easier reference.<br><br>While resolving your urgent issue is our top priority, each support request is replied to in the order it comes in. Rest assured that we&rsquo;re doing our very best to attend to your ticket as soon as we can!<br><em><br>** Kindly note that replying using subject #{{ticketNumber}} - #{{subject}} to make inquiries on the status will reset your support request and the ticket queue.</em></span></p><p><span style=\"font-size: 10.0pt; font-family: 'Helvetica',sans-serif;\"><br>Thank you for your patience.</span></p><p><span style=\"font-size: 10.0pt; font-family: 'Helvetica',sans-serif;\"><br>Sincerely,<br><br>MAGIT SOLUTIONS PTE LTD - Technical Support<br>--------------------<br>Case #{{ticketNumber}}<br>--------------------</span></p>"
         ]);
     }
 

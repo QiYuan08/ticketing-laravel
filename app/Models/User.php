@@ -3,18 +3,24 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Constant\MediaCollection;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
     use HasUuids;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -72,5 +78,10 @@ class User extends Authenticatable
     public function received()
     {
         return $this->morphMany(Messages::class, 'recipient');
+    }
+
+    //profile picture
+    public function getProfilePic() {
+        return $this->getFirstMedia(MediaCollection::AGENT_PROFILE)?->getTemporaryUrl(Carbon::now()->addHours(5));
     }
 }
