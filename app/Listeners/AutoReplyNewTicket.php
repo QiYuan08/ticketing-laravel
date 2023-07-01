@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Constant\Role;
 use App\Events\NewTicket;
 use App\Mail\AutoReplyNewTicketMail;
 use App\Models\EmailTemplate;
@@ -31,7 +32,7 @@ class AutoReplyNewTicket implements ShouldQueue
      */
     public function handle(NewTicket $event)
     {
-        $content = EmailTemplate::find('9951d51f-968e-474c-a99b-5c660d2e47bb')->content;
+        $content = EmailTemplate::find(Role::DEFAULT_TEMPLATE)->content;
 
         // replace variable with value
         $content = Str::replace('{{customer}}', $event->ticket->requestor->pic_name, $content);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ticket\API;
 
 use App\Constant\MediaCollection;
 use App\Constant\Priority as ConstantPriority;
+use App\Constant\Role;
 use App\Constant\Status as ConstantStatus;
 use App\Events\NewTicket;
 use App\Http\Controllers\Controller;
@@ -170,7 +171,7 @@ class CreateTicketController extends Controller
             $message->payload = $request->input('message');
             $message->sender_id = $user->customer_id;
             $message->sender_type = get_class($user);
-            $message->recipient_id = '9950c600-ee08-42d2-9e4c-5a1785ff16a4';
+            $message->recipient_id = Role::ADMING_ACC_ID;
             $message->recipient_type = User::class;
             $message->internal_node = false;
             $message->messageId = $request->input('messageId');
