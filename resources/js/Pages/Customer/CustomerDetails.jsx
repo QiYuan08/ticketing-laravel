@@ -17,6 +17,7 @@ const CustomerDetails = (props) => {
     const { data, setData, patch, errors } = useForm({
         customerId: customer.alias_customer_id,
         newCustomerId: customer.alias_customer_id,
+        email: customer.email,
         picName: customer.pic_name,
         phoneNumber: customer.phone_number,
         mobileNumber: customer.mobile_number,
@@ -80,6 +81,15 @@ const CustomerDetails = (props) => {
                                     error={errors.picName}
                                     inputName="picName"
                                     field="Full name"
+                                />
+
+                                <CustomerDetailInput
+                                    edit={edit}
+                                    value={data.email}
+                                    handleChange={handleOnChange}
+                                    error={errors.email}
+                                    inputName="email"
+                                    field="Email"
                                 />
 
                                 <CustomerDetailInput

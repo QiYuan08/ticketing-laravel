@@ -36,10 +36,10 @@ class GenerateTicketHistoryController extends Controller
 
         $requestInfo = $request->all('data')['data'];
 
-        $tickets = Ticket::where('requestor_id', '=', $request->input('customer_id'))
+        $tickets = Ticket::where('requestor_id', '=', '99609874-3ce4-4775-ad48-e5ca84c4554e')
                 ->where(function($query) use ($requestInfo) {
-                    $query->where('created_at', '>=', $requestInfo['startDate'])
-                        ->Where('created_at', '<=', $requestInfo['endDate']);
+                    $query->where('created_at', '>=', '2023-05-28')
+                        ->Where('created_at', '<=', '2023-07-18');
                 })
                 ->get();
 
@@ -52,7 +52,7 @@ class GenerateTicketHistoryController extends Controller
 
         // dd($ticket->messages->toArray());
         $pdf = PDF::loadView('pdf/customer-ticket-hist', [
-            'requestor' => Customer::find($requestInfo['customer_id'])->pic_name,
+            'requestor' => 'yuan 2',
             'title' => 'Ticket History',
             'tickets' => $tickets->toArray(),
             // 'messages' => $ticket->messages,

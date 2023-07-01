@@ -45,27 +45,38 @@ const CustomerTicketsTab = ({ customer_id, tickets }) => {
         //         handleOpen();
         //     },
         // });
-
-        axios
-            .post(route("utility.generate-ticket-pdf"), {
+        const link = document.createElement("a");
+        (link.href = route("utility.generate-ticket-pdf")),
+            {
                 responseType: "blob",
                 data,
-            })
-            .then((response) => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
-                const link = document.createElement("a");
-                link.href = url;
+            };
 
-                console.log(response, link, url);
-                link.setAttribute("download", "ticket_history.pdf");
-                document.body.appendChild(link);
-                link.click();
-            })
-            .catch((error) => {
-                console.error("Error generating PDF:", error);
-            });
+        // link.setAttribute("download", "history.pdf");
+        link.setAttribute("target", "blank");
+        document.body.appendChild(link);
+        link.click();
+
+        // axios
+        //     .post(route("utility.generate-ticket-pdf"), {
+        //         responseType: "blob",
+        //         data,
+        //     })
+        //     .then((response) => {
+        //         const url = window.URL.createObjectURL(
+        //             new Blob([response.data], { type: "application/pdf" })
+        //         );
+        //         const link = document.createElement("a");
+        //         link.href = url;
+
+        //         console.log(response, link, url);
+        //         link.setAttribute("download", "history.pdf");
+        //         document.body.appendChild(link);
+        //         link.click();
+        //     })
+        //     .catch((error) => {
+        //         console.error("Error generating PDF:", error);
+        //     });
 
         // router.visit(route("utility.generate-ticket-pdf"), {
         //     method: "get",

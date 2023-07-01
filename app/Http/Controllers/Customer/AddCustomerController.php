@@ -25,13 +25,17 @@ class AddCustomerController extends Controller
             'picName' => ['required'],
         ]);
         
-        $customerId = $request->input('customerId') === null || $request->input('customerId') === '' ?  
+        $customerId = $request->input('customerId') === null || trim($request->input('customerId')) === '' ?  
                         Str::random(12) : 
                         $request->input('customerId');
 
         // if is previously unknown customer
         if (Customer::where('email', '=', $request->input('email'))->withTrashed()->exists()){
             $customer = Customer::where('email', '=', $request->input('email'))->withTrashed()->first();
+
+            if($customer->trashed()) {
+                $customer->restore();
+            }
 
             $customer->alias_customer_id = $customerId;
             $customer->pic_name = $request->input('picName');

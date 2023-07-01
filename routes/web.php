@@ -140,7 +140,7 @@ Route::middleware('auth')->name('notification.')->prefix('notification')->group(
 
 // OTHERS
 Route::middleware('auth')->name('utility.')->prefix('utility')->group(function() {
-    Route::post('/generate-ticket-pdf', [GenerateTicketHistoryController::class, 'generate'])->name('generate-ticket-pdf');
+    Route::get('/generate-ticket-pdf', [GenerateTicketHistoryController::class, 'generate'])->name('generate-ticket-pdf');
     
 });
 

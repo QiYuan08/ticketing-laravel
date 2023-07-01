@@ -25,11 +25,12 @@ must clone with laravel user
 	- log file (/var/log/supervisor/supervisord.log)
 
 8. change snappy config
-	- sudo apt-get install -y && libxrender-dev
-	- sudo apt install -y wkhtmltopdf
-	- cp vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64 /usr/local/bin/
-	- cp vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64 /usr/local/bin/
-	- chmod +x /usr/local/bin/wkhtmltoimage-amd64 (add to config/snappy.php)
-	- chmod +x /usr/local/bin/wkhtmltopdf-amd64
+	- sudo apt-get install -y && sudo apt-get install -y libxrender-dev
+	- composer require h4cc/wkhtmltopdf-amd64 0.12.x
+	- composer require h4cc/wkhtmltoimage-amd64 0.12.x
+	- sudo cp vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64 /usr/local/bin/
+	- sudo cp vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64 /usr/local/bin/
+	- sudo chmod +x /usr/local/bin/wkhtmltoimage-amd64 (add to config/snappy.php)
+	- sudo chmod +x /usr/local/bin/wkhtmltopdf-amd64
 	- 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Rules\Customer\UniqueEmailForNewCustomer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -34,6 +35,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), 
         [            
             'picName' => ['required'],
+            'email' => ['required', new UniqueEmailForNewCustomer], // if, is known, check if the email is unique
         ]);
 
         // check if the new customer id is unique or not if the newCustomerId is different than old customerId
@@ -44,6 +46,7 @@ class CustomerController extends Controller
         
         $customer->alias_customer_id = $request->input('newCustomerId');
         $customer->pic_name = $request->input('picName');
+        $customer->email = $request->input('email');
         $customer->phone_number = $request->input('phoneNumber');
         $customer->mobile_number = $request->input('mobileNumber');
         $customer->company = $request->input('companyName');
