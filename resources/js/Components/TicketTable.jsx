@@ -41,6 +41,9 @@ const TicketTable = ({ data, pagination }) => {
                 bodyRow={
                     data && data.length > 0 ? (
                         data.map((row, idx) => {
+                            {
+                                console.log(row);
+                            }
                             return (
                                 <tr
                                     className="odd:bg-gray-100 break-words"
