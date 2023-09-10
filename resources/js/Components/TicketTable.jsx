@@ -61,7 +61,7 @@ const TicketTable = ({ data, pagination }) => {
                                         {row.type?.name}
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800 w-1/6">
-                                        {row.requestor?.pic_name}
+                                        {row?.requestor?.pic_name}
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800 w-1/6">
                                         {row.assignee?.name}
@@ -71,7 +71,7 @@ const TicketTable = ({ data, pagination }) => {
                                     </td>
                                     <td className="px-2 py-4 text-sm text-gray-800">
                                         <StatusTag
-                                            status={row.priority?.name}
+                                            status={row?.priority?.name}
                                         />
                                     </td>
                                     <td className="px-2 py-4 text-sm font-medium text-left ">
