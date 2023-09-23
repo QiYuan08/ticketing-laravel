@@ -29,9 +29,9 @@ class TicketController extends Controller
                             ->with(['type', 'assignee.role'])
                             ->first();
                             
-        $messages = Messages::where('ticket_id', '=', $request->ticketID)
+                            $messages = Messages::where('ticket_id', '=', $request->ticketID)
                             ->orderBy('created_at', 'asc')
-                            ->with(['recipient', 'sender'])
+                            ->with(['recipient' => fn($q) => $q->withTrashed(), 'sender' => fn($q) => $q->withTrashed()])
                             ->get();
 
         // query the attachment

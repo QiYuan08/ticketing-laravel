@@ -46,11 +46,11 @@ const CustomerTicketsTab = ({ customer_id, tickets }) => {
         //     },
         // });
         const link = document.createElement("a");
-        (link.href = route("utility.generate-ticket-pdf")),
-            {
-                responseType: "blob",
-                data,
-            };
+        link.href = route("utility.generate-ticket-pdf", {
+            customer_id: data.customer_id,
+            startDate: data.startDate,
+            endDate: data.endDate,
+        });
 
         // link.setAttribute("download", "history.pdf");
         link.setAttribute("target", "blank");

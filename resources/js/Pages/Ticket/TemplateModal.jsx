@@ -47,7 +47,7 @@ const TemplateModal = ({ open, handleOpen, templates, ticket }) => {
                 >
                     {templates.map((template, idx) => {
                         return (
-                            <Option value={idx}>
+                            <Option key={idx} value={idx}>
                                 {template.template_name}
                             </Option>
                         );

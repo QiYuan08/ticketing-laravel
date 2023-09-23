@@ -90,6 +90,8 @@ const TicketDetails = (props) => {
         router.get(route("ticket.get-generate-site-pdf", ticket.ticket_id));
     };
 
+    console.log(ticket);
+
     return (
         <>
             {/* // TODO: finish the back button */}
@@ -111,7 +113,7 @@ const TicketDetails = (props) => {
                         >
                             <Typography variant="h4">Requestor</Typography>
                             <TextAvatar
-                                text={ticket.requestor.pic_name}
+                                text={ticket?.requestor?.pic_name}
                                 subtext="Customer"
                                 img=""
                             />
@@ -217,7 +219,7 @@ const TicketDetails = (props) => {
                                         Requestor
                                     </Typography>
                                     <TextAvatar
-                                        text={ticket.requestor.pic_name}
+                                        text={ticket?.requestor?.pic_name}
                                         subtext="Customer"
                                         img=""
                                     />

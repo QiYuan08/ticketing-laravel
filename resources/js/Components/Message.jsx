@@ -6,13 +6,13 @@ import { FaUserAlt } from "react-icons/fa";
 
 const Message = ({ message, userId }) => {
     return (
-        <div className="">
+        <div className="" key={userId}>
             <div
                 className={`${
-                    message.sender.id ? "justify-end" : "justify-start"
+                    message.sender?.id ? "justify-end" : "justify-start"
                 } flex mb-4"`}
             >
-                {message.sender.profilePicture ? (
+                {message.sender?.profilePicture ? (
                     <Avatar
                         src={message.sender.profilePicture}
                         alt="avatar"
@@ -26,7 +26,7 @@ const Message = ({ message, userId }) => {
                 {/* message body */}
                 <div
                     className={`${
-                        message.sender.id === userId
+                        message.sender?.id === userId
                             ? "mr-2 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl"
                             : " ml-2 rounded-tl-xl rounded-br-3xl rounded-tr-3xl"
                     } flex flex-col gap-y-2 py-3 px-4 bg-gray-200 ${
@@ -47,7 +47,7 @@ const Message = ({ message, userId }) => {
                         </div>
                         <div className="inline-flex gap-x-1 items-center">
                             <b>From:</b>
-                            {message.sender.pic_name ?? message.sender.name}
+                            {message.sender?.pic_name ?? message.sender?.name}
                         </div>
                         {message.source_ticket && (
                             <div className="inline-flex gap-x-1 items-center">
@@ -76,7 +76,7 @@ const Message = ({ message, userId }) => {
                         {getDateFromBackend(message.updated_at)}
                     </div>
                 </div>
-                {message.sender.id === userId && (
+                {message.sender?.id === userId && (
                     /* icon */
                     <img
                         src="https://source.unsplash.com/vpOeXr5wmR4/600x600"

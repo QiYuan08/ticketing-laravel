@@ -1,22 +1,40 @@
 user: laravel
 userpwd: laravel
 
+putty key passphrase: magit-prod
+
+server name: magit-prod (for ssh local)
+server filepath: /home/laravel
+
+
+
 DEPLOYMENT CHECKLIST
 usermod -aG sudo laravel (give access)
+su laravel (to change user)
 must clone with laravel user
 
 - switch to postgres user to access db
 	- sudo -u postgres -i
-	- \l list db
-	- \c connect db
+	- psql -U postgres
+	- \l - list db
+	- \c - connect db
 
 
 1. composer install
 2. modify env file 
+	DB_CONNECTION=pgsql
+	DB_CONNECTION=pgsql
+	DB_HOST=127.0.0.1
+	DB_PORT=5432
+	DB_DATABASE=production	
+	DB_USERNAME=postgres
+	DB_PASSWORD=postgres
+
+
 3. npm install && npm run build
 3. php artisan migrate
 5. php artisan config:clear
-6. php artisan route:clear
+6. php artisan route:clearlsd
 7. start the queue worker (inside /etc/supervisor/conf.d/queue-worker.conf
 	- sudo supervisorctl reread
 	- sudo supervisorctl update
@@ -26,11 +44,17 @@ must clone with laravel user
 
 8. change snappy config
 	- sudo apt-get install -y && sudo apt-get install -y libxrender-dev
-	- composer require h4cc/wkhtmltopdf-amd64 0.12.x
+	- composer require h4cc/wkhtmltopdf-amd64 0.12.x h4cc/wkhtmltoimage-amd64 0.12.x
 	- composer require h4cc/wkhtmltoimage-amd64 0.12.x
 	- sudo cp vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64 /usr/local/bin/
 	- sudo cp vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64 /usr/local/bin/
 	- sudo chmod +x /usr/local/bin/wkhtmltoimage-amd64 (add to config/snappy.php)
 	- sudo chmod +x /usr/local/bin/wkhtmltopdf-amd64
 	- 
+
+
+dumb DB
+- pg_dump database_name > path (currently /home/laravel/database)
+	e.g sudo pg_dump production > production_dump_202309190040.sql
+
 

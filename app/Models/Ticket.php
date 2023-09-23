@@ -78,11 +78,11 @@ class Ticket extends Model implements HasMedia
     }
 
     public function requestor() {
-        return $this->belongsTo(Customer::class, 'requestor_id', 'customer_id');
+        return $this->belongsTo(Customer::class, 'requestor_id', 'customer_id')->withTrashed();
     }
 
     public function assignee() {
-        return $this->belongsTo(User::class, 'assignee_id', 'id');
+        return $this->belongsTo(User::class, 'assignee_id', 'id')->withTrashed();
     }
 
     protected static function generateNewId(): string {

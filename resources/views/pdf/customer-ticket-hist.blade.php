@@ -135,7 +135,7 @@
 		<div class='container'>
 			<div class='header'>
 				<div class="company">
-					<img src="{!! public_path('images/log-nobg.png') !!}" class="logo"/>
+					<img src="{!! public_path('images/logo.jpg') !!}" class="logo"/>
 				</div>
 				<h3>MAG - IT Support</h3>
 			</div>
@@ -213,8 +213,7 @@
 								</div>
 							<div class="messages_body">
 								{!! $message['payload'] !!}
-								<p>fdafdsfasdf</p>
-								<p>asdfhfjnbfg</p>
+								
 							</div>
 						</div>
 						

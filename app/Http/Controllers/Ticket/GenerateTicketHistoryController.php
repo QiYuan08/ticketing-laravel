@@ -36,23 +36,34 @@ class GenerateTicketHistoryController extends Controller
 
         $requestInfo = $request->all('data')['data'];
 
-        $tickets = Ticket::where('requestor_id', '=', '99609874-3ce4-4775-ad48-e5ca84c4554e')
-                ->where(function($query) use ($requestInfo) {
-                    $query->where('created_at', '>=', '2023-05-28')
-                        ->Where('created_at', '<=', '2023-07-18');
+        $tickets = Ticket::where('requestor_id', '=', $request->customer_id)
+                ->where(function($query) use ($request) {
+                    $query->where('created_at', '>=', $request->startDate)
+                        ->Where('created_at', '<=', $request->endDate);
                 })
                 ->get();
 
         $tickets->map(function($ticket) {
-            return $ticket->messages = Messages::where('ticket_id', '=', $ticket->ticket_id)
+            return $messages = $ticket->messages = Messages::where('ticket_id', '=', $ticket->ticket_id)
                 ->where('internal_node', '=', false)
                 ->get()
                 ->toArray();
+            })
+            ->toArray();
+
+        collect($tickets)->map(function ($ticket) {
+            dd($ticket);
+
+
+
+        return $a;
         });
+
+        
 
         // dd($ticket->messages->toArray());
         $pdf = PDF::loadView('pdf/customer-ticket-hist', [
-            'requestor' => 'yuan 2',
+            'requestor' => Customer::find($request->customer_id)->pic_name,
             'title' => 'Ticket History',
             'tickets' => $tickets->toArray(),
             // 'messages' => $ticket->messages,
