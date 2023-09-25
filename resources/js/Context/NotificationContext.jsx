@@ -7,8 +7,6 @@ const NotificationContext = React.createContext();
 export function NotificationProvider({ children, alert }) {
     const [toast, setToast] = useState([]);
 
-    console.log(alert);
-
     const open = (message, severity, timeout = 2000) => {
         const id = Date.now();
 

@@ -36,6 +36,7 @@ const TicketDetails = (props) => {
     const type = props.type;
     const priority = props.priority;
     const status = props.status;
+    const customers = props.customers;
     const templates = props.templates;
 
     const { open } = useNotificationContext();
@@ -48,6 +49,7 @@ const TicketDetails = (props) => {
         priority: ticket.priority,
         type: ticket.type,
         recepient: ticket.requestor,
+        requestor: ticket.requestor,
         cc: [],
         message: "",
         attachment: [],
@@ -90,8 +92,6 @@ const TicketDetails = (props) => {
         router.get(route("ticket.get-generate-site-pdf", ticket.ticket_id));
     };
 
-    console.log(ticket);
-
     return (
         <>
             {/* // TODO: finish the back button */}
@@ -112,10 +112,19 @@ const TicketDetails = (props) => {
                             onClick={goToCustomerDetails}
                         >
                             <Typography variant="h4">Requestor</Typography>
-                            <TextAvatar
-                                text={ticket?.requestor?.pic_name}
-                                subtext="Customer"
-                                img=""
+                            <Select
+                                items={customers}
+                                selected={data.requestor}
+                                identifier="customer_id"
+                                setSelected={(value) => {
+                                    setData("requestor", value);
+                                }}
+                                render={(item) => (
+                                    <TextAvatar
+                                        text={item?.pic_name ?? ""}
+                                        img={item?.profilePicture}
+                                    />
+                                )}
                             />
                         </div>
                     </div>
@@ -139,7 +148,7 @@ const TicketDetails = (props) => {
                         />
                     </div>
                     <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
-                        <div className="flex flex-wrap gap-x-4 justify-between">
+                        <div className="flex flex-wrap gap-x-2">
                             <div className="flex flex-col justify-start items-start gap-y-1">
                                 <Typography variant="h5">Type</Typography>
                                 <Select
@@ -215,6 +224,20 @@ const TicketDetails = (props) => {
                                     className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-2 gap-y-1 cursor-pointer"
                                     onClick={goToCustomerDetails}
                                 >
+                                    <Select
+                                        items={agents}
+                                        selected={data.assignee}
+                                        setSelected={(value) => {
+                                            setData("assignee", value);
+                                        }}
+                                        render={(item) => (
+                                            <TextAvatar
+                                                text={item?.name ?? ""}
+                                                subtext={item?.role?.name ?? ""}
+                                                img=""
+                                            />
+                                        )}
+                                    />
                                     <Typography variant="h4">
                                         Requestor
                                     </Typography>
@@ -245,7 +268,7 @@ const TicketDetails = (props) => {
                                 />
                             </div>
                             <div className="py-2 border-t-[1px] lg:border-gray-500 mt-1 px-3">
-                                <div className="flex flex-wrap gap-x-4 gap-y-3 justify-between">
+                                <div className="flex flex-wrap gap-x-2 gap-y-3 justify-between">
                                     <div className="flex flex-col justify-start items-start gap-y-1">
                                         <Typography variant="h5">
                                             Type

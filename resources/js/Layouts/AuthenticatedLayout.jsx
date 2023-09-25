@@ -17,6 +17,7 @@ import { GrNotification } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { useMessageNotificationContext } from "@/Context/MailNotificationContext";
 import MsgNotificationDrawer from "@/Components/shared/MsgNotificationDrawer";
+import { isAdmin } from "@/Utility/globalFunction";
 
 const Authenticated = ({ header, children }) => {
     const { auth, additionalInfo } = usePage().props;
@@ -39,8 +40,6 @@ const Authenticated = ({ header, children }) => {
     useEffect(() => {
         setNotificationCount(additionalInfo.unreadNotificationCount);
     }, [additionalInfo.unreadNotificationCount]);
-
-    const isAdmin = (role) => role === ADMIN;
 
     // listen to incoming message from client
     window.Echo.private(`App.Models.User.${auth.user.id}`).notification(
@@ -96,43 +95,43 @@ const Authenticated = ({ header, children }) => {
                                     </NavLink>
                                 )}
 
-                                {isAdmin(auth.user.role.name) && (
-                                    <Menu>
-                                        <MenuHandler>
-                                            <button
-                                                className={`text-gray-500 text-sm font-medium leading-5 `}
+                                <Menu>
+                                    <MenuHandler>
+                                        <button
+                                            className={`text-gray-500 text-sm font-medium leading-5 `}
+                                        >
+                                            Customer
+                                        </button>
+                                    </MenuHandler>
+                                    <MenuList>
+                                        {isAdmin(auth.user.role.name) && (
+                                            <MenuItem>
+                                                <NavLink
+                                                    href={route(
+                                                        "customer.list"
+                                                    )}
+                                                    active={route().current(
+                                                        "customer.list"
+                                                    )}
+                                                >
+                                                    Manage Customer
+                                                </NavLink>
+                                            </MenuItem>
+                                        )}
+                                        <MenuItem>
+                                            <NavLink
+                                                href={route(
+                                                    "customer.info.list"
+                                                )}
+                                                active={route().current(
+                                                    "customer.info.list"
+                                                )}
                                             >
-                                                Customer
-                                            </button>
-                                        </MenuHandler>
-                                        <MenuList>
-                                            <MenuItem>
-                                                <NavLink
-                                                    href={route(
-                                                        "customer.list"
-                                                    )}
-                                                    active={route().current(
-                                                        "customer.list"
-                                                    )}
-                                                >
-                                                    Manager Customer
-                                                </NavLink>
-                                            </MenuItem>
-                                            <MenuItem>
-                                                <NavLink
-                                                    href={route(
-                                                        "customer.info.list"
-                                                    )}
-                                                    active={route().current(
-                                                        "customer.info.list"
-                                                    )}
-                                                >
-                                                    Customer Info
-                                                </NavLink>
-                                            </MenuItem>
-                                        </MenuList>
-                                    </Menu>
-                                )}
+                                                Customer Info
+                                            </NavLink>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
 
                                 {isAdmin(auth.user.role.name) && (
                                     <NavLink

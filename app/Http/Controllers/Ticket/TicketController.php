@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ticket;
 use App\Constant\MediaCollection;
 use App\Constant\Status as ConstantStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\EmailTemplate;
 use App\Models\Messages;
 use App\Models\Priority;
@@ -61,6 +62,7 @@ class TicketController extends Controller
 
                                 return $agent;
                             }),
+            "customers" => Customer::where('unknown', '=', false)->get(),
             'type' => Type::all(),
             'templates' => EmailTemplate::all(),
             'status' => Status::all(),

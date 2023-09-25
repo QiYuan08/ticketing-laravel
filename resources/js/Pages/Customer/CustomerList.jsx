@@ -5,11 +5,12 @@ import Table from "@/Components/Table";
 import { useNotificationContext } from "@/Context/NotificationContext";
 import { useDebounce } from "@/Hooks/useDebounce";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { getDateFromBackend } from "@/Utility/globalFunction";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { getDateFromBackend, isAdmin } from "@/Utility/globalFunction";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { Card, CardBody, CardFooter } from "@material-tailwind/react";
 
 const CustomerList = (props) => {
+    const { auth } = usePage().props;
     let pagination = props.data;
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -60,19 +61,21 @@ const CustomerList = (props) => {
                                 }}
                             />
 
-                            <PrimaryButton
-                                onClick={() => {
-                                    console.log(2);
-                                    router.get(
-                                        route(
-                                            "customer.new",
-                                            "7487f175-c868-3f80-9b9f-93184d41f44a"
-                                        )
-                                    );
-                                }}
-                            >
-                                Add Customer
-                            </PrimaryButton>
+                            {isAdmin(auth.user.role.name) && (
+                                <PrimaryButton
+                                    onClick={() => {
+                                        console.log(2);
+                                        router.get(
+                                            route(
+                                                "customer.new",
+                                                "7487f175-c868-3f80-9b9f-93184d41f44a"
+                                            )
+                                        );
+                                    }}
+                                >
+                                    Add Customer
+                                </PrimaryButton>
+                            )}
                         </div>
 
                         <div className=" ">

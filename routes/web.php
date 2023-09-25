@@ -13,6 +13,7 @@ use App\Http\Controllers\Ticket\GenerateSiteVisitPdfController;
 use App\Http\Controllers\Ticket\GenerateTicketHistoryController;
 use App\Http\Controllers\Ticket\MailNotificationController;
 use App\Http\Controllers\Ticket\MergeTicketController;
+use App\Http\Controllers\Ticket\NewTicketController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\TicketReplyController;
 use App\Http\Controllers\User\NewAgentController;
@@ -93,6 +94,9 @@ Route::middleware('auth')
     ->name('ticket.')
     ->prefix('ticket/')
     ->group(function () {
+
+    Route::get('/create/new-ticket', [NewTicketController::class, 'create'])->name('create-new-ticket');
+    Route::post('/create/new-ticket', [NewTicketController::class, 'save'])->name('create-new-ticket');
 
     Route::get('generate-site-visit/{ticket}/{name?}', [GenerateSiteVisitPdfController::class, 'create'])->name('get-generate-site-pdf');
     Route::post('generate-site-visit/{ticket}', [GenerateSiteVisitPdfController::class, 'store'])->name('post-generate-site-pdf');

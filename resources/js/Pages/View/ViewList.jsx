@@ -1,6 +1,7 @@
 import Checkbox from "@/Components/Checkbox";
 import Filter from "@/Components/Filter";
 import Pagination from "@/Components/Pagination";
+import PrimaryButton from "@/Components/PrimaryButton";
 import SearchBox from "@/Components/SearchBox";
 import TicketTable from "@/Components/TicketTable";
 import { useDebounce } from "@/Hooks/useDebounce";
@@ -54,59 +55,71 @@ const ViewList = (props) => {
                                 }}
                             />
 
-                            <Filter
-                                element={[
-                                    <Checkbox
-                                        labelText={"Priority High"}
-                                        id="high"
-                                        className="hover:before:opacity-0"
-                                        checked={data.high}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Priority Medium"}
-                                        id="medium"
-                                        className="hover:before:opacity-0"
-                                        checked={data.medium}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Priority Low"}
-                                        id="low"
-                                        className="hover:before:opacity-0"
-                                        checked={data.low}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Status Open"}
-                                        id="open"
-                                        className="hover:before:opacity-0"
-                                        checked={data.open}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Status Pending"}
-                                        id="pending"
-                                        className="hover:before:opacity-0"
-                                        checked={data.pending}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Status Solved"}
-                                        id="solved"
-                                        className="hover:before:opacity-0"
-                                        checked={data.solved}
-                                        onChange={handleCheckbox}
-                                    />,
-                                    <Checkbox
-                                        labelText={"Status Deleted"}
-                                        id="deleted"
-                                        className="hover:before:opacity-0"
-                                        checked={data.deleted}
-                                        onChange={handleCheckbox}
-                                    />,
-                                ]}
-                            />
+                            <div className="flex gap-x-2 flex-end">
+                                <PrimaryButton
+                                    className="h-[37px]"
+                                    onClick={() =>
+                                        router.get(
+                                            route("ticket.create-new-ticket")
+                                        )
+                                    }
+                                >
+                                    New Ticket
+                                </PrimaryButton>
+                                <Filter
+                                    element={[
+                                        <Checkbox
+                                            labelText={"Priority High"}
+                                            id="high"
+                                            className="hover:before:opacity-0"
+                                            checked={data.high}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Priority Medium"}
+                                            id="medium"
+                                            className="hover:before:opacity-0"
+                                            checked={data.medium}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Priority Low"}
+                                            id="low"
+                                            className="hover:before:opacity-0"
+                                            checked={data.low}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Status Open"}
+                                            id="open"
+                                            className="hover:before:opacity-0"
+                                            checked={data.open}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Status Pending"}
+                                            id="pending"
+                                            className="hover:before:opacity-0"
+                                            checked={data.pending}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Status Solved"}
+                                            id="solved"
+                                            className="hover:before:opacity-0"
+                                            checked={data.solved}
+                                            onChange={handleCheckbox}
+                                        />,
+                                        <Checkbox
+                                            labelText={"Status Deleted"}
+                                            id="deleted"
+                                            className="hover:before:opacity-0"
+                                            checked={data.deleted}
+                                            onChange={handleCheckbox}
+                                        />,
+                                    ]}
+                                />
+                            </div>
                         </div>
                     </div>
                     <TicketTable

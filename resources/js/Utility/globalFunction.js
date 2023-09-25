@@ -1,3 +1,5 @@
+import { ADMIN } from "./constant";
+
 export const getDateFromBackend = (datetime) => {
     let date = new Date(datetime).toLocaleString();
 
@@ -57,3 +59,6 @@ export const handleAttachmentDeleteUtil = (file, attachment) => {
         (attach) => attach.name !== file.name && attach.size !== file.size
     );
 };
+
+// check if the user is admin
+export const isAdmin = (role) => role === ADMIN;
