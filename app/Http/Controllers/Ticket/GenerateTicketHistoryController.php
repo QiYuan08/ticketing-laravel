@@ -48,16 +48,23 @@ class GenerateTicketHistoryController extends Controller
                 ->where('internal_node', '=', false)
                 ->get()
                 ->toArray();
-            })
+                    })
             ->toArray();
 
-        collect($tickets)->map(function ($ticket) {
-            dd($ticket);
+        // collect($tickets)->map(function ($ticket) {
+        //     // dd($ticket);
 
+        //     $a = collect($messages)
+        //     ->map(function ($message) {
+        //         $dateTime = Carbon::parse($message['created_at'])->toDateTimeString();
+        //         $message['created_at'] = $dateTime; 
+                
+        //         return $message;
+        //     })
+        //     ->toArray();
 
-
-        return $a;
-        });
+        // return $a;
+        // });
 
         
 
