@@ -9,12 +9,17 @@ const Select = ({
     selected,
     render,
     identifier = "id",
+    disabled = false,
 }) => {
     return (
         <div className="min-w-30">
-            <Listbox value={selected} onChange={setSelected}>
+            <Listbox
+                value={selected}
+                onChange={setSelected}
+                disabled={disabled}
+            >
                 <div className="relative mt-1">
-                    <Listbox.Button className="w-[90%] relative min-w-max min-h-10 h-max cursor-default rounded-[3px] bg-white py-1 pl-3 pr-10 text-left border-gray-900/10 border-[1px] focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm z-0">
+                    <Listbox.Button className="w-full relative min-w-max min-h-10 h-max cursor-default rounded-[3px] bg-white py-1 pl-3 pr-10 text-left border-gray-900/10 border-[1px] focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm z-0">
                         <span className="block truncate">
                             {render(selected)}
                         </span>

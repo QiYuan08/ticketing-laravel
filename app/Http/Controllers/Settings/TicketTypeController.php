@@ -7,7 +7,10 @@ use App\Models\EmailTemplate;
 use App\Models\Type;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+
+use function PHPSTORM_META\type;
 
 class TicketTypeController extends Controller
 {
@@ -22,13 +25,21 @@ class TicketTypeController extends Controller
     }
 
     public function update(Request $request, Type $type) {
-
-        $request->validate([
-            'name' => ['required', 'unique:App\Models\Type,name'],
-            'type_id' => ['required']
+        $validator = Validator::make($request->all(), 
+        [            
+            'type_id' => ['required'],
+            'deduction_rate' => ['required'],
+            'name' => ['required']
         ]);
 
+        // check if the new ticket name  is unique or not 
+        $validator->sometimes('name', 'unique:App\Models\Type,name', function ($request) use ($type) {
+            return $request->input('name') !== $type->name;
+        });
+
+
         $type->name = $request->input('name');
+        $type->deduction_rate = $request->input('deduction_rate');
         $type->save();
 
 

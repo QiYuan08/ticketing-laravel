@@ -42,7 +42,7 @@ class GeneralMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->mailData->subject
+            subject: $this->mailData->subject,
         );
     }
 

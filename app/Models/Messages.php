@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Str;
 
 class Messages extends Model implements HasMedia
 {
@@ -36,6 +37,14 @@ class Messages extends Model implements HasMedia
         'messageId',
         'source_ticket',
     ];
+
+    
+    public static function generateMessageId() {
+        $messageId = (string) Str::uuid();
+        $messageIdStr = "s$messageId@magit.sg";
+
+        return "$messageIdStr";
+    }
 
     public function recipient() {
             return $this->morphTo();

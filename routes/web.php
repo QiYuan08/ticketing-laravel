@@ -86,6 +86,7 @@ Route::middleware('auth')->name('customer.info.')->prefix('/customers-info')->gr
         Route::get('/list', [CustomerInfoController::class, 'create'])->name('list');
         Route::get('/{customer}', [CustomerInfoController::class, 'view'])->name('details');
 
+        Route::patch('/update-job-order/{customer}', [CustomerInfoController::class,'updateJobOrder'])->name('update-job-order');
         Route::patch('/{customer}', [CustomerInfoController::class, 'store'])->name('update');
 });
 

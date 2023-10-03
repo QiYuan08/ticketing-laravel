@@ -13,7 +13,7 @@ class CustomerInfoController extends Controller
 {
     public function create (Request $request) {
         $query = Customer::filter($request)
-        ->orderBy('updated_at', 'desc')
+        ->orderBy('pic_name', 'asc')
         ->paginate(15);
 
         return Inertia::render('Customer/CustomerInfo/CustomerInfoList', ['data' => $query]);
@@ -39,5 +39,12 @@ class CustomerInfoController extends Controller
         session()->put('success', "$customer->name updated");
 
         return redirect()->route('customer.info.details', $customer->customer_id);
+    }
+
+    public function updateJobOrder (Request $request, Customer $customer) {
+        $customer->job_order = $request->input('jobOrder');
+        $customer->save();
+
+        return redirect()->back();
     }
 }

@@ -5,7 +5,7 @@ import TextAvatar from "@/Components/TextAvatar";
 import TextEditor from "@/Components/TextEditor";
 import { useNotificationContext } from "@/Context/NotificationContext";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { INFO } from "@/Utility/constant";
+import { INFO, TICKET_STATUS_SOLVED } from "@/Utility/constant";
 import {
     getAttachmentSize,
     handleAttachmentDeleteUtil,
@@ -45,6 +45,7 @@ const TicketDetails = (props) => {
     const [openTemplate, setOpenTemplate] = useState(false);
     const { data, setData, post, progress } = useForm({
         assignee: ticket?.assignee,
+        customer: ticket?.customer,
         status: ticket.status,
         priority: ticket.priority,
         type: ticket.type,
@@ -112,22 +113,35 @@ const TicketDetails = (props) => {
                             onClick={goToCustomerDetails}
                         >
                             <Typography variant="h4">Requestor</Typography>
-                            <Select
-                                items={customers}
-                                selected={data.requestor}
-                                identifier="customer_id"
-                                setSelected={(value) => {
-                                    setData("requestor", value);
-                                }}
-                                render={(item) => (
-                                    <TextAvatar
-                                        text={item?.pic_name ?? ""}
-                                        img={item?.profilePicture}
-                                    />
-                                )}
+                            <TextAvatar
+                                text={ticket?.requestor?.pic_name}
+                                subtext="Customer"
+                                img=""
                             />
                         </div>
                     </div>
+                    {console.log(data)}
+
+                    {/* pic_name */}
+                    <div className="flex flex-col justify-items-center items-start ml-2 mt-2 lg:mt-2 gap-y-1 cursor-pointer">
+                        <Typography variant="h4">Customer</Typography>
+                        <Select
+                            items={customers}
+                            selected={data.customer ?? ""}
+                            identifier="customer_id"
+                            setSelected={(value) => {
+                                setData("customer", value);
+                            }}
+                            render={(item) => (
+                                <TextAvatar
+                                    text={item?.pic_name ?? ""}
+                                    subtext={item?.email ?? ""}
+                                    img={item?.profilePicture}
+                                />
+                            )}
+                        />
+                    </div>
+
                     {/* assignee */}
                     <div className="flex flex-col justify-items-center items-start ml-2 lg:mt-2 gap-y-1 p-3">
                         <Typography variant="h4">Assignee</Typography>
@@ -183,6 +197,9 @@ const TicketDetails = (props) => {
                             <Select
                                 items={status}
                                 selected={data.status}
+                                disabled={
+                                    data.status.name === TICKET_STATUS_SOLVED
+                                }
                                 setSelected={(value) => {
                                     setData("status", value);
                                 }}

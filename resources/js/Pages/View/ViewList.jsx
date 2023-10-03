@@ -40,7 +40,7 @@ const ViewList = (props) => {
     });
     return (
         <>
-            <Head title="Dashboard" />
+            <Head title="View" />
 
             <Card>
                 <CardBody>
@@ -141,7 +141,7 @@ ViewList.layout = (page) => (
         children={page}
         header={
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard (View and edit ticket assigned to you)
+                View (View and edit ticket assigned to you)
             </h2>
         }
     />

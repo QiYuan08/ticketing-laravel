@@ -35,8 +35,7 @@ const TicketTable = ({ data, pagination }) => {
                     "Assignee",
                     "Requested At",
                     "Priority",
-                    "Edit",
-                    "Delete",
+                    // "Delete",
                 ]}
                 bodyRow={
                     data && data.length > 0 ? (
@@ -46,9 +45,16 @@ const TicketTable = ({ data, pagination }) => {
                                     className="odd:bg-gray-100 break-words"
                                     key={idx}
                                 >
-                                    <td className="px-2 py-4 text-sm text-center font-medium text-gray-800">
-                                        {row.ticket_id}
-                                    </td>
+                                    <Link
+                                        href={route("ticket.get", {
+                                            ticketID: row.ticket_id,
+                                        })}
+                                        as="button"
+                                    >
+                                        <td className="px-2 py-4 text-sm text-center font-medium text-gray-800 hover:font-semibold">
+                                            {row.ticket_id}
+                                        </td>
+                                    </Link>
                                     <td className="px-2 py-4 text-sm font-medium text-gray-800  w-1 ">
                                         <StatusTag
                                             status={row.status?.name ?? ""}
@@ -74,7 +80,7 @@ const TicketTable = ({ data, pagination }) => {
                                             status={row?.priority?.name}
                                         />
                                     </td>
-                                    <td className="px-2 py-4 text-sm font-medium text-left ">
+                                    {/* <td className="px-2 py-4 text-sm font-medium text-left ">
                                         <Link
                                             href={route("ticket.get", {
                                                 ticketID: row.ticket_id,
@@ -85,8 +91,8 @@ const TicketTable = ({ data, pagination }) => {
                                         >
                                             Edit
                                         </Link>
-                                    </td>
-                                    <td className="px-2 py-4 text-sm font-medium text-left ">
+                                    </td> */}
+                                    {/* <td className="px-2 py-4 text-sm font-medium text-left ">
                                         <button
                                             onClick={() =>
                                                 deleteTicket(row.ticket_id)
@@ -95,7 +101,7 @@ const TicketTable = ({ data, pagination }) => {
                                         >
                                             Delete
                                         </button>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             );
                         })

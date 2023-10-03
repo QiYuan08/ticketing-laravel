@@ -16,14 +16,16 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::table('users')->insert([
-            'id' => Role::ADMING_ACC_ID,
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'role_id' => 1
-        ]);
-        
+        if (!User::find(Role::ADMING_ACC_ID)->exists()) {
+            DB::table('users')->insert([
+                'id' => Role::ADMING_ACC_ID,
+                'name' => 'Admin',
+                'email' => 'admin@gmail.com',
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+                'role_id' => 1
+            ]);
+            
+        }
     }
 
     /**
@@ -33,5 +35,7 @@ return new class extends Migration
      */
     public function down()
     {
+        $adminId = Role::ADMING_ACC_ID;
+        DB::query("DELETE FROM users where id = '$adminId'");
     }
 };

@@ -44,7 +44,7 @@ class Ticket extends Model implements HasMedia
      *
      * @var array
      */
-    protected $with = ['priority', 'status', 'type', 'requestor', 'assignee'];
+    protected $with = ['priority', 'status', 'type', 'requestor', 'assignee', 'customer'];
 
 
     protected $primaryKey = 'ticket_id';
@@ -59,6 +59,7 @@ class Ticket extends Model implements HasMedia
         'type_id',
         'latest_reference',
     ];
+
     
     public function messages()
     {
@@ -79,6 +80,10 @@ class Ticket extends Model implements HasMedia
 
     public function requestor() {
         return $this->belongsTo(Customer::class, 'requestor_id', 'customer_id')->withTrashed();
+    }
+
+    public function customer() {
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id')->withTrashed();
     }
 
     public function assignee() {

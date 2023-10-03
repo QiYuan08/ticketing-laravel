@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Ticket;
 
 use App\Constant\MediaCollection;
+use App\Constant\Status;
 use App\Http\Controllers\Controller;
 use App\Mail\GeneralMail;
 use App\Models\Customer;
 use App\Models\Messages;
 use App\Models\Ticket;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -16,6 +18,7 @@ class TicketReplyController extends Controller
 {
     public function reply(Request $request, Ticket $ticket)
     {
+        $previousStatus = $ticket->status_id;
         // Validate the uploaded file
         // $request->validate([
         //     'files' => 'required|file',
@@ -25,10 +28,23 @@ class TicketReplyController extends Controller
         $request->input('status') && $ticket->status_id = $request->input('status')['status_id'];
         $request->input('priority') && $ticket->priority_id = $request->input('priority')['priority_id'];
         $request->input('assignee') && $ticket->assignee_id = $request->input('assignee')['id'];
+        $request->input('customer') && $ticket->customer_id = $request->input('customer')['customer_id'];
         $request->input('requestor') && $ticket->requestor_id = $request->input('requestor')['customer_id'];
         $request->input('type') && $ticket->type_id = $request->input('type')['type_id'];
 
+        // if ticket solve and got assigned customer
+        if ( $request->input('status')['status_id'] === Status::TICKET_STATUS_SOLVED_ID && $ticket->customer_id && $previousStatus !== $ticket->status_id) {
+            $job_type = Type::find($ticket->type_id)->deduction_rate;
+            $customer = Customer::find($ticket->customer_id);
+
+            $customer->job_order -= $job_type;
+
+            $customer->save();
+        }
+
         $ticket->save();
+        $ticket->refresh();
+
 
         // create new message if provided
         if ($request->input('message') !== null && $request->input('message') !== "") {

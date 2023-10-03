@@ -27,7 +27,7 @@ class CreateTicketController extends Controller
         // Log::debug('file received', $request->file());
 
         // find if the assignee exist
-        $user = Customer::where('email', '=', $request->input('from'))->first();
+        $user = Customer::where('email', '=', $request->input('from'))->withTrashed()->first();
 
 
         if ($user === null) {
@@ -36,6 +36,14 @@ class CreateTicketController extends Controller
                 'pic_name' => $request->input('fromName') ?? $request->input('from'),
                 'unknown' => true,
             ]);
+        }
+
+        if ($user->deleted_at) {
+            $user->restore();
+            $user->unknown = true;
+
+            $user->save();
+            // $user->refresh();
         }
 
         // check if the ticket exist

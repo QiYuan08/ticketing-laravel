@@ -53,8 +53,6 @@ const Authenticated = ({ header, children }) => {
                 },
             };
 
-            console.log([data].concat(messages));
-
             setMessages([data].concat(messages));
             setNotificationCount(notificationCount + 1);
         }
