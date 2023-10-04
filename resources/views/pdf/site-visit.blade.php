@@ -123,7 +123,7 @@
 
         .header-title {
             font-size: 2.2rem;
-            font-family: 'Courier New', Courier, monospace; 
+            font-family: Courier, monospace; 
         }
 		
 		.logo {
