@@ -22,6 +22,10 @@ const TicketType = ({ types, alert }) => {
             label: 0.5,
         },
         {
+            value: 1.0,
+            label: 1.0,
+        },
+        {
             value: 1.5,
             label: 1.5,
         },

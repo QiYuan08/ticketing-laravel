@@ -106,6 +106,5 @@ class GenerateSiteVisitPdfController extends Controller
 
         return redirect()->route('ticket.get', ['ticketID' => $ticket->ticket_id]);
 
-        dd($request->input('imageURL'));
     }
 }
