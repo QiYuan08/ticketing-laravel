@@ -1,5 +1,6 @@
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
+import TextEditor from "@/Components/TextEditor";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
 import {
@@ -21,7 +22,13 @@ const GenerateSiteVisitPdf = (props) => {
 
     var formatedDate = `${date.getFullYear()}-${
         date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
-    }-${date.getDate()}`;
+    }- ${date.getDate() < 9 ? "0" + date.getDate() : date.getDate()}`;
+
+    var formatedTime = `${
+        date.getHours() < 9 ? "0" + date.getHours() : date.getHours()
+    } : ${
+        date.getMinutes() < 9 ? "0" + date.getMinutes() : date.getMinutes()
+    } : ${date.getSeconds() < 9 ? "0" + date.getSeconds() : date.getSeconds()}`;
 
     const sigCanvas = useRef();
     const [imageURL, setImageURL] = useState(null);
@@ -35,7 +42,7 @@ const GenerateSiteVisitPdf = (props) => {
             ticket.requestor.mobile_number ??
             "",
         Date: formatedDate,
-        time: "",
+        time: formatedTime,
         customerId: ticket.requestor.alias_customer_id,
         engineer: "",
         service: false,
@@ -50,6 +57,8 @@ const GenerateSiteVisitPdf = (props) => {
         adHocFee: "",
         imageURL: "",
     });
+
+    console.log(data.problem);
 
     const handleInputChange = (e) => {
         setData(e.target.name, e.target.value);
@@ -132,9 +141,10 @@ const GenerateSiteVisitPdf = (props) => {
                         <div className="grid grid-cols-2 gap-y-3">
                             <label className="font-semibold">Date</label>
                             <input
-                                type="date"
+                                // type="date"
                                 className="p-2 border-gray-300 border-2 rounded-md leading-5"
                                 value={data.Date}
+                                disabled={true}
                                 name="Date"
                                 onChange={handleInputChange}
                             />
@@ -148,6 +158,7 @@ const GenerateSiteVisitPdf = (props) => {
                                 className="p-2 border-gray-300 border-2 rounded-md leading-[5px]"
                                 value={data.time}
                                 name="time"
+                                disabled={true}
                                 onChange={handleInputChange}
                             />
                             <InputError
@@ -187,20 +198,20 @@ const GenerateSiteVisitPdf = (props) => {
                             onChange={(e) =>
                                 setData("service", e.target.checked)
                             }
-                            label="Service"
+                            label="Service Order"
                         />
                         <Checkbox
                             onChange={(e) =>
                                 setData("workOrder", e.target.checked)
                             }
-                            label="Work Order/Job Order"
+                            label="Job Order"
                         />
                         <Checkbox
                             value="others"
                             onChange={(e) =>
                                 setData("others", e.target.checked)
                             }
-                            label="Other"
+                            label="Others"
                         />
                         <div className="flex items-center gap-x-1 w-48">
                             :
@@ -220,22 +231,30 @@ const GenerateSiteVisitPdf = (props) => {
 
                     <div className="flex flex-col md:col-span-2">
                         <p className="font-semibold text-base">Problem</p>
-                        <Textarea
+                        <TextEditor
+                            value={data.problem}
+                            onChange={(msg) => setData("problem", msg)}
+                        />
+                        {/* <Textarea
                             value={data.problem}
                             name="problem"
                             onChange={handleInputChange}
-                        />
+                        /> */}
                         <InputError message={errors.problem} className="mt-2" />
                     </div>
 
                     <div className="flex flex-col md:col-span-2">
                         <p className="font-semibold text-base">Details</p>
-                        <Textarea
+                        <TextEditor
+                            value={data.detail}
+                            onChange={(msg) => setData("detail", msg)}
+                        />
+                        {/* <Textarea
                             size="lg"
                             value={data.detail}
                             name="detail"
                             onChange={handleInputChange}
-                        />
+                        /> */}
                     </div>
 
                     <div className="flex items-center md:col-span-2 gap-x-2">
@@ -303,12 +322,12 @@ const GenerateSiteVisitPdf = (props) => {
             </>
 
             {/* signature modal */}
-            <Dialog open={openModal} handler={setOpenModal}>
+            <Dialog open={openModal} handler={setOpenModal} size="xl">
                 <DialogBody>
                     <SignatureCanvas
                         penColor="black"
                         ref={sigCanvas}
-                        canvasProps={{ className: "w-full h-full h-48" }}
+                        canvasProps={{ className: "w-full h-64" }}
                     />
                 </DialogBody>
                 <DialogFooter className="space-x-2">

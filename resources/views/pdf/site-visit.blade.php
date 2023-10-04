@@ -97,6 +97,10 @@
 
         }
 
+        .mt--1 {
+            margin-top: -2px;
+        }
+
         .mt-1 {
             margin-top: 5px
         }
@@ -148,7 +152,7 @@
 				
                 <div class="d-flex-row ml-2">
                     <h2 class="header-title" style="margin-bottom: 4px">
-                        MAGIT SOLUTIONS PTE LTD
+                        MAG CONSULTING PTE LTD
                     </h2>
                     <hr>
                     <h3 style="margin-top: -4px; font-style:italic">INFORMATION TECHNOLOGY SPECIALIST</h3>
@@ -172,13 +176,13 @@
                 </div>
 
                 <div class="item-container right">
-                    <div class="sub-container left">                    
+                    <div class="sub-container left mt--1">                    
                         <p>Date:</p>
                         <p>Time:</p>
                         <p>Customer ID:</p>
                         <p>Engineer:</p>
                     </div>
-                    <div class="sub-container left">
+                    <div class="sub-container left mt--1">
                         <p>{{$Date}}</p>
                         <p>{{$time}} </p>
                         <p>{{$customerId}}</p>
@@ -190,7 +194,7 @@
             <div class="item-container-full d-flex">
                 <p>Service Type: </p>
                 <div class="ml-2 d-flex">
-                    <p>Service</p>
+                    <p>Service Order</p>
                     @if ($service)
                         <input type="checkbox" checked class="ml-1"/>
                     @else
@@ -199,7 +203,7 @@
                     
                 </div>
                 <div class="ml-2 d-flex">
-                    <p>Work Order/Job Order</p>
+                    <p>Job Order</p>
                     @if ($workOrder)
                         <input type="checkbox" checked class="ml-1"/>
                     @else
@@ -222,12 +226,12 @@
 
             <p class="mt-2">Problem</p>
             <div class="item-container-full min-h-100">
-                    {{$problem}}
+                    {!! $problem !!}
             </div>
 
             <p class="mt-2">Details</p>
             <div class="item-container-full min-h-300">
-                {{$detail}}
+                {!! $detail !!}
             </div>
 
             <div class="d-flex row">

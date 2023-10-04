@@ -27,11 +27,11 @@ class GenerateSiteVisitPdfController extends Controller
 
     public function store(Request $request, Ticket $ticket) {
         
-        $request->validate([
-            'email' => ['required',], // if, is known, check if the email is unique
-            'problem' => ['required'],
-            'Date' => ['required'],
-        ]);
+        // $request->validate([
+        //     'email' => ['required',], // if, is known, check if the email is unique
+        //     'problem' => ['required'],
+        //     'Date' => ['required'],
+        // ]);
 
         $file = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->input('imageURL'))); 
     
@@ -104,10 +104,8 @@ class GenerateSiteVisitPdfController extends Controller
             'messageId' => $messageIdStr
         ], $message));
 
-
-
         return redirect()->route('ticket.get', ['ticketID' => $ticket->ticket_id]);
 
-        // dd($request->input('imageURL'));
+        dd($request->input('imageURL'));
     }
 }

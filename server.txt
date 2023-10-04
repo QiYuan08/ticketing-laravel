@@ -34,7 +34,7 @@ must clone with laravel user
 3. npm install && npm run build
 3. php artisan migrate
 5. php artisan config:clear
-6. php artisan route:clearlsd
+6. php artisan route:clear
 7. start the queue worker (inside /etc/supervisor/conf.d/queue-worker.conf
 	- sudo supervisorctl reread
 	- sudo supervisorctl update
@@ -51,7 +51,7 @@ must clone with laravel user
 	- sudo chmod +x /usr/local/bin/wkhtmltoimage-amd64 (add to config/snappy.php)
 	- sudo chmod +x /usr/local/bin/wkhtmltopdf-amd64
 	- 
-
+9. restart nginx
 
 dumb DB
 - pg_dump database_name > path (currently /home/laravel/database)
