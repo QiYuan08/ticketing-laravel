@@ -135,7 +135,7 @@ const TicketDetails = (props) => {
                             render={(item) => (
                                 <TextAvatar
                                     text={item?.pic_name ?? ""}
-                                    subtext={item?.email ?? ""}
+                                    subtext={item?.company ?? "-"}
                                     img={item?.profilePicture}
                                 />
                             )}

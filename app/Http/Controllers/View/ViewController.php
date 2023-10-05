@@ -15,7 +15,7 @@ class ViewController extends Controller
         
         return Inertia::render('View/ViewList', 
         [
-            'data' => Ticket::filter($request)->withTrashed()->orderBy('updated_at', 'asc')->paginate(20),
+            'data' => Ticket::filter($request)->withTrashed()->orderBy('ticket_id', 'desc')->paginate(20),
         ]);
     }
 }
